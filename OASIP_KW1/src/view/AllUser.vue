@@ -1,22 +1,34 @@
 <script setup>
 import {onBeforeMount, ref} from 'vue';
+import { useRouter } from "vue-router";
 const userList=ref([])
 const userCheck=ref(undefined)
 const userLink=`http://localhost:8080/api/users`
 
+//router
+const myRouter = useRouter();
+const goUser = (input) =>
+  myRouter.push({
+    name: "User",
+    params: {
+      id: input.id,
+    },
+  });
+
+  
 //GET user
-const getCategory = async () => {
+const getAllUser = async () => {
   const res = await fetch(userLink);
   if (res.status === 200) {
     userList.value = await res.json();
     userCheck.value = true;
     console.log(userList.value)
   } else {
-    categoryCheck = false;
+    userCheck.value = false;
   }
 };
 onBeforeMount(async()=>{
-    await getCategory();
+    await getAllUser();
 })
 </script>
  
@@ -39,6 +51,8 @@ onBeforeMount(async()=>{
             <th scope="col" class="px-6 py-3">Role</th>
             <th scope="col" class="px-6 py-3">CreateOn</th>
             <th scope="col" class="px-6 py-3">UpdateOn</th>
+            <th scope="col" class="px-6 py-3">more detail</th>
+
           </tr>
         </thead>
         <tbody>
@@ -53,8 +67,8 @@ onBeforeMount(async()=>{
             >
               {{ User.name }}
             </th>
-            <td class="px-1 py-4">
-              <div class="block m-auto">
+            <td class="px-1 py-4 text-ellipsis overflow-hidden ">
+              <div class="  block m-auto">
                 {{User.email}}
               </div>
             </td>
@@ -66,6 +80,14 @@ onBeforeMount(async()=>{
             </td>
             <td class="px-14 py-4">
                 {{User.updatedOn}}
+            </td>
+            <td class="px-14 py-4">
+              <button
+                @click="goUser(User)"
+                class="text-black hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+              >
+                Detail
+              </button>
             </td>
           </tr>
         </tbody>
