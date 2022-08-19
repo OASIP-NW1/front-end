@@ -32,7 +32,7 @@ const goBooking = () => myRouter.push({ name: "Booking" });
     <div class="showUp w-1/3 inline-block h-fit mt-20">
       <!-- ขึ้นลง -->
       <div class="w-62 m-auto">
-        <img class="z-50 animate-bounce" src="../assets/test3.png" />
+        <img class="z-50 animate-bounce" src="../../public/hansom.jpg" />
       </div>
 
       <!-- เข้มจาง -->
