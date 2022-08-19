@@ -6,6 +6,8 @@ import Reservation from '../view/Reservation.vue'
 import ReservationList from '../view/ReservationList.vue'
 import ContactUs from '../view/ContactUs.vue'
 import AllUser from '../view/AllUser.vue'
+import User from '../view/User.vue'
+
 
 const history=createWebHistory(import.meta.env.BASE_URL)
       
@@ -43,6 +45,11 @@ const routes=[
         path:'/all-user',
         name:'AllUser',
         component: AllUser
+    },
+    {
+        path:'/user/:id',
+        name:'User',
+        component: User
     }
 ]
 
