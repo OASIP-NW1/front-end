@@ -23,8 +23,8 @@ const goAllUser = ()=>myRouter.push({name:'AllUser'})
   <router-view></router-view> -->
  
   <div class=" lg:pt-2 md:w-screen h-screen" id="bg_color">
-    <nav class="bg-transparent drop-shadow-md md:rounded-lg md:mx-auto w-3/4">
-                <div class="max-w-screen-xl mx-auto px-4 mx-20 ">
+    <nav class="bg-transparent drop-shadow-md md:rounded-lg md:mx-auto w-full">
+                <div class="max-w-screen-xl mx-auto px-4 mx-auto ">
                     <div class="md:flex justify-between drop-shadow-lg">
                         <div class="md:flex space-x-4">
                             <!-- logo -->
@@ -48,7 +48,7 @@ const goAllUser = ()=>myRouter.push({name:'AllUser'})
 
 
                         <!-- secondary nav -->
-                        <div class=" lg:flex items-center space-x-1 px-6 py-3 mx-auto" >
+                        <div class=" lg:flex items-center space-x-1 px-6 py-3   ml-28" >
                             <ul>
 
                                 <li>
@@ -90,6 +90,11 @@ const goAllUser = ()=>myRouter.push({name:'AllUser'})
                             transition duration-150 ease-in-out " @click="goContactUs">Contact us</button>
                                 </li>                                
                             </ul>
+                        </div>
+                        <div class="flex m-auto">
+                            <h2 class="mx-4">sign in</h2>
+                            <h2 class="mx-4">sign up</h2>
+
                         </div>
                     </div>
                 </div>
