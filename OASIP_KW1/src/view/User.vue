@@ -71,7 +71,7 @@ const removeInfo = async () => {
 
         <!-- for button -->
         <div class="flex m-auto mt-7 mb-3 w-fit">
-          <a href="#remove" class="m-2 p-2 bg-slate-800 text-white">Remove</a>
+          <a href="#remove" class="m-2 p-2 bg-rose-400 text-white">Remove</a>
           <button @click="goAllUser" class="m-2 p-2 bg-slate-800 text-white">Edit</button>
           <button @click="goAllUser" class="m-2 p-2 bg-slate-800 text-white">Back</button>
 
@@ -107,7 +107,7 @@ const removeInfo = async () => {
   </div>
 </template>
  
-<style>
+<style scoped>
 /* remove */
 .remove {
   background: rgb(166, 166, 166);
