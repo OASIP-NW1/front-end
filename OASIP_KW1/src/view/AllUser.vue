@@ -33,11 +33,16 @@ onBeforeMount(async()=>{
 </script>
  
 <template>
+    <!-- for show no user -->
+  <div v-if="userList.length == 0" class="w-64 h-28 p-5  mx-auto mt-10 bg-white rounded-md shadow-xl" >
+      <h4 class="text-center w-fit m-auto ">No User</h4> 
+  </div>
 
-  <div
+    <!-- for show user -->
+  <div v-else
     class="showUp w-5/6 p-5 pb-7 mx-auto mt-10 bg-white rounded-md shadow-xl overflow-auto">
     <div
-      v-if="userList.length !== 0"
+      
       class="drop-shadow-2xl bg-white overflow-y-auto mx-auto h-fit"
       style="height: 440px; width: 100%"
     >
@@ -49,8 +54,8 @@ onBeforeMount(async()=>{
             <th scope="col" class="px-6 py-3">Name</th>
             <th scope="col" class="px-3 py-3">Email</th>
             <th scope="col" class="px-6 py-3">Role</th>
-            <th scope="col" class="px-6 py-3">CreateOn</th>
-            <th scope="col" class="px-6 py-3">UpdateOn</th>
+            <!-- <th scope="col" class="px-6 py-3">CreateOn</th>
+            <th scope="col" class="px-6 py-3">UpdateOn</th> -->
             <th scope="col" class="px-6 py-3">more detail</th>
 
           </tr>
@@ -75,12 +80,12 @@ onBeforeMount(async()=>{
             <td class="px-6 py-4">
                 {{User.role}}
             </td>
-            <td class="px-6 py-4 text-ellipsis overflow-hidden">
+            <!-- <td class="px-6 py-4 text-ellipsis overflow-hidden">
               {{ User.createdOn }}
             </td>
             <td class="px-14 py-4">
                 {{User.updatedOn}}
-            </td>
+            </td> -->
             <td class="px-14 py-4">
               <button
                 @click="goUser(User)"
