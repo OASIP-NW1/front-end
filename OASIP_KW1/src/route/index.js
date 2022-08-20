@@ -7,7 +7,8 @@ import ReservationList from '../view/ReservationList.vue'
 import ContactUs from '../view/ContactUs.vue'
 import AllUser from '../view/AllUser.vue'
 import User from '../view/User.vue'
-
+import SignIn from '../view/SignIn.vue'
+import SignUp from '../view/SignUp.vue'
 
 const history=createWebHistory(import.meta.env.BASE_URL)
       
@@ -50,6 +51,16 @@ const routes=[
         path:'/user/:id',
         name:'User',
         component: User
+    },
+    {   
+        path:'/sign-in',
+        name:'SignIn',
+        component: SignIn        
+    },
+    {   
+        path:'/sign-up',
+        name:'SignUp',
+        component: SignUp        
     }
 ]
 
