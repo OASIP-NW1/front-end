@@ -40,7 +40,8 @@ onBeforeMount(async()=>{
 
 //remove information
 const removeInfo = async () => {
-  const res = await fetch(`${userLink}/${id}`, { method: "DELETE" });
+  const res = await fetch(`${userLink}/${id}`,
+   { method: "DELETE" });
   if (res.status === 200) {
     console.log("delete successfully");
     goAllUser();
