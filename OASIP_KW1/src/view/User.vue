@@ -31,7 +31,7 @@ const getUser = async () => {
     }
     //console.log(userList.value)
   } else {
-    userCheck = false;
+    userCheck.value = false;
   }
 };
 onBeforeMount(async()=>{
