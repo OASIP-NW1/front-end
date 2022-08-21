@@ -12,6 +12,10 @@ const goBooking = ()=>myRouter.push({name:'Booking'})
 const goReservationList =()=>myRouter.push({name:'ReservationList'})
 const goContactUs = ()=>myRouter.push({name:'ContactUs'})
 const goAllUser = ()=>myRouter.push({name:'AllUser'})
+const goSignUp = ()=>myRouter.push({name:'SignUp'})
+const goSignIn = ()=>myRouter.push({name:'SignIn'})
+
+
 
 
 
@@ -92,8 +96,8 @@ const goAllUser = ()=>myRouter.push({name:'AllUser'})
                             </ul>
                         </div>
                         <div class="flex m-auto">
-                            <h2 class="mx-4">sign in</h2>
-                            <h2 class="mx-4">sign up</h2>
+                            <button @click="goSignIn" class="mx-4">sign in</button>
+                            <button @click="goSignUp" class="mx-4">sign up</button>
 
                         </div>
                     </div>
