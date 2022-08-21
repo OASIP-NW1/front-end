@@ -12,6 +12,10 @@ const goBooking = ()=>myRouter.push({name:'Booking'})
 const goReservationList =()=>myRouter.push({name:'ReservationList'})
 const goContactUs = ()=>myRouter.push({name:'ContactUs'})
 const goAllUser = ()=>myRouter.push({name:'AllUser'})
+const goSignUp = ()=>myRouter.push({name:'SignUp'})
+const goSignIn = ()=>myRouter.push({name:'SignIn'})
+
+
 
 
 
@@ -92,8 +96,8 @@ const goAllUser = ()=>myRouter.push({name:'AllUser'})
                             </ul>
                         </div>
                         <div class="flex m-auto">
-                            <h2 class="mx-4">sign in</h2>
-                            <h2 class="mx-4">sign up</h2>
+                            <button @click="goSignIn" class="mx-4">sign in</button>
+                            <button @click="goSignUp" class="mx-4">sign up</button>
 
                         </div>
                     </div>
@@ -122,9 +126,9 @@ ul li {
       font-family: arvo;
     }
 #bg_color {
-	background: linear-gradient(-45deg, #525252, #1b1b1b,#525252,#1b1b1b, #525252,#1b1b1b);
+	background: linear-gradient(-45deg, #0c25af, #e9287b,#7a32ee);
 	background-size: 400% 400%;
-	animation: gradient 30s ease infinite;
+	animation: gradient 20s ease infinite;
 	height: 100vh;
 }
 

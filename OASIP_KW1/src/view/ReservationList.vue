@@ -7,7 +7,7 @@ const categoryList = ref([]);
 const categoryCheck = ref(false);
 const filterReservationList = ref([]);
 
-const db = "http://localhost:5000/booking";
+// const db = "http://localhost:5000/booking";
 const eventLink = `${import.meta.env.BASE_URL}api/events`;
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
 

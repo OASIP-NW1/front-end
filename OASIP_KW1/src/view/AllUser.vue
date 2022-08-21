@@ -3,7 +3,12 @@ import {onBeforeMount, ref} from 'vue';
 import { useRouter } from "vue-router";
 const userList=ref([])
 const userCheck=ref(undefined)
+<<<<<<< Updated upstream
+const userLink=`${import.meta.env.BASE_URL}api/users`
+=======
 const userLink=`http://localhost:8080/api/users`
+const db="http://localhost:5000/user"
+>>>>>>> Stashed changes
 
 //router
 const myRouter = useRouter();
