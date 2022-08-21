@@ -6,7 +6,7 @@ import { resolveComponent } from 'vue';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
- base:`/nw1/`,
+  base:`/nw1/`,
   server: {
     proxy: {
       // Focus here
