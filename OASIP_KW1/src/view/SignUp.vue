@@ -18,13 +18,10 @@ const goHome = () =>
   });
 
   
-<<<<<<< Updated upstream
 
-const userLink=`${import.meta.env.BASE_URL}api/users`
-=======
 const db="http://localhost:5000/user"
-const userLink=`http://localhost:8080/api/users`
->>>>>>> Stashed changes
+const userLink=`${import.meta.env.BASE_URL}api/users`
+
 
 //GET user
 const userCheck=ref(undefined)
@@ -146,11 +143,6 @@ const addNewUser=async ()=>{
         console.log("can not add new user pls try again")
         
     }
-<<<<<<< Updated upstream
-        
-=======
-    
->>>>>>> Stashed changes
 }
 
 // functoin for check unique
