@@ -14,7 +14,7 @@ const updated=ref(undefined)
 const myRouoter=useRouter()
 const goAllUser = () => myRouoter.push({ name: "AllUser" });
 
-const userLink=`http://localhost:8080/api/users`
+const userLink=`${import.meta.env.BASE_URL}api/users`
 
 //GET user
 const getUser = async () => {
@@ -38,7 +38,6 @@ onBeforeMount(async()=>{
     await getUser();
 })
 
-
 //remove information
 const removeInfo = async () => {
   const res = await fetch(`${userLink}/${id}`, { method: "DELETE" });
@@ -52,7 +51,6 @@ const removeInfo = async () => {
 <template>
     <div
     class=" showUp w-3/5 p-5 pb-7 mx-auto m-10 bg-white rounded-md shadow-xl overflow-auto">
-
       <h1 class="m-auto w-fit">User Detail </h1>
       <h2 class="m-auto w-fit">User ID: {{id}}</h2>
       <div class="flex w-fit mx-auto">
@@ -74,11 +72,7 @@ const removeInfo = async () => {
           <a href="#remove" class="m-2 p-2 bg-rose-400 text-white">Remove</a>
           <button @click="goAllUser" class="m-2 p-2 bg-slate-800 text-white">Edit</button>
           <button @click="goAllUser" class="m-2 p-2 bg-slate-800 text-white">Back</button>
-
         </div>
-
-
-
       </div>
       </div>
     </div>
@@ -89,7 +83,6 @@ const removeInfo = async () => {
       <h2 class="mb-5 text-xl font-bold bg-white mx-auto w-fit">
         Are you sure(remove) ?
       </h2>
-
       <div class="option flex m-auto w-full mt-10">
         <a
           @click="removeInfo"

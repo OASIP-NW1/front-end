@@ -21,7 +21,7 @@ const goHome = () =>
 
   
 
-const userLink=`http://localhost:8080/api/users`
+const userLink=`${import.meta.env.BASE_URL}api/users`
 
 // submit
 const submitt = ()=>{
@@ -73,8 +73,7 @@ const addNewUser=async ()=>{
     }else{
         console.log("can not add new user")
     }
-    
-    
+        
 }
 </script>
  

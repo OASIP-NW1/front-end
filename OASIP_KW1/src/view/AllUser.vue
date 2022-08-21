@@ -3,7 +3,7 @@ import {onBeforeMount, ref} from 'vue';
 import { useRouter } from "vue-router";
 const userList=ref([])
 const userCheck=ref(undefined)
-const userLink=`http://localhost:8080/api/users`
+const userLink=`${import.meta.env.BASE_URL}api/users`
 
 //router
 const myRouter = useRouter();
