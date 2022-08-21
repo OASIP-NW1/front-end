@@ -397,7 +397,7 @@ onBeforeMount(async () => {
                 v-model="name"
                 type="text"
                 name="name"
-                placeholder="Somchai Jaidee (AT-3)"
+                placeholder="Somchai Jaidee (NW-1)"
                 required
                 :style="[
                   validateNameisNotNull == false ? 'border-color:red' : '',
