@@ -3,7 +3,7 @@ import { ref ,onBeforeMount} from "vue";
 import { useRoute, useRouter } from "vue-router";
 const { params } = useRoute();
 
-const userCheck=ref(undefined)
+const userCheck= ref(undefined)
 const userList=ref([])
 const id = params.id;
 const name=ref(undefined)
@@ -31,7 +31,7 @@ const getUser = async () => {
     }
     //console.log(userList.value)
   } else {
-    userCheck = false;
+    userCheck.value = false;
   }
 };
 onBeforeMount(async()=>{
