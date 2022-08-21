@@ -100,16 +100,17 @@ const submitt = ()=>{
     }else checkEmailF.value=true
 
     // check unique
-    if(isUniqueName.value!==true){
+    if(isUniqueName.value==true){
         console.log("name is ununique 😏")
     }else 
-    if(isUniqueEmail.value!==true){
+    if(isUniqueEmail.value==true){
         console.log("email is ununique 😏")
     }else
-    if(isUniqueNameAndRole.value!==true ){
+    if(isUniqueNameAndRole.value==true ){
         console.log("role and name is ununique")
     }else
-    if(checkEMailN.value==true && checkNameN.value==true &&checkEMailL.value==true &&checkNameL.value==true&&checkEmailF.value==true&&isUniqueName.value==true&&isUniqueEmail.value==true&&isUniqueNameAndRole.value==true){
+    // last check
+    if(checkEMailN.value==true && checkNameN.value==true &&checkEMailL.value==true &&checkNameL.value==true&&checkEmailF.value==true&&isUniqueName.value!==true&&isUniqueEmail.value!==true&&isUniqueNameAndRole.value!==true){
         console.log("status good")
         addNewUser()
     } 
@@ -129,7 +130,7 @@ const addNewUser=async ()=>{
       createdOn:null,
       updatedOn:null
 
-    }),
+    })
   });if( res.status==201){
         console.log("add new user")
         checkNameN.value=undefined
