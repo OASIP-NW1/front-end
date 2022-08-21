@@ -1,16 +1,14 @@
 <script setup>
 import {ref} from 'vue'
 import { useRouter } from 'vue-router';
+import { onBeforeMount } from 'vue';
 
 const name=ref('')
 const eMail=ref('')
 const role= ref('')
 const nameL=100
 const eMailL=50
-
-// validate
-const checkName=ref(undefined)
-const checkEMail=ref(undefined)
+const userList=ref([])
 
 //router
 const myRouter = useRouter();
@@ -20,33 +18,107 @@ const goHome = () =>
   });
 
   
+<<<<<<< Updated upstream
 
 const userLink=`${import.meta.env.BASE_URL}api/users`
+=======
+const db="http://localhost:5000/user"
+const userLink=`http://localhost:8080/api/users`
+>>>>>>> Stashed changes
+
+//GET user
+const userCheck=ref(undefined)
+const getUser = async () => {
+  const res = await fetch(userLink);
+  if (res.status === 200) {
+    userList.value = await res.json();
+    userCheck.value = true
+    console.log("get user")
+    //console.log(userList.value)
+  } else {
+    userCheck.value = false
+  }
+};
+onBeforeMount(async()=>{
+    await getUser();
+})
+
+// validate
+const checkNameN=ref(undefined)
+const checkEMailN=ref(undefined)
+const checkNameL=ref(undefined)
+const checkEMailL=ref(undefined)
+const checkEmailF =ref(undefined)
+const valFormEmail = (input) => {
+  let valid =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  if (input.match(valid)) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 // submit
 const submitt = ()=>{
-    console.log(name.value)
-    console.log(eMail.value)
-    console.log(role.value)
+    // console.log(name.value)
+    // console.log(eMail.value)
+    // console.log(role.value)
+    isUniqueName.value=undefined
+    isUniqueEmail.value=undefined
+    isUniqueNameAndRole.value=undefined
+    checkUniqueName()
+    checkUniqueEmail()
+    checkUniqueNameAndRole()
 
+
+    // check name is null?
     if(name.value==''){
-        checkName.value=false
-        console.log(false)
-    }else checkName.value=true 
-
+        checkNameN.value=false
+        console.log("pls input your name")
+    }else checkNameN.value=true 
+ 
+    // check e-mail is null?    
     if(eMail.value==''){
-        checkEMail.value=false
-        console.log(false)
-    }else checkEMail.value=true
+        checkEMailN.value=false
+        console.log("pls input your email")
+    }else checkEMailN.value=true
+    
+    //check name length
+    if(name.value.length>nameL){
+      console.log("name over 100")
+      checkNameL.value=false
+    }else checkNameL.value=true //;console.log('checkName Length',checkNameL.value)
 
-    if(checkEMail.value==true && checkName.value==true){
-        console.log(true)
+    //check e-mail length
+    if(eMail.value.length>eMailL){
+      console.log("email over 50")
+      checkEMailL.value=false
+    }else checkEMailL.value=true //;console.log('checkEMail Length',checkEMailL.value)
+
+    // check e-mail form
+    if(valFormEmail(eMail.value)==false){
+      console.log("email invalid form")
+      checkEmailF.value=false
+    }else checkEmailF.value=true
+
+    // check unique
+    if(isUniqueName.value!==true){
+        console.log("name is ununique 😏")
+    }else 
+    if(isUniqueEmail.value!==true){
+        console.log("email is ununique 😏")
+    }else
+    if(isUniqueNameAndRole.value!==true ){
+        console.log("role and name is ununique")
+    }else
+    if(checkEMailN.value==true && checkNameN.value==true &&checkEMailL.value==true &&checkNameL.value==true&&checkEmailF.value==true&&isUniqueName.value==true&&isUniqueEmail.value==true&&isUniqueNameAndRole.value==true){
+        console.log("status good")
         addNewUser()
     } 
   }    
 
 //add new user
-
 const addNewUser=async ()=>{
  const  res = await fetch(userLink, {
     method: "POST",
@@ -61,20 +133,58 @@ const addNewUser=async ()=>{
       updatedOn:null
 
     }),
-  });if(await res.status==201){
+  });if( res.status==201){
         console.log("add new user")
-        checkName.value=undefined
-        checkEMail.value=undefined
+        checkNameN.value=undefined
+        checkEMailN.value=undefined
         name.value=''
         eMail.value=''
         role.value=''
         goHome()      
 
     }else{
-        console.log("can not add new user")
-    }
+        console.log("can not add new user pls try again")
         
+    }
+<<<<<<< Updated upstream
+        
+=======
+    
+>>>>>>> Stashed changes
 }
+
+// functoin for check unique
+const isUniqueName =ref(undefined)
+const isUniqueEmail =ref(undefined)
+const isUniqueNameAndRole =ref(undefined)
+
+const checkUniqueName =()=>{
+  for(let check of userList.value){
+    if(check.name==name.value){
+      console.log(`Name :${check.name}`)
+      isUniqueName.value=true
+    }
+  }
+}
+
+const checkUniqueEmail =()=>{
+  for(let check of userList.value){
+    if(check.email==eMail.value){
+      console.log(`E-mail :${check.email}`)
+      isUniqueEmail.value=true
+    }
+  }
+}
+
+const checkUniqueNameAndRole =()=>{
+  for(let check of userList.value){
+    if(check.role==role.value &&check.name==name.value){
+      console.log(`Role :${check.role} Name : ${check.name}`)
+      isUniqueNameAndRole.value=true
+    }
+  }
+}
+
 </script>
  
 <template>
@@ -86,16 +196,24 @@ const addNewUser=async ()=>{
         <!-- body -->
         <div class="m-auto w-2/5">
             <div class="m-4 ">
-                <h3>Username :</h3> 
-                <input class="border-black border-2" type="text" v-model="name">
+                <label for="name">Username ({{name.length}}) :</label> 
+                <input id="name" class="border-black border-2" type="text" v-model="name">
             </div>
             <div class="m-4">
-                <h3>E-mail :</h3>
-                <input class="border-black border-2" type="text" v-model="eMail">
+                <label for="email">E-mail ({{eMail.length}}) :</label>
+                <input id="email" class="border-black border-2" type="text" v-model="eMail">
             </div>
             <div class="m-4">
-                <h3>role :</h3> 
-                <input class="border-black border-2" type="text" v-model="role">
+                <!-- <h3>role :</h3> 
+                <input class="border-black border-2" type="text" v-model="role"> -->
+                <label for="role">Role:</label>
+                <select  id="role" v-model="role">
+                  <option value="" disabled selected>select your role.</option>
+                  <option  value="student">Student</option>
+                  <option  value="lecturer">Lecturer</option>
+                  <option  value="admin">Admin</option>
+
+                </select>
             </div>
             <!-- <div class="m-4">
                 <h3>password :</h3> 
@@ -103,7 +221,7 @@ const addNewUser=async ()=>{
             </div> -->
         </div>
         <!-- button -->
-        <div class="m-auto w-fit">
+        <div class="m-auto w-fit bg-lime-400">
             <a href="#submit" class="p-6 m-2" >
                 submit
             </a>
