@@ -3,7 +3,7 @@
 </script>
  
 <template>
-sign in
+comming soon
 </template>
  
 <style>
