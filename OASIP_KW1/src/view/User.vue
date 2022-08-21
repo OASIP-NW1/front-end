@@ -47,6 +47,18 @@ const removeInfo = async () => {
     goAllUser();
   } else console.log("error");
 };
+
+// edit
+const nameEdit=ref('sdfsdf')
+const eMailEdit=ref('')
+const roleEdit=ref('')
+const isEdit=ref(false)
+const edit=()=>{
+  isEdit.value=true
+ nameEdit.value=name.value
+ console.log(isEdit.value)
+ 
+}
 </script>
  
 <template>
@@ -60,18 +72,33 @@ const removeInfo = async () => {
       </div>
 
       <div class="px-2 m-auto w-3/5  border-l-4">
-        <div class="w-full p-2">
-        <h3 class="w-fit m-auto ">Name : {{userList.name}}</h3>
-        <h3 class="w-fit m-auto">E-mail : {{userList.email}}</h3>
-        <h3 class="w-fit m-auto">role :  {{role}}</h3>
-        <h3 class="w-fit m-auto">created on :  {{created}}</h3>
-        <h3 class="w-fit m-auto">updated on :  {{updated}}</h3>          
+          <div class=" w-4/5 p-4 mx-auto">
+            <div class="w-full ">
+              <!-- name -->
+              <div v-if="isEdit==false" class="w-full mx-auto">
+                <h3 class="w-fit block  ">Name : </h3>
+                <!-- for show name-->
+                <h4  class="overflow-x-auto w-full resize-none" disabled>{{userList.name}}</h4>
+                <!-- for edit name -->                
+                <input type="text"  class=" w-full resize-none" v-model="nameEdit" />
+              </div>
+
+                <h3 class="w-fit block ">role :  {{role}}</h3>
+              <div>
+                <h3 class="w-full ">E-mail : </h3>
+                <h4 class="overflow-x-auto">{{userList.email}}</h4> 
+              </div> 
+            
+            <h3 class="w-full ">created on :  {{created}}</h3>
+            <h3 class="w-fit ">updated on :  {{updated}}</h3>         
+          </div>
+           
         </div>
 
         <!-- for button -->
         <div class="flex m-auto mt-7 mb-3 w-fit">
           <a href="#remove" class="m-2 p-2 bg-rose-400 text-white">Remove</a>
-          <button @click="goAllUser" class="m-2 p-2 bg-slate-800 text-white">Edit</button>
+          <button @click="edit" class="m-2 p-2 bg-slate-800 text-white">Edit</button>
           <button @click="goAllUser" class="m-2 p-2 bg-slate-800 text-white">Back</button>
         </div>
       </div>
@@ -184,5 +211,29 @@ const removeInfo = async () => {
   .option {
     width: 20%;
   }
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  height: 7.5px;
+  width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px transparent;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(109, 109, 112);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #577fbb;
 }
 </style>
