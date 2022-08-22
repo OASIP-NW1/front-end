@@ -3,7 +3,17 @@ import { onBeforeMount, onUpdated, ref } from "vue";
 import {useRouter} from 'vue-router'
 
 const categoryList = ref([]);
+const getStatus =ref(undefined)
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
+
+const photo =ref([
+  "../assets/project-manage.png",
+  "../assets/devops.png",
+  "../assets/data.png",
+  "../assets/client.png",
+  "../assets/back.png"
+
+])
 
 //GET category
 // first get Category
@@ -23,12 +33,14 @@ onBeforeMount(async () => {
 
 const myRouter = useRouter()
 const goCategoryDetail = (input)=>myRouter.push({name:'DetailCategory',params:{id:input.id}})
-
+// const goCategoryDetail=(input)=>{console.log(input)}
 </script>
 
 <template>
 <div class="grid grid-cols-5 gap-5">
     <div v-for="cat in categoryList">
+      <img src="" alt="">
+
         <img src="../assets/project-manage.png" v-if="cat.id == 1">
         <img src="../assets/devops.png" v-if="cat.id == 2">
         <img src="../assets/data.png" v-if="cat.id == 3">
