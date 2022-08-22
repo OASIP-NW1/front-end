@@ -1,12 +1,10 @@
 <script setup>
-import { onBeforeMount, ref } from "vue";
-import {useRoute} from 'vue-router'
-
+import { onBeforeMount, onUpdated, ref } from "vue";
+import {useRoute , useRouter} from 'vue-router'
 const categoryList = ref([]);
 const {params} = useRoute();
-const getStatus = ref(undefined);
-const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
-
+const getStatus = ref(false);
+const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory/${params.id}`;
 const id = params.id
 console.log(id)
 //GET category
@@ -16,25 +14,28 @@ const getCategory = async () => {
   if (res.status === 200) {
     categoryList.value = await res.json();
     getStatus.value = true;
-    console.log(categoryList.value)
-    console.log('true')
+    console.log(categoryList.value);
   } else {
     getStatus.value = false;
-    console.log('false')
   }
-
 };
-onBeforeMount( () => {
-   getCategory;
+onBeforeMount(async () => {
+   getCategory();
 });
-
+const myRouter = useRouter()
+const goEditCategory = ()=>myRouter.push({name:'EditCategory',params:categoryList.value})
 </script>
 <template>
-<div v-for="details in categoryList">
-{{details.eventCategoryName}}
+<div class="col-md-8" >
+      <div class="card-body">
+        <h6 class="card-title2"><b>Category Name : </b>{{categoryList.eventCategoryName}}</h6>
+        <hr style="width:80%;text-align:left;margin-left:0">
+        <p class="card-text" v-if="categoryList.eventCategoryDescription == null"><b>Description : - </b></p>
+        <p class="card-text" v-else><b>Description : </b>{{categoryList.eventCategoryDescription}}</p>
+        <p class="card-text"><b>Duration : </b>{{categoryList.eventDuration}}</p>
 </div>
-{{categoryList}}
+        <button class="btn btn-blue" @click="goEditCategory()">edit</button>
+        </div>
 </template>
-
 <style>
 </style>

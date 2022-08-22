@@ -40,7 +40,6 @@ const goCategoryDetail = (input)=>myRouter.push({name:'DetailCategory',params:{i
 <div class="grid grid-cols-5 gap-5">
     <div v-for="cat in categoryList">
       <img src="" alt="">
-
         <img src="../assets/project-manage.png" v-if="cat.id == 1">
         <img src="../assets/devops.png" v-if="cat.id == 2">
         <img src="../assets/data.png" v-if="cat.id == 3">
