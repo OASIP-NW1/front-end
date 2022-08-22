@@ -5,6 +5,7 @@ const { params } = useRoute();
 
 const userCheck= ref(undefined)
 const userList=ref([])
+const user =ref([])
 const id = params.id;
 const name=ref(undefined)
 const eMail=ref(undefined)
@@ -12,6 +13,8 @@ const role =ref(undefined)
 const created=ref(undefined)
 const updated=ref(undefined)
 const myRouoter=useRouter()
+const nameL=100
+const eMailL=50
 const goAllUser = () => myRouoter.push({ name: "AllUser" });
 
 const userLink=`${import.meta.env.BASE_URL}api/users`
@@ -20,14 +23,14 @@ const userLink=`${import.meta.env.BASE_URL}api/users`
 const getUser = async () => {
   const res = await fetch(`${userLink}/${id}`);
   if (res.status === 200) {
-    userList.value = await res.json();
+    user.value = await res.json();
     userCheck.value = true;
-    if(userList.value.id==id){
-      name.value=userList.value.name
-      eMail.value=userList.value.email
-      role.value=userList.value.role
-      created.value=userList.value.createdOn
-      updated.value=userList.value.updatedOn
+    if(user.value.id==id){
+      name.value=user.value.name
+      eMail.value=user.value.email
+      role.value=user.value.role
+      created.value=user.value.createdOn
+      updated.value=user.value.updatedOn
     }
     //console.log(userList.value)
   } else {
@@ -36,6 +39,7 @@ const getUser = async () => {
 };
 onBeforeMount(async()=>{
     await getUser();
+    
 })
 
 //remove information
@@ -60,6 +64,136 @@ const editMode=()=>{
  console.log(isEdit.value)
  
 }
+
+
+// validate
+const checkNameN=ref(undefined)
+const checkEMailN=ref(undefined)
+const checkNameL=ref(undefined)
+const checkEMailL=ref(undefined)
+const checkEmailF =ref(undefined)
+const valFormEmail = (input) => {
+  let valid =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  if (input.match(valid)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// submit
+const submitt=()=>{
+      checkUniqueName()
+    checkUniqueEmail()
+    checkUniqueNameAndRole()
+ // check name is null?
+    if(nameEdit.value==''){
+        checkNameN.value=false
+        console.log("pls input your name")
+    }else checkNameN.value=true 
+ 
+    // check e-mail is null?    
+    if(eMailEdit.value==''){
+        checkEMailN.value=false
+        console.log("pls input your email")
+    }else checkEMailN.value=true
+
+    //check name length
+    if(nameEdit.value.length>nameL){
+      console.log("name over 100")
+      checkNameL.value=false
+    }else checkNameL.value=true //;console.log('checkName Length',checkNameL.value)
+
+    //check e-mail length
+    if(eMailEdit.value.length>eMailL){
+      console.log("email over 50")
+      checkEMailL.value=false
+    }else checkEMailL.value=true //;console.log('checkEMail Length',checkEMailL.value)
+
+    // check e-mail form
+    if(valFormEmail(eMailEdit.value)==false){
+      console.log("email invalid form")
+      checkEmailF.value=false
+    }else checkEmailF.value=true
+
+        // check unique
+    if(isUniqueName.value==true){
+        console.log("name is ununique 😏")
+    }else 
+    if(isUniqueEmail.value==true){
+        console.log("email is ununique 😏")
+    }else
+    if(isUniqueNameAndRole.value==true ){
+        console.log("role and name is ununique")
+    }else
+    // last check
+    if(checkEMailN.value==true && checkNameN.value==true &&checkEMailL.value==true &&checkNameL.value==true&&checkEmailF.value==true&&isUniqueName.value!==true&&isUniqueEmail.value!==true&&isUniqueNameAndRole.value!==true){
+        console.log("status good")
+        updateUser()
+    } 
+}
+
+//add new user
+const updateUser=async ()=>{
+ const  res = await fetch(`${userLink}/${id}`, {
+    method: "PUT",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      name: nameEdit.value.trim(),
+      email: eMailEdit.value.trim(),
+      role: roleEdit.value==''?null:role.value,
+
+
+    })
+  });if( res.status==200){
+        console.log("add new user")
+        checkNameN.value=undefined
+        checkEMailN.value=undefined
+        name.value=''
+        eMail.value=''
+        role.value=''
+             
+
+    }else{
+        console.log("can not add new user pls try again")
+        
+    }
+}
+
+// functoin for check unique
+const isUniqueName =ref(undefined)
+const isUniqueEmail =ref(undefined)
+const isUniqueNameAndRole =ref(undefined)
+
+const checkUniqueName =()=>{
+  for(let check of userList.value){
+    if(check.name==nameEdit.value){
+      console.log(`Name :${check.name}`)
+      isUniqueName.value=true
+    }
+  }
+}
+
+const checkUniqueEmail =()=>{
+  for(let check of userList.value){
+    if(check.email==eMailEdit.value){
+      console.log(`E-mail :${check.email}`)
+      isUniqueEmail.value=true
+    }
+  }
+}
+
+const checkUniqueNameAndRole =()=>{
+  for(let check of userList.value){
+    if(check.role==roleEdit.value &&check.name==nameEdit.value){
+      console.log(`Role :${check.role} Name : ${check.name}`)
+      isUniqueNameAndRole.value=true
+    }
+  }
+}
 </script>
  
 <template>
@@ -67,31 +201,31 @@ const editMode=()=>{
     class=" showUp w-3/5 p-5 pb-7 mx-auto m-10 bg-white rounded-md shadow-xl ">
       <h1 class="font-semibold  text-lg m-auto w-fit font-sans">User Detail </h1>
       <h2 class="text-slate-500 font-medium m-auto w-fit">User ID: {{id}}</h2>
-      <div class="flex w-fit mx-auto">
-      <div class=" w-2/5 m-12">
+      <div class=" w-fit mx-auto">
+      <!-- <div class=" w-2/5 m-12">
         <img src="../assets/Rick_Rolling.gif" alt="">
-      </div>
+      </div> -->
 
-      <div class="px-2 m-auto w-5/6  border-l-4">
-<div class=" w-4/5 p-4 mx-auto">
+      <div class="px-2 m-auto w-full  border-4">
+    <div class=" w-full p-4 mx-auto">
             <div class="w-full ">
               <!-- name -->
               <div  class="flex w-full mx-auto pt-2">
-                <h3 class="w-fit  pr-2">Name : </h3>
+                <h3 class="w-fit  pr-2">Name :{{nameEdit.length}} </h3>
                 <!-- for show name-->
-                <h4 v-if="isEdit==false" class="inline-block overflow-x-auto w-5/6 " disabled>{{userList.name}}</h4>
+                <h4 v-if="isEdit==false" class=" overflow-x-auto w-5/6 " disabled>{{user.name}}</h4>
                 <!-- for edit name -->                
                 <input v-if="isEdit==true" type="text"  class=" border-cyan-400 border-3 border-solid w-4/5 " v-model="nameEdit" />
               </div>
               <!-- e-mail -->
               <div class="flex w-full mx-auto pt-3">
-                <h3 class="w-fit pr-2">E-mail : </h3>
+                <h3 class="w-fit pr-2">E-mail : {{eMailEdit.length}}</h3>
                 <!-- for show email -->
-                <h4 v-if="isEdit==false" class="inline-block overflow-x-auto w-5/6">{{userList.email}}</h4>
+                <h4 v-if="isEdit==false" class=" overflow-x-auto w-5/6">{{user.email}}</h4>
                 <input v-if="isEdit==true" type="text"  class=" border-cyan-400 border-3 border-solid w-4/5 " v-model="eMailEdit" />
  
               </div> 
-              <div class="flex w-full mx-auto pt-3">
+              <div class="flex w-fit  pt-3">
                  <label class="w-fit pr-2 " for="role">Role : </label>
                  <h4 v-if="isEdit==false" class="w-fit">{{role}}</h4>
                  <!-- <input v-if="isEdit==true" type="text" class="border-cyan-400 border-3 border-solid w-4/5" v-model="roleEdit" /> -->
@@ -110,10 +244,16 @@ const editMode=()=>{
         </div>
 
         <!-- for button -->
-        <div class="flex m-auto mt-7 mb-3 w-fit">
+        <div v-if="isEdit==false" class="flex m-auto mt-7 mb-3 w-fit">
           <a href="#remove" class="m-2 p-2 bg-rose-400 text-white">Remove</a>
           <button @click="editMode" class="m-2 p-2 bg-slate-800 text-white">Edit</button>
           <button @click="goAllUser" class="m-2 p-2 bg-slate-800 text-white">Back</button>
+        </div>
+
+        <!-- for edit button -->
+        <div v-if="isEdit==true" class="flex m-auto mt-7 mb-3 w-fit">
+          <button @click="isEdit=false" class="m-2 p-2 bg-slate-800 text-white">cancel</button>
+          <a href="#submit" class="m-2 p-2 bg-slate-800 text-white">Submit</a>
         </div>
       </div>
       </div>
@@ -140,9 +280,80 @@ const editMode=()=>{
       </div>
     </div>
   </div>
+  
+           <!-- for submit  -->
+  <div id="submit" class="overlay">
+    <div class="popup2 ">
+      <h2 class="mb-5 text-xl font-bold bg-white mx-auto w-fit">
+        Are you sure ?
+      </h2>
+
+      <div class="option flex m-auto w-full mt-10">
+        <a
+          @click="submitt"
+          href="#"
+          class="w-full text-center p-2 px-2 bg-gray-200 hover:bg-green-500 font-bold hover:text-white"
+          >Yes</a
+        >
+        <a
+          href="#"
+          class="w-full text-center p-2 px-2 bg-gray-200 hover:bg-rose-500 font-bold hover:text-white"
+          >No</a
+        >
+      </div>
+    </div>
+  </div>
 </template>
  
 <style scoped>
+/* submit */
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+.popup2 {
+  margin: auto;
+  margin-top: 17%;
+  padding-top: 23px;
+  background: #fff;
+
+  width: 20%;
+  height: 130px;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup2 h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.popup2 .option {
+  bottom: 0;
+}
+
+@media screen and (max-width: 700px) {
+  .popup2 {
+    width: 70%;
+  }
+
+  .option {
+    width: 20%;
+  }
+}
+
+
 /* width */
 ::-webkit-scrollbar {
   height: 7.5px;
