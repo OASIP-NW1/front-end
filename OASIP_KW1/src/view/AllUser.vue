@@ -7,7 +7,6 @@ const userCheck=ref(undefined)
 const userLink=`${import.meta.env.BASE_URL}api/users`
 //const db="http://localhost:5000/user"
 
-
 //router
 const myRouter = useRouter();
 const goUser = (input) =>
@@ -18,7 +17,6 @@ const goUser = (input) =>
     },
   });
 
-  
 //GET user
 const getAllUser = async () => {
   const res = await fetch(userLink);
