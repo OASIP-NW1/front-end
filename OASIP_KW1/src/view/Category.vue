@@ -3,6 +3,9 @@ import { onBeforeMount, onUpdated, ref } from "vue";
 import {useRouter} from 'vue-router'
 
 const categoryList = ref([]);
+const getStatus =ref(undefined) 
+
+
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
 
 //GET category
@@ -35,10 +38,10 @@ const goCategoryDetail = (input)=>myRouter.push({name:'DetailCategory',params:{i
         <img src="../assets/client.png" v-if="cat.id == 4">
         <img src="../assets/back.png" v-if="cat.id == 5">
         <div class="px-6 py-4">
-            <div>{{cat.eventCategoryName}}</div>
+        <div>{{cat.eventCategoryName}}</div>
         <button class="btn btn-blue" @click="goCategoryDetail(cat)">Detail</button>
   </div>
-    </div>
+</div>
 </div>
 </template>
  
