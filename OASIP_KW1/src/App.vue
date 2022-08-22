@@ -128,7 +128,7 @@ ul li {
       font-family: arvo;
     }
 #bg_color {
-	background: linear-gradient(-45deg, #0c25af, #e9287b,#7a32ee);
+	background: linear-gradient(-45deg, #a1a1aa, #fca5a5,#a5f3fc);
 	background-size: 400% 400%;
 	animation: gradient 20s ease infinite;
 	height: 100vh;

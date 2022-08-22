@@ -51,6 +51,7 @@ const check_duration = ref(false);
 const check_name_duplicate = ref(false);
 const updateComplete = ref(false);
 console.log(params)
+
 const getUpdate = computed(() =>{
   if(categoryName.value == undefined || categoryName.value == "" || categoryName.value.length == 0){
     check_name.value = true;
@@ -121,8 +122,8 @@ const getUpdate = computed(() =>{
         <b>Duration : </b> <input class="card-text" type="number" min=1 max=480 v-model="categoryDuration"> <br><br>
         <button type="button" class="btn btn-1 btn-success" @click="modifyCategory(getUpdate)">Update Category</button>
         <button type="button" class="btn btn-1 btn-danger" @click="myRouter.go(-1)">Cancel</button>
-    </div>
         </div>  
+    </div>
 </template>
  
 <style>
