@@ -1,11 +1,11 @@
 <script setup>
-import { onBeforeMount, onUpdated, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import {useRoute} from 'vue-router'
 
 const categoryList = ref([]);
 const {params} = useRoute();
-const getStatus = ref(false);
-const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory/${id}`;
+const getStatus = ref(undefined);
+const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
 
 const id = params.id
 console.log(id)
@@ -16,13 +16,16 @@ const getCategory = async () => {
   if (res.status === 200) {
     categoryList.value = await res.json();
     getStatus.value = true;
+    console.log(categoryList.value)
+    console.log('true')
   } else {
     getStatus.value = false;
+    console.log('false')
   }
 
 };
-onBeforeMount(async () => {
-  await getCategory();
+onBeforeMount( () => {
+   getCategory;
 });
 
 </script>
@@ -30,6 +33,7 @@ onBeforeMount(async () => {
 <div v-for="details in categoryList">
 {{details.eventCategoryName}}
 </div>
+{{categoryList}}
 </template>
 
 <style>
