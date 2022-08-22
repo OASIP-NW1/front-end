@@ -48,13 +48,15 @@ const removeInfo = async () => {
   } else console.log("error");
 };
 // edit
-const nameEdit=ref('sdfsdf')
+const nameEdit=ref('')
 const eMailEdit=ref('')
 const roleEdit=ref('')
 const isEdit=ref(false)
-const edit=()=>{
+const editMode=()=>{
   isEdit.value=true
  nameEdit.value=name.value
+ eMailEdit.value=eMail.value
+ roleEdit.value=role.value
  console.log(isEdit.value)
  
 }
@@ -62,40 +64,55 @@ const edit=()=>{
  
 <template>
     <div
-    class=" showUp w-3/5 p-5 pb-7 mx-auto m-10 bg-white rounded-md shadow-xl overflow-auto">
-      <h1 class="m-auto w-fit">User Detail </h1>
-      <h2 class="m-auto w-fit">User ID: {{id}}</h2>
+    class=" showUp w-3/5 p-5 pb-7 mx-auto m-10 bg-white rounded-md shadow-xl ">
+      <h1 class="font-semibold  text-lg m-auto w-fit font-sans">User Detail </h1>
+      <h2 class="text-slate-500 font-medium m-auto w-fit">User ID: {{id}}</h2>
       <div class="flex w-fit mx-auto">
       <div class=" w-2/5 m-12">
         <img src="../assets/Rick_Rolling.gif" alt="">
       </div>
 
-      <div class="px-2 m-auto w-3/5  border-l-4">
+      <div class="px-2 m-auto w-5/6  border-l-4">
 <div class=" w-4/5 p-4 mx-auto">
             <div class="w-full ">
               <!-- name -->
-              <div v-if="isEdit==false" class="w-full mx-auto">
-                <h3 class="w-fit block  ">Name : </h3>
+              <div  class="flex w-full mx-auto pt-2">
+                <h3 class="w-fit  pr-2">Name : </h3>
                 <!-- for show name-->
-                <h4  class="overflow-x-auto w-full resize-none" disabled>{{userList.name}}</h4>
+                <h4 v-if="isEdit==false" class="inline-block overflow-x-auto w-5/6 " disabled>{{userList.name}}</h4>
                 <!-- for edit name -->                
-                <input type="text"  class=" w-full resize-none" v-model="nameEdit" />
+                <input v-if="isEdit==true" type="text"  class=" border-cyan-400 border-3 border-solid w-4/5 " v-model="nameEdit" />
               </div>
-                <h3 class="w-fit block ">role :  {{role}}</h3>
-              <div>
-                <h3 class="w-full ">E-mail : </h3>
-                <h4 class="overflow-x-auto">{{userList.email}}</h4> 
+              <!-- e-mail -->
+              <div class="flex w-full mx-auto pt-3">
+                <h3 class="w-fit pr-2">E-mail : </h3>
+                <!-- for show email -->
+                <h4 v-if="isEdit==false" class="inline-block overflow-x-auto w-5/6">{{userList.email}}</h4>
+                <input v-if="isEdit==true" type="text"  class=" border-cyan-400 border-3 border-solid w-4/5 " v-model="eMailEdit" />
+ 
               </div> 
-            
-            <h3 class="w-full ">created on :  {{created}}</h3>
-            <h3 class="w-fit ">updated on :  {{updated}}</h3>         
+              <div class="flex w-full mx-auto pt-3">
+                 <label class="w-fit pr-2 " for="role">Role : </label>
+                 <h4 v-if="isEdit==false" class="w-fit">{{role}}</h4>
+                 <!-- <input v-if="isEdit==true" type="text" class="border-cyan-400 border-3 border-solid w-4/5" v-model="roleEdit" /> -->
+                 <select v-if="isEdit==true"  id="role" v-model="roleEdit">
+                   <option value="" disabled selected>select your role.</option>
+                   <option  value="student">Student</option>
+                   <option  value="lecturer">Lecturer</option>
+                   <option  value="admin">Admin</option>
+
+                 </select>                     
+              </div>
+          
+            <h3 class="w-full pt-3">created on :  {{created}}</h3>
+            <h3 class="w-fit pt-3">updated on :  {{updated}}</h3>         
           </div>          
         </div>
 
         <!-- for button -->
         <div class="flex m-auto mt-7 mb-3 w-fit">
           <a href="#remove" class="m-2 p-2 bg-rose-400 text-white">Remove</a>
-          <button @click="edit" class="m-2 p-2 bg-slate-800 text-white">Edit</button>
+          <button @click="editMode" class="m-2 p-2 bg-slate-800 text-white">Edit</button>
           <button @click="goAllUser" class="m-2 p-2 bg-slate-800 text-white">Back</button>
         </div>
       </div>
