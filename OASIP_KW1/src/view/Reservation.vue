@@ -132,7 +132,8 @@ const cancel = () => {
   editStartDate.value = "";
 };
 
-const edit =async()=>{
+const edit =async(input)=>{
+  console.log(`${editStartDate.value}T${editStartTime.value}:00+07:00`)
        let canEdit=undefined
         const res = await fetch(`${eventLink}/${id}`, {
         method: "PUT",
@@ -140,8 +141,10 @@ const edit =async()=>{
           "content-type": "application/json",
         },
         body: JSON.stringify({
+
           eventStartTime: `${editStartDate.value}T${editStartTime.value}:00+07:00`,
-          eventNotes: editNote.value,
+          eventNote: editNote.value
+          
         }),
       });
       if (res.status == 200) {
