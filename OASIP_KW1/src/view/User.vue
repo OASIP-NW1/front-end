@@ -134,7 +134,7 @@ const submitt=()=>{
     } 
 }
 
-//add new user
+//update user
 const updateUser=async ()=>{
  const  res = await fetch(`${userLink}/${id}`, {
     method: "PUT",
@@ -144,18 +144,21 @@ const updateUser=async ()=>{
     body: JSON.stringify({
       name: nameEdit.value.trim(),
       email: eMailEdit.value.trim(),
-      role: roleEdit.value==''?null:role.value,
+      role: roleEdit.value==''?null:roleEdit.value,
 
 
     })
   });if( res.status==200){
-        console.log("add new user")
+        console.log("updated user")
         checkNameN.value=undefined
         checkEMailN.value=undefined
-        name.value=''
-        eMail.value=''
-        role.value=''
-             
+        checkNameN.value=undefined
+        checkEMailN.value=undefined
+        checkNameL.value=undefined
+        checkEMailL.value=undefined
+        checkEmailF.value=undefined
+        getUser()
+        isEdit.value=false
 
     }else{
         console.log("can not add new user pls try again")
@@ -201,12 +204,12 @@ const checkUniqueNameAndRole =()=>{
     class=" showUp w-3/5 p-5 pb-7 mx-auto m-10 bg-white rounded-md shadow-xl ">
       <h1 class="font-semibold  text-lg m-auto w-fit font-sans">User Detail </h1>
       <h2 class="text-slate-500 font-medium m-auto w-fit">User ID: {{id}}</h2>
-      <div class=" w-fit mx-auto">
+      <div class=" w-full mx-auto">
       <!-- <div class=" w-2/5 m-12">
         <img src="../assets/Rick_Rolling.gif" alt="">
       </div> -->
 
-      <div class="px-2 m-auto w-full  border-4">
+      <div class="px-2 m-auto w-4/5  border-4">
     <div class=" w-full p-4 mx-auto">
             <div class="w-full ">
               <!-- name -->
@@ -230,10 +233,10 @@ const checkUniqueNameAndRole =()=>{
                  <h4 v-if="isEdit==false" class="w-fit">{{role}}</h4>
                  <!-- <input v-if="isEdit==true" type="text" class="border-cyan-400 border-3 border-solid w-4/5" v-model="roleEdit" /> -->
                  <select v-if="isEdit==true"  id="role" v-model="roleEdit">
-                   <option value="" disabled selected>select your role.</option>
-                   <option  value="student">Student</option>
-                   <option  value="lecturer">Lecturer</option>
-                   <option  value="admin">Admin</option>
+                   <option value="" disabled >select your role.</option>
+                   <option  value="student">student</option>
+                   <option  value="lecturer">lecturer</option>
+                   <option  value="admin">admin</option>
 
                  </select>                     
               </div>
@@ -243,11 +246,11 @@ const checkUniqueNameAndRole =()=>{
           </div>          
         </div>
 
-        <!-- for button -->
+        <!-- for no edit button -->
         <div v-if="isEdit==false" class="flex m-auto mt-7 mb-3 w-fit">
-          <a href="#remove" class="m-2 p-2 bg-rose-400 text-white">Remove</a>
-          <button @click="editMode" class="m-2 p-2 bg-slate-800 text-white">Edit</button>
-          <button @click="goAllUser" class="m-2 p-2 bg-slate-800 text-white">Back</button>
+          <a href="#remove" class="m-2 p-2 custom-btn remove">Remove</a>
+          <button @click="editMode" class="custom-btn edit m-2 p-2 ">Edit</button>
+          <button @click="goAllUser" class="custom-btn remove m-2 p-2 ">Back</button>
         </div>
 
         <!-- for edit button -->
@@ -306,6 +309,97 @@ const checkUniqueNameAndRole =()=>{
 </template>
  
 <style scoped>
+.custom-btn {
+  width: 100px;
+  height: 40px;
+  padding: 10px 25px;
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+/* edit */
+.edit {
+  background: rgb(166, 166, 166);
+  color: #fff;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+.edit:hover {
+  background: rgb(252, 140, 252);
+  color: #000;
+  box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9,
+    7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
+}
+.edit:before,
+.edit:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 2px;
+  width: 0;
+  background: #000;
+  transition: 400ms ease all;
+}
+.edit:after {
+  right: inherit;
+  top: inherit;
+  left: 0;
+  bottom: 0;
+}
+.edit:hover:before,
+.edit:hover:after {
+  width: 100%;
+  transition: 800ms ease all;
+}
+.eidt-color {
+  border-color: rgb(252, 140, 252);
+}
+
+/* remove */
+.remove {
+  background: rgb(255, 172, 172);
+  color: #fff;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+.remove:hover {
+  background: rgb(166, 166, 166);
+  color: #000;
+  box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9,
+    7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
+}
+.remove:before,
+.remove:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 2px;
+  width: 0;
+  background: #000;
+  transition: 400ms ease all;
+}
+.remove:after {
+  right: inherit;
+  top: inherit;
+  left: 0;
+  bottom: 0;
+}
+.remove:hover:before,
+.remove:hover:after {
+  width: 100%;
+  transition: 800ms ease all;
+}
+
 /* submit */
 .overlay {
   position: fixed;
