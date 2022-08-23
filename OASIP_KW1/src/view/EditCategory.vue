@@ -2,7 +2,6 @@
 import { computed } from '@vue/reactivity';
 import { ref , onBeforeMount} from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-
 defineEmits(['edit'])
 const prop = defineProps({
   categoryDetail: {
@@ -12,7 +11,6 @@ const prop = defineProps({
 })
 const allCategory = ref([])
 const nameOfCategory = ref([])
-
 const getAllCategory = async () =>{
     const res = await fetch(`${import.meta.env.BASE_URL}api/eventCategory`)
     if(res.status === 200) {
@@ -25,7 +23,6 @@ const getAllCategory = async () =>{
 onBeforeMount( async () => {
    await getAllCategory()
 })
-
 // modify
 const modifyCategory = async (category) => {
   console.log(category);
@@ -43,21 +40,18 @@ const modifyCategory = async (category) => {
     console.log('update success')
   }else console.log('error, cannot update notes');
 }
-
 const myRouter = useRouter()
 const { params } = useRoute()
-
 const categoryName = ref(params.eventCategoryName);
 const categoryDescription = ref(params.eventCategoryDescription);
 const categoryDuration = ref(params.eventDuration);
-
 const check_name = ref(false);
 const check_name_over = ref(false);
 const check_duration = ref(false);
 const check_name_duplicate = ref(false);
 const updateComplete = ref(false);
-
 console.log(params)
+
 const getUpdate = computed(() =>{
   if(categoryName.value == undefined || categoryName.value == "" || categoryName.value.length == 0){
     check_name.value = true;
@@ -92,7 +86,6 @@ const getUpdate = computed(() =>{
   }
   }
 })
-
 </script>
  
 <template>   
@@ -129,8 +122,8 @@ const getUpdate = computed(() =>{
         <b>Duration : </b> <input class="card-text" type="number" min=1 max=480 v-model="categoryDuration"> <br><br>
         <button type="button" class="btn btn-1 btn-success" @click="modifyCategory(getUpdate)">Update Category</button>
         <button type="button" class="btn btn-1 btn-danger" @click="myRouter.go(-1)">Cancel</button>
-    </div>
         </div>  
+    </div>
 </template>
  
 <style>

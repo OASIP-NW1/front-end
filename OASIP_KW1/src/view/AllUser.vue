@@ -7,6 +7,7 @@ const userCheck=ref(undefined)
 const userLink=`${import.meta.env.BASE_URL}api/users`
 //const db="http://localhost:5000/user"
 
+
 //router
 const myRouter = useRouter();
 const goUser = (input) =>
@@ -17,6 +18,7 @@ const goUser = (input) =>
     },
   });
 
+  
 //GET user
 const getAllUser = async () => {
   const res = await fetch(userLink);
@@ -105,4 +107,19 @@ onBeforeMount(async()=>{
  
 <style>
 
+.showUp {
+  position: relative;
+  animation: wii 1s;
+  animation-timing-function: ease-in-out;
+}
+/* animatio* */
+@keyframes wii {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1.5;
+  }
+}
 </style>

@@ -1,12 +1,10 @@
 <script setup>
 import { onBeforeMount, onUpdated, ref } from "vue";
 import {useRoute , useRouter} from 'vue-router'
-
 const categoryList = ref([]);
 const {params} = useRoute();
 const getStatus = ref(false);
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory/${params.id}`;
-
 const id = params.id
 console.log(id)
 //GET category
@@ -21,11 +19,9 @@ const getCategory = async () => {
     getStatus.value = false;
   }
 };
-
 onBeforeMount(async () => {
    getCategory();
 });
-
 const myRouter = useRouter()
 const goEditCategory = ()=>myRouter.push({name:'EditCategory',params:categoryList.value})
 </script>
@@ -41,6 +37,5 @@ const goEditCategory = ()=>myRouter.push({name:'EditCategory',params:categoryLis
         <button class="btn btn-blue" @click="goEditCategory()">edit</button>
         </div>
 </template>
-
 <style>
 </style>

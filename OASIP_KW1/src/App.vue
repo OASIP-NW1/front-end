@@ -98,8 +98,8 @@ const goSignIn = ()=>myRouter.push({name:'SignIn'})
                             </ul>
                         </div>
                         <div class="flex m-auto">
-                            <button @click="goSignIn" class="mx-4">sign in</button>
-                            <button @click="goSignUp" class="mx-4">sign up</button>
+                            <button @click="goSignIn" class="mt-2 text-black hover:text-white  hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">sign in</button>
+                            <button @click="goSignUp" class="bg-rose-400 mt-2 text-gray-900 hover:text-white  hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">sign up</button>
 
                         </div>
                     </div>
@@ -128,7 +128,7 @@ ul li {
       font-family: arvo;
     }
 #bg_color {
-	background: linear-gradient(-45deg, #0c25af, #e9287b,#7a32ee);
+	background: linear-gradient(-45deg, #a1a1aa, #fca5a5,#a5f3fc);
 	background-size: 400% 400%;
 	animation: gradient 20s ease infinite;
 	height: 100vh;
