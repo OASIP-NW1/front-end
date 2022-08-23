@@ -107,4 +107,19 @@ onBeforeMount(async()=>{
  
 <style>
 
+.showUp {
+  position: relative;
+  animation: wii 1s;
+  animation-timing-function: ease-in-out;
+}
+/* animatio* */
+@keyframes wii {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1.5;
+  }
+}
 </style>
