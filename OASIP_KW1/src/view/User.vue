@@ -212,28 +212,22 @@ const checkUniqueNameAndRole =()=>{
 
       <div class="px-2 m-auto w-4/5  ">
     <div class=" w-full p-4 mx-auto">
-            <div class="w-full ">
+            <div class="w-full pt-3">
               <!-- name -->
-              <div  class="flex w-full mx-auto pt-2">
+              <div  class="inline-flex w-fit  pt-2">
                 <h3 class="w-fit font-semibold text-gray-400 pr-2">Name :{{nameEdit.length}} </h3>
                 <!-- for show name-->
-                <h4 v-if="isEdit==false" class=" overflow-x-auto w-5/6 " disabled>{{user.name}}</h4>
+                <h4 v-if="isEdit==false" class="px-2 rounded border-gray-300 border-2 overflow-x-auto w-96 " disabled>{{user.name}}</h4>
                 <!-- for edit name -->                
-                <input v-if="isEdit==true" type="text"  class="showUp border-cyan-400 border-3 border-solid w-4/5 " v-model="nameEdit" />
+                <input v-if="isEdit==true" type="text"  class="showUp rounded border-fuchsia-500 border-2 border-solid w-96 px-2" v-model="nameEdit" />
               </div>
-              <!-- e-mail -->
-              <div class="flex w-full mx-auto pt-3">
-                <h3 class="w-fit text-gray-400 font-semibold pr-2">E-mail : {{eMailEdit.length}}</h3>
-                <!-- for show email -->
-                <h4 v-if="isEdit==false" class=" overflow-x-auto w-5/6">{{user.email}}</h4>
-                <input v-if="isEdit==true" type="text"  class="showUp border-cyan-400 border-3 border-solid w-4/5 " v-model="eMailEdit" />
- 
-              </div> 
-              <div class="flex w-fit  pt-3">
-                 <label class="w-fit text-gray-400 pr-2 font-semibold" for="role">Role : </label>
-                 <h4 v-if="isEdit==false" class="w-fit">{{role}}</h4>
+
+              <!-- role -->
+              <div class="inline-flex w-fit ml-2 pt-3">
+                 <label class="w-fit text-gray-400 pr-2 font-semibold " for="role">Role : </label>
+                 <h4 v-if="isEdit==false" class="w-fit rounded border-gray-300 border-2 px-3">{{role}}</h4>
                  <!-- <input v-if="isEdit==true" type="text" class="border-cyan-400 border-3 border-solid w-4/5" v-model="roleEdit" /> -->
-                 <select v-if="isEdit==true" class="showUp" id="role" v-model="roleEdit">
+                 <select v-if="isEdit==true" class="showUp px-2 border-fuchsia-500 border-2 border-solid rounded w-32" id="role" v-model="roleEdit">
                    <option value="" disabled >select your role.</option>
                    <option  value="student">student</option>
                    <option  value="lecturer">lecturer</option>
@@ -241,15 +235,25 @@ const checkUniqueNameAndRole =()=>{
 
                  </select>                     
               </div>
+
+              <!-- e-mail -->
+              <div class="flex w-full mx-auto pt-3">
+                <h3 class="w-fit text-gray-400 font-semibold pr-2">E-mail : {{eMailEdit.length}}</h3>
+                <!-- for show email -->
+                <h4 v-if="isEdit==false" class="rounded border-gray-300 border-2 overflow-x-auto w-fit px-3">{{user.email}}</h4>
+                <input v-if="isEdit==true" type="text"  class="showUp rounded border-fuchsia-500 border-2 border-solid w-4/5 px-2" v-model="eMailEdit" />
+ 
+              </div> 
+
               <!-- created -->
             <div class="pt-3 flex">
               <h3 class="w-fit font-semibold text-gray-400 inline">created on :  </h3>
-              <h4 class="w-fit">{{created}}</h4>
+              <h4 class="w-fit px-2 text-gray-600">{{created}}</h4>
             </div>
               <!-- update on -->
             <div class="pt-3 flex">
             <h3 class="w-fit font-semibold text-gray-400 inline">updated on :  </h3>
-            <h4 class="w-fit">{{updated}}</h4>                 
+            <h4 class="w-fit px-2 text-gray-600">{{updated}}</h4>                 
             </div>        
           </div>          
         </div>
@@ -263,8 +267,8 @@ const checkUniqueNameAndRole =()=>{
 
         <!-- for edit button -->
         <div v-if="isEdit==true" class="showUp flex m-auto mt-7 mb-3 w-fit">
-          <button @click="isEdit=false" class="m-2 p-2 bg-slate-800 text-white">cancel</button>
-          <a href="#submit" class="m-2 p-2 bg-slate-800 text-white">Submit</a>
+          <button @click="isEdit=false" class="custom-btn remove m-2  ">cancel</button>
+          <a href="#submit" class="custom-btn edit m-2  ">Submit</a>
         </div>
       </div>
       </div>
