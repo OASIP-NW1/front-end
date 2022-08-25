@@ -35,7 +35,7 @@ const routes=[
         component: Category
     },
     {
-        path:'/DetailCategory',
+        path:'/DetailCategory/:id',
         name:'DetailCategory',
         component: DetailCategory
     },

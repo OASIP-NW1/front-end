@@ -296,7 +296,7 @@ const addBooking = async () => {
         } 
     }),
   });
-  if (res.status === 201) {
+  if (res.status === 200) {
     addSuccess.value = true;
     createStatus = true;
     isStatus.value = true;
