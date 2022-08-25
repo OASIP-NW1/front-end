@@ -255,13 +255,12 @@ const cancelEdit=()=>{
               <div  class="block w-full  pt-2">
                 <div class="w-5/6 mx-auto">
                 <h3 class="w-fit inline font-semibold text-gray-400 pr-2">Name : </h3>
-                <span class="inline-block text-sm text-gray-300">{{nameEdit.length }}/{{nameL}} charector</span>                  
+                <span v-if="isEdit==true" class="inline-block text-sm text-gray-300" :style="[nameEdit.length>nameL?'color: red;':'']">{{nameEdit.length }}/{{nameL}} charector</span>                  
                 </div>
 
                 <!-- for show name-->
-                  <h4 v-if="isEdit==false" class=" rounded border-gray-300 border-2 ml-11 w-5/6  px-2  overflow-x-scroll " disabled>{{user.name}}</h4>                  
-                <!-- for edit name -->
-                               
+                  <h4 v-if="isEdit==false" class="showUp rounded border-gray-300 border-2 ml-11 w-5/6  px-2  overflow-x-scroll " disabled>{{user.name}}</h4>                  
+                <!-- for edit name -->      
                 <input v-if="isEdit==true" type="text" :style="[isSame==true || isUniqueName==true||checkNameL==false ||checkNameN==false ? 'border-style:solid;border-color:red' : '']"  class="ml-11 showUp w-5/6 rounded border-fuchsia-500 border-2 border-solid  px-2" v-model="nameEdit" />
               </div>
 
@@ -271,11 +270,11 @@ const cancelEdit=()=>{
               <div class="block w-full  pt-3">
                 <div class="w-5/6 ml-12">
                 <h3 class="w-fit inline text-gray-400  font-semibold pr-2">E-mail : </h3>    
-                <span class="inline-block text-sm text-gray-300 ">{{eMailEdit.length}}/{{eMailL}} charector</span>              
+                <span v-if="isEdit==true" class="inline-block text-sm text-gray-300 " :style="[eMailEdit.length>eMailL?'color: red;':'']">{{eMailEdit.length}}/{{eMailL}} charector</span>              
                 </div>
 
                 <!-- for show email -->
-                <h4 v-if="isEdit==false" class="rounded border-gray-300 border-2 ml-11 overflow-x-auto w-5/6 px-3 ">{{user.email}}</h4>
+                <h4 v-if="isEdit==false" class="showUp rounded border-gray-300 border-2 ml-11 overflow-x-auto w-5/6 px-2 ">{{user.email}}</h4>
                 <input v-if="isEdit==true" :style="[isSame==true||isUniqueEmail==true||checkEMailL==false||checkEMailN==false||checkEmailF==false ? 'border-style:solid;border-color:red':'']" type="text"  class="ml-11 showUp rounded border-fuchsia-500 border-2 border-solid w-5/6 px-1" v-model="eMailEdit" />
  
               </div> 
@@ -283,7 +282,7 @@ const cancelEdit=()=>{
               <div class="block w-full ml-11 pt-3">
                   <div class=" inline-block">
                   <label class="inline w-fit text-gray-400  font-semibold pr-2" for="role">Role : </label>
-                 <h4 v-if="isEdit==false" class="w-fit rounded border-gray-300 border-2 px-2 inline-block">{{role}}</h4>                  
+                 <h4 v-if="isEdit==false" class="showUp w-fit rounded border-gray-300 border-2 px-2 inline-block">{{role}}</h4>                  
                   </div>
  
                  <!-- <input v-if="isEdit==true" type="text" class="border-cyan-400 border-3 border-solid w-4/5" v-model="roleEdit" /> -->
@@ -369,14 +368,7 @@ const cancelEdit=()=>{
     </div>
     </div>
   </div>
-<!-- isUniqueName.value=undefined
-    isUniqueEmail.value=undefined
-    isUniqueNameAndRole.value=undefined
-    checkNameN.value=undefined
-    checkNameL.value=undefined
-    checkEmailF.value=undefined
-    checkEMailN.value=undefined
-    checkEMailL.value=undefined -->
+
       <!-- alert  -->
       <div  class="alert-area">
         <div v-if="updateSuccess == true" class="alert success text-sm">
