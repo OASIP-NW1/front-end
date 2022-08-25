@@ -66,6 +66,9 @@ const checkEMailN=ref(undefined)
 const checkNameL=ref(undefined)
 const checkEMailL=ref(undefined)
 const checkEmailF =ref(undefined)
+const isSame =ref(undefined)
+
+
 const valFormEmail = (input) => {
   let valid =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -76,8 +79,18 @@ const valFormEmail = (input) => {
   }
 };
 // submit
+const updateSuccess=ref(false)
 const submitt=()=>{
-      checkUniqueName()
+    isUniqueName.value=undefined
+    isUniqueEmail.value=undefined
+    isUniqueNameAndRole.value=undefined
+    checkNameN.value=undefined
+    checkNameL.value=undefined
+    checkEmailF.value=undefined
+    checkEMailN.value=undefined
+    checkEMailL.value=undefined
+    isSame.value=undefined
+    checkUniqueName()
     checkUniqueEmail()
     checkUniqueNameAndRole()
  // check name is null?
@@ -116,6 +129,10 @@ const submitt=()=>{
     if(isUniqueNameAndRole.value==true ){
         console.log("role and name is ununique")
     }else
+    if(name.value==nameEdit.value&&eMail.value==eMailEdit.value&&role.value==roleEdit.value){
+      isSame.value=true
+        console.log("information no change")
+    }else
     // last check
     if(checkEMailN.value==true && checkNameN.value==true &&checkEMailL.value==true &&checkNameL.value==true&&checkEmailF.value==true&&isUniqueName.value!==true&&isUniqueEmail.value!==true&&isUniqueNameAndRole.value!==true){
         console.log("status good")
@@ -123,7 +140,9 @@ const submitt=()=>{
     } 
 }
 //update user
+const statusNoSend=ref(false)
 const updateUser=async ()=>{
+  statusNoSend.value=undefined
  const  res = await fetch(`${userLink}/${id}`, {
     method: "PUT",
     headers: {
@@ -134,18 +153,25 @@ const updateUser=async ()=>{
       email: eMailEdit.value.trim(),
       role: roleEdit.value==''?null:roleEdit.value,
     })
-  });if( res.status==200){
+  }); 
+    if( res.status==200){
+        updateSuccess.value=true
         console.log("updated user")
+        isUniqueName.value=undefined
+        isUniqueEmail.value=undefined
+        isUniqueNameAndRole.value=undefined
         checkNameN.value=undefined
-        checkEMailN.value=undefined
-        checkNameN.value=undefined
-        checkEMailN.value=undefined
         checkNameL.value=undefined
-        checkEMailL.value=undefined
         checkEmailF.value=undefined
+        checkEMailN.value=undefined
+        checkEMailL.value=undefined
+        isSame.value=undefined
         getUser()
         isEdit.value=false
-    }else{
+        setTimeout(()=>(updateSuccess.value=false),5000)        
+
+ }else{
+        statusNoSend.value=true
         console.log("can not add new user pls try again")
         
     }
@@ -178,6 +204,19 @@ const checkUniqueNameAndRole =()=>{
     }
   }
 }
+
+const cancelEdit=()=>{
+    isUniqueName.value=undefined
+    isUniqueEmail.value=undefined
+    isUniqueNameAndRole.value=undefined
+    checkNameN.value=undefined
+    checkNameL.value=undefined
+    checkEmailF.value=undefined
+    checkEMailN.value=undefined
+    checkEMailL.value=undefined
+    isSame.value=undefined
+    isEdit.value=false
+}
 </script>
  
 <template>
@@ -192,28 +231,43 @@ const checkUniqueNameAndRole =()=>{
       </div> -->
       <div class="px-2 m-auto w-4/5  ">
     <div class=" w-full p-4 mx-auto">
-            <div class="w-full ">
+            <div class="w-5/6 ml-12  pt-3">
               <!-- name -->
-              <div  class="flex w-full mx-auto pt-2">
-                <h3 class="w-fit font-semibold text-gray-400 pr-2">Name :{{nameEdit.length}} </h3>
+              <div  class="block w-full  pt-2">
+                <div class="w-5/6 mx-auto">
+                <h3 class="w-fit inline font-semibold text-gray-400 pr-2">Name : </h3>
+                <span v-if="isEdit==true" class="inline-block text-sm text-gray-300" :style="[nameEdit.length>nameL?'color: red;':'']">{{nameEdit.length }}/{{nameL}} charector</span>                  
+                </div>
+
                 <!-- for show name-->
-                <h4 v-if="isEdit==false" class=" overflow-x-auto w-5/6 " disabled>{{user.name}}</h4>
-                <!-- for edit name -->                
-                <input v-if="isEdit==true" type="text"  class="showUp border-cyan-400 border-3 border-solid w-4/5 " v-model="nameEdit" />
+                  <h4 v-if="isEdit==false" class="showUp rounded border-gray-300 border-2 ml-11 w-5/6  px-2  overflow-x-scroll " disabled>{{user.name}}</h4>                  
+                <!-- for edit name -->      
+                <input v-if="isEdit==true" type="text" :style="[isSame==true || isUniqueName==true||checkNameL==false ||checkNameN==false ? 'border-style:solid;border-color:red' : '']"  class="ml-11 showUp w-5/6 rounded border-fuchsia-500 border-2 border-solid  px-2" v-model="nameEdit" />
               </div>
+
+
+
               <!-- e-mail -->
-              <div class="flex w-full mx-auto pt-3">
-                <h3 class="w-fit text-gray-400 font-semibold pr-2">E-mail : {{eMailEdit.length}}</h3>
+              <div class="block w-full  pt-3">
+                <div class="w-5/6 ml-12">
+                <h3 class="w-fit inline text-gray-400  font-semibold pr-2">E-mail : </h3>    
+                <span v-if="isEdit==true" class="inline-block text-sm text-gray-300 " :style="[eMailEdit.length>eMailL?'color: red;':'']">{{eMailEdit.length}}/{{eMailL}} charector</span>              
+                </div>
+
                 <!-- for show email -->
-                <h4 v-if="isEdit==false" class=" overflow-x-auto w-5/6">{{user.email}}</h4>
-                <input v-if="isEdit==true" type="text"  class="showUp border-cyan-400 border-3 border-solid w-4/5 " v-model="eMailEdit" />
+                <h4 v-if="isEdit==false" class="showUp rounded border-gray-300 border-2 ml-11 overflow-x-auto w-5/6 px-2 ">{{user.email}}</h4>
+                <input v-if="isEdit==true" :style="[isSame==true||isUniqueEmail==true||checkEMailL==false||checkEMailN==false||checkEmailF==false ? 'border-style:solid;border-color:red':'']" type="text"  class="ml-11 showUp rounded border-fuchsia-500 border-2 border-solid w-5/6 px-1" v-model="eMailEdit" />
  
               </div> 
-              <div class="flex w-fit  pt-3">
-                 <label class="w-fit text-gray-400 pr-2 font-semibold" for="role">Role : </label>
-                 <h4 v-if="isEdit==false" class="w-fit">{{role}}</h4>
+              <!-- role -->
+              <div class="block w-full ml-11 pt-3">
+                  <div class=" inline-block">
+                  <label class="inline w-fit text-gray-400  font-semibold pr-2" for="role">Role : </label>
+                 <h4 v-if="isEdit==false" class="showUp w-fit rounded border-gray-300 border-2 px-2 inline-block">{{role}}</h4>                  
+                  </div>
+ 
                  <!-- <input v-if="isEdit==true" type="text" class="border-cyan-400 border-3 border-solid w-4/5" v-model="roleEdit" /> -->
-                 <select v-if="isEdit==true" class="showUp" id="role" v-model="roleEdit">
+                 <select v-if="isEdit==true" :style="[isSame==true||isUniqueNameAndRole==true ? 'border-style:solid;border-color:red':'']" class=" showUp px-2 border-fuchsia-500 border-2 border-solid rounded w-28" id="role" v-model="roleEdit">
                    <option value="" disabled >select your role.</option>
                    <option  value="student">student</option>
                    <option  value="lecturer">lecturer</option>
@@ -221,14 +275,14 @@ const checkUniqueNameAndRole =()=>{
                  </select>                     
               </div>
               <!-- created -->
-            <div class="pt-3 flex">
+            <div class="pt-3 flex ml-11 w-fit">
               <h3 class="w-fit font-semibold text-gray-400 inline">created on :  </h3>
-              <h4 class="w-fit">{{created}}</h4>
+              <h4 class="w-fit px-2 text-gray-600">{{created}}</h4>
             </div>
               <!-- update on -->
-            <div class="pt-3 flex">
+            <div class="pt-3 flex ml-11 w-fit">
             <h3 class="w-fit font-semibold text-gray-400 inline">updated on :  </h3>
-            <h4 class="w-fit">{{updated}}</h4>                 
+            <h4 class="w-fit px-2 text-gray-600">{{updated}}</h4>                 
             </div>        
           </div>          
         </div>
@@ -240,8 +294,8 @@ const checkUniqueNameAndRole =()=>{
         </div>
         <!-- for edit button -->
         <div v-if="isEdit==true" class="showUp flex m-auto mt-7 mb-3 w-fit">
-          <button @click="isEdit=false" class="m-2 p-2 bg-slate-800 text-white">cancel</button>
-          <a href="#submit" class="m-2 p-2 bg-slate-800 text-white">Submit</a>
+          <button @click="cancelEdit" class="custom-btn remove m-2  ">cancel</button>
+          <a href="#submit" class="custom-btn edit m-2  ">Submit</a>
         </div>
       </div>
       </div>
@@ -290,9 +344,62 @@ const checkUniqueNameAndRole =()=>{
     </div>
     </div>
   </div>
+
+      <!-- alert  -->
+      <div  class="alert-area">
+        <div v-if="updateSuccess == true" class="alert success text-sm">
+          <span class="closebtn" @click="updateSuccess = false">x</span>
+          <strong class="block">Success!</strong> Update user success.
+        </div>
+        <div v-if="statusNoSend == true" class="alert warning text-sm">
+          <span class="closebtn" @click="statusNoSend = false">x</span>
+          <strong class="block">Warning !</strong> Unable to update, please try again later.
+        </div>
+        <div v-if="isUniqueName == true" class="alert warning text-sm">
+          <span class="closebtn" @click="isUniqueName = false">x</span>
+          <strong class="block">Warning !</strong> This name is used.
+        </div>
+        <div v-if="isUniqueEmail == true" class="alert warning text-sm">
+          <span class="closebtn" @click="isUniqueEmail = false">x</span>
+          <strong class="block">Warning !</strong> This e-mail is used.
+        </div>
+        <div v-if="isUniqueNameAndRole == true" class="alert warning text-sm">
+          <span class="closebtn" @click="isUniqueNameAndRole = false">x</span>
+          <strong class="block">Warning !</strong> This name and role is used.
+        </div> 
+        <div v-if="checkNameN == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkNameN = undefined">x</span>
+          <strong class="block">Warning !</strong> Please enter your name.
+        </div>
+        <div v-if="checkNameL == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkNameL = undefined">x</span>
+          <strong class="block">Warning !</strong> The name contains more than {{nameL}} characters.
+        </div>
+        <div v-if="checkEmailF == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkEmailF = undefined">x</span>
+          <strong class="block">Warning !</strong> The e-mail format is incorrect.
+        </div>
+        <div v-if="checkEMailN == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkEMailN = undefined">x</span>
+          <strong class="block">Warning !</strong> Please enter your e-mail.
+        </div>                                                           
+        <div v-if="checkEMailL == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkEMailL = undefined">x</span>
+          <strong class="block">Warning !</strong> The e-mail contains more than {{eMailL}} characters.
+        </div>
+        <div v-if="isSame == true" class="alert warning text-sm">
+          <span class="closebtn" @click="isSame = undefined">x</span>
+          <strong class="block">Warning !</strong> The information has not changed.
+        </div>                                                            
+      </div>
+     
+    
 </template>
  
 <style scoped>
+
+
+
 .custom-btn {
   width: 100px;
   height: 40px;
@@ -460,7 +567,7 @@ const checkUniqueNameAndRole =()=>{
 }
 /* width */
 ::-webkit-scrollbar {
-  height: 7.5px;
+  height: 5.5px;
   width: 9px;
 }
 /* Track */
@@ -475,7 +582,7 @@ const checkUniqueNameAndRole =()=>{
 }
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #577fbb;
+  background: #ef61e3;
 }
 /* remove */
 .remove {
@@ -546,6 +653,86 @@ const checkUniqueNameAndRole =()=>{
 .popup2 .option {
   bottom: 0;
 }
+<<<<<<< HEAD
+=======
+
+
+
+.showUp {
+  position: relative;
+  animation: wii 1s;
+  animation-timing-function: ease-in-out;
+}
+
+/* alert */
+.alert-area {
+  position: fixed;
+  top: 150px;
+  right: 0;
+  background-color: transparent;
+  width: 18%;
+  margin-right: 10px;
+}
+
+.alert {
+  position: relative;
+  width: 100%;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  animation: moveLeft 0.9s;
+  animation-timing-function: ease-in-out;
+  background-color: #f44336;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.6s;
+  margin-bottom: 15px;
+}
+
+.alert.success {
+  background-color: #d547e4;
+}
+
+.alert.info {
+  background-color: #2196f3;
+}
+
+.alert.warning {
+  background-color: #ff9800;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+/* animation */
+@keyframes moveLeft {
+  0% {
+    right: -300px;
+    top: 0px;
+    opacity: 0;
+  }
+
+  100% {
+    right: 0px;
+    top: 0px;
+    opacity: 1.5;
+  }
+}
+
+>>>>>>> 6bc5184190c384369c56b794b0796d53600be518
 @media screen and (max-width: 700px) {
   .popup2 {
     width: 70%;
@@ -554,12 +741,16 @@ const checkUniqueNameAndRole =()=>{
     width: 20%;
   }
 }
+<<<<<<< HEAD
 .showUp {
   position: relative;
   animation: wii 1s;
   animation-timing-function: ease-in-out;
 }
 /* animatio* */
+=======
+
+>>>>>>> 6bc5184190c384369c56b794b0796d53600be518
 @keyframes wii {
   0% {
     opacity: 0;
