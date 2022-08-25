@@ -2,7 +2,6 @@
 import { ref ,onBeforeMount} from "vue";
 import { useRoute, useRouter } from "vue-router";
 const { params } = useRoute();
-
 const userCheck= ref(undefined)
 const userList=ref([])
 const user =ref([])
@@ -16,9 +15,7 @@ const myRouoter=useRouter()
 const nameL=100
 const eMailL=50
 const goAllUser = () => myRouoter.push({ name: "AllUser" });
-
 const userLink=`${import.meta.env.BASE_URL}api/users`
-
 //GET user
 const getUser = async () => {
   const res = await fetch(`${userLink}/${id}`);
@@ -41,7 +38,6 @@ onBeforeMount(async()=>{
     await getUser();
     
 })
-
 //remove information
 const removeInfo = async () => {
   const res = await fetch(`${userLink}/${id}`,
@@ -64,8 +60,6 @@ const editMode=()=>{
  console.log(isEdit.value)
  
 }
-
-
 // validate
 const checkNameN=ref(undefined)
 const checkEMailN=ref(undefined)
@@ -81,7 +75,6 @@ const valFormEmail = (input) => {
     return false;
   }
 };
-
 // submit
 const submitt=()=>{
       checkUniqueName()
@@ -98,25 +91,21 @@ const submitt=()=>{
         checkEMailN.value=false
         console.log("pls input your email")
     }else checkEMailN.value=true
-
     //check name length
     if(nameEdit.value.length>nameL){
       console.log("name over 100")
       checkNameL.value=false
     }else checkNameL.value=true //;console.log('checkName Length',checkNameL.value)
-
     //check e-mail length
     if(eMailEdit.value.length>eMailL){
       console.log("email over 50")
       checkEMailL.value=false
     }else checkEMailL.value=true //;console.log('checkEMail Length',checkEMailL.value)
-
     // check e-mail form
     if(valFormEmail(eMailEdit.value)==false){
       console.log("email invalid form")
       checkEmailF.value=false
     }else checkEmailF.value=true
-
         // check unique
     if(isUniqueName.value==true){
         console.log("name is ununique 😏")
@@ -133,7 +122,6 @@ const submitt=()=>{
         updateUser()
     } 
 }
-
 //update user
 const updateUser=async ()=>{
  const  res = await fetch(`${userLink}/${id}`, {
@@ -145,8 +133,6 @@ const updateUser=async ()=>{
       name: nameEdit.value.trim(),
       email: eMailEdit.value.trim(),
       role: roleEdit.value==''?null:roleEdit.value,
-
-
     })
   });if( res.status==200){
         console.log("updated user")
@@ -159,18 +145,15 @@ const updateUser=async ()=>{
         checkEmailF.value=undefined
         getUser()
         isEdit.value=false
-
     }else{
         console.log("can not add new user pls try again")
         
     }
 }
-
 // functoin for check unique
 const isUniqueName =ref(undefined)
 const isUniqueEmail =ref(undefined)
 const isUniqueNameAndRole =ref(undefined)
-
 const checkUniqueName =()=>{
   for(let check of userList.value){
     if(check.name==nameEdit.value){
@@ -179,7 +162,6 @@ const checkUniqueName =()=>{
     }
   }
 }
-
 const checkUniqueEmail =()=>{
   for(let check of userList.value){
     if(check.email==eMailEdit.value){
@@ -188,7 +170,6 @@ const checkUniqueEmail =()=>{
     }
   }
 }
-
 const checkUniqueNameAndRole =()=>{
   for(let check of userList.value){
     if(check.role==roleEdit.value &&check.name==nameEdit.value){
@@ -209,7 +190,6 @@ const checkUniqueNameAndRole =()=>{
       <!-- <div class=" w-2/5 m-12">
         <img src="../assets/Rick_Rolling.gif" alt="">
       </div> -->
-
       <div class="px-2 m-auto w-4/5  ">
     <div class=" w-full p-4 mx-auto">
             <div class="w-full ">
@@ -238,7 +218,6 @@ const checkUniqueNameAndRole =()=>{
                    <option  value="student">student</option>
                    <option  value="lecturer">lecturer</option>
                    <option  value="admin">admin</option>
-
                  </select>                     
               </div>
               <!-- created -->
@@ -253,14 +232,12 @@ const checkUniqueNameAndRole =()=>{
             </div>        
           </div>          
         </div>
-
         <!-- for no edit button -->
         <div v-if="isEdit==false" class="showUp flex m-auto mt-7 mb-3 w-fit">
           <a href="#remove" class="m-2 p-2 custom-btn remove">Remove</a>
           <button @click="editMode" class="custom-btn edit m-2 p-2 ">Edit</button>
           <button @click="goAllUser" class="custom-btn back m-2 p-2 ">Back</button>
         </div>
-
         <!-- for edit button -->
         <div v-if="isEdit==true" class="showUp flex m-auto mt-7 mb-3 w-fit">
           <button @click="isEdit=false" class="m-2 p-2 bg-slate-800 text-white">cancel</button>
@@ -269,7 +246,6 @@ const checkUniqueNameAndRole =()=>{
       </div>
       </div>
     </div>
-
     <!-- for remove  -->
   <div id="remove" class="overlay">
     <div class="popup2 h-96">
@@ -298,7 +274,6 @@ const checkUniqueNameAndRole =()=>{
       <h2 class="mb-5 text-xl font-bold bg-white mx-auto w-fit">
         Are you sure ?
       </h2>
-
       <div class="option flex m-auto w-full mt-10">
         <a
           @click="submitt"
@@ -331,7 +306,6 @@ const checkUniqueNameAndRole =()=>{
   display: inline-block;
   text-align: center;
 }
-
 /* back*/
 .back {
   background: rgb(115, 115, 115);
@@ -368,7 +342,6 @@ const checkUniqueNameAndRole =()=>{
   width: 100%;
   transition: 800ms ease all;
 }
-
 /* edit */
 .edit {
   background: rgb(166, 166, 166);
@@ -408,7 +381,6 @@ const checkUniqueNameAndRole =()=>{
 .eidt-color {
   border-color: rgb(252, 140, 252);
 }
-
 /* remove */
 .remove {
   background: rgb(255, 172, 172);
@@ -445,7 +417,6 @@ const checkUniqueNameAndRole =()=>{
   width: 100%;
   transition: 800ms ease all;
 }
-
 /* submit */
 .overlay {
   position: fixed;
@@ -467,33 +438,26 @@ const checkUniqueNameAndRole =()=>{
   margin-top: 17%;
   padding-top: 23px;
   background: #fff;
-
   width: 20%;
   height: 130px;
   position: relative;
   transition: all 5s ease-in-out;
 }
-
 .popup2 h2 {
   margin-top: 0;
   color: #333;
 }
-
 .popup2 .option {
   bottom: 0;
 }
-
 @media screen and (max-width: 700px) {
   .popup2 {
     width: 70%;
   }
-
   .option {
     width: 20%;
   }
 }
-
-
 /* width */
 ::-webkit-scrollbar {
   height: 7.5px;
@@ -513,7 +477,6 @@ const checkUniqueNameAndRole =()=>{
 ::-webkit-scrollbar-thumb:hover {
   background: #577fbb;
 }
-
 /* remove */
 .remove {
   background: rgb(166, 166, 166);
@@ -550,7 +513,6 @@ const checkUniqueNameAndRole =()=>{
   width: 100%;
   transition: 800ms ease all;
 }
-
 /* submit */
 .overlay {
   position: fixed;
@@ -572,32 +534,26 @@ const checkUniqueNameAndRole =()=>{
   margin-top: 17%;
   padding-top: 23px;
   background: #fff;
-
   width: 20%;
   height: 130px;
   position: relative;
   transition: all 5s ease-in-out;
 }
-
 .popup2 h2 {
   margin-top: 0;
   color: #333;
 }
-
 .popup2 .option {
   bottom: 0;
 }
-
 @media screen and (max-width: 700px) {
   .popup2 {
     width: 70%;
   }
-
   .option {
     width: 20%;
   }
 }
-
 .showUp {
   position: relative;
   animation: wii 1s;
@@ -608,7 +564,6 @@ const checkUniqueNameAndRole =()=>{
   0% {
     opacity: 0;
   }
-
   100% {
     opacity: 1.5;
   }
