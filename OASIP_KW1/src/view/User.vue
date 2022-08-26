@@ -397,9 +397,6 @@ const cancelEdit=()=>{
 </template>
  
 <style scoped>
-
-
-
 .custom-btn {
   width: 100px;
   height: 40px;
