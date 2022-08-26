@@ -77,9 +77,9 @@ const goSignIn = () => myRouter.push({ name: 'SignIn' })
                                 </li>
             </ul>
             <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-blue-500 hover:bg-blue-600 text-l text-white 
-        font-bold  rounded-xl transition duration-200" href="#" @click="goSignIn">Sign Up</a>
+        font-bold  rounded-xl transition duration-200" href="#" @click="goSignIn">Sign In / Log In</a>
             <a class="hidden lg:inline-block lg:ml-right py-2 px-6 bg-emerald-500 hover:bg-emerald-600 text-l text-white 
-        font-bold rounded-xl " href="#" @click="goSignUp">Log In</a>
+        font-bold rounded-xl " href="#" @click="goSignUp">Register</a>
         </nav>
         <div class="flex object-cover ">
             <router-view></router-view>
