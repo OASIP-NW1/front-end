@@ -11,6 +11,7 @@ import User from '../view/User.vue'
 import SignIn from '../view/SignIn.vue'
 import SignUp from '../view/SignUp.vue'
 import DetailCategory from '../view/DetailCategory.vue'
+import EditCategory from '../view/EditCategory.vue'
 
 const history=createWebHistory(import.meta.env.BASE_URL)
       
@@ -38,6 +39,11 @@ const routes=[
         path:'/DetailCategory/:id',
         name:'DetailCategory',
         component: DetailCategory
+    },
+    {
+        path:'/EditCategory/:id',
+        name:'EditCategory',
+        component: EditCategory
     },
     {
         path:'/reservation/:id',

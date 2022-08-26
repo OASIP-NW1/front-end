@@ -2,7 +2,6 @@
 import { computed } from "@vue/reactivity";
 import { onBeforeMount, onUpdated, ref } from "vue";
 import { useRouter } from "vue-router";
-
 const name = ref("");
 const eMail = ref("");
 const startDate = ref("");
@@ -10,42 +9,31 @@ const category = ref("");
 const startTime = ref("");
 const noteText = ref("");
 const cateId = ref("");
-
 const nameLength = 100;
 const emailLength = 100;
 const noteLength = 500;
-
 //const db = "http://localhost:5000/booking";
 const eventLink = `${import.meta.env.BASE_URL}api/events`;
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
-
 const eventList = ref([]);
 const categoryList = ref([]);
 const addSuccess = ref(undefined);
 const getStatus = ref(undefined);
-
 // validate past
 const validateIsPast = ref(undefined);
-
 // validate name
 const validateNameisNotNull = ref(undefined);
 const validateNameLength = ref(undefined);
-
 // validate between date
 const validateBetweenDate = ref(undefined);
-
 // validate category
 const validateCategoryisNotNull = ref(undefined);
-
 // validate start Date
 const validateStartDateisNotNull = ref(undefined);
-
 // validate start Time
 const validateStartTimeisNotNull = ref(undefined);
-
 // validate note
 const validateNoteLength = ref(undefined);
-
 // validate email
 const validateEmailisNotNull = ref(undefined);
 const validateEmailLength = ref(undefined);
@@ -59,10 +47,8 @@ const valEmail = (input) => {
     return false;
   }
 };
-
 // overlap
 const betweenDateWarning = ref(undefined);
-
 const overlap = () => {
   betweenDateWarning.value = undefined;
   let isOverlap = undefined;
@@ -72,7 +58,6 @@ const overlap = () => {
       // console.log(Date.parse(check.eventStartTime))
       // console.log(Date.parse(`${check.eventStartTime.substring(0,10)}T${calTime(parseInt(check.eventStartTime.substring(11,13)) ,parseInt(check.eventStartTime.substring(14,16)),check.eventDuration)}:00+07:00`))
       // console.log('cut')
-
       if (
         Date.parse(`${startDate.value}T${startTime.value}:00+07:00`) >=
           Date.parse(check.eventStartTime) &&
@@ -136,7 +121,6 @@ const overlap = () => {
   }
   return isOverlap;
 };
-
 //for calculate time
 const calTime = (hour, minute, addTime) => {
   let sum = undefined;
@@ -151,12 +135,10 @@ const calTime = (hour, minute, addTime) => {
   }
   h = h < 10 ? `0${h}` : h;
   m = m < 10 ? `0${m}` : m;
-
   sum = `${h}:${m}`;
   // console.log(sum)
   return sum;
 };
-
 // check date & time
 const day = ref();
 const month = ref();
@@ -176,7 +158,6 @@ let clock = () => {
       ? `0${dateToday.getMonth() + 1}`.toString()
       : dateToday.getMonth() + 1; // month
   year.value = dateToday.getFullYear().toString(); // year
-
   hours.value =
     dateToday.getHours() < 10
       ? `0${dateToday.getHours()}`.toString()
@@ -185,13 +166,11 @@ let clock = () => {
     dateToday.getMinutes() < 10
       ? `0${dateToday.getMinutes()}`.toString()
       : dateToday.getMinutes(); // minute
-
   //  combine
   minTime.value = `${hours.value}:${minutes.value}`;
   minDate.value = `${year.value}-${month.value}-${day.value}`;
 };
 setInterval(clock, 1000);
-
 // submit
 const submitt = () => {
   validateEmailisNotNull.value = undefined;
@@ -275,7 +254,6 @@ const submitt = () => {
     }
   }
 };
-
 // fetch create
 const isStatus = ref(undefined);
 const addBooking = async () => {
@@ -296,6 +274,7 @@ const addBooking = async () => {
         } 
     }),
   });
+  console.log(res.status)
   if (res.status === 200) {
     addSuccess.value = true;
     createStatus = true;
@@ -310,9 +289,7 @@ const addBooking = async () => {
   }
   return createStatus;
 };
-
 //GET category
-
 // first get Category
 const getCategory = async () => {
   const res = await fetch(categoryLink);
@@ -323,11 +300,9 @@ const getCategory = async () => {
     getStatus.value = false;
   }
 };
-
 // get event
 const resGetEvent = ref(undefined);
 //const countGetEvent=ref(0)
-
 // check every 10 second
 setInterval(async () => {
   //console.log(countGetEvent.value++)
@@ -337,7 +312,6 @@ setInterval(async () => {
     getStatus.value = true;
   } else getStatus.value = false;
 }, 10000);
-
 // first get event
 const getEvent = async () => {
   const res = await fetch(eventLink);
@@ -346,9 +320,7 @@ const getEvent = async () => {
     getStatus.value = true;
   } else getStatus.value = false;
 };
-
 //get duration
-
 const durationTime = computed(() => {
   let value = undefined;
   for (let cate of categoryList.value) {
@@ -359,13 +331,11 @@ const durationTime = computed(() => {
   }
   return value;
 });
-
 onBeforeMount(async () => {
   await getCategory();
   await getEvent();
 });
 </script>
-
 <template>
   <div class="showUp container mx-auto">
     <div
@@ -397,7 +367,7 @@ onBeforeMount(async () => {
                 v-model="name"
                 type="text"
                 name="name"
-                placeholder="Somchai Jaidee (NW-1)"
+                placeholder="Somchai Jaidee (AT-3)"
                 required
                 :style="[
                   validateNameisNotNull == false ? 'border-color:red' : '',
@@ -406,7 +376,6 @@ onBeforeMount(async () => {
               />
             </div>
           </div>
-
           <!-- email -->
           <div class="mx-4 inline-block m-auto">
             <div class="px-3 w-full">
@@ -435,7 +404,6 @@ onBeforeMount(async () => {
             </div>
           </div>
         </div>
-
         <!-- category -->
         <div class="my-3 px-6 inline-block">
           <div class="inline-block">
@@ -472,7 +440,6 @@ onBeforeMount(async () => {
             </div>
           </div>
         </div>
-
         <!-- date & time -->
         <div class="inline-block px-3 w-max">
           <!-- start date -->
@@ -495,7 +462,6 @@ onBeforeMount(async () => {
               />
             </div>
           </div>
-
           <!-- start time -->
           <div class="w-fit inline-block">
             <div class="pr-2 w-full">
@@ -516,7 +482,6 @@ onBeforeMount(async () => {
               </div>
             </div>
           </div>
-
           <!-- duration -->
           <div class="w-fit inline-block">
             <div class="pr-2 w-full">
@@ -539,7 +504,6 @@ onBeforeMount(async () => {
             </div>
           </div>
         </div>
-
         <!-- note & button-->
         <div class="inline-flex w-full px-4">
           <!-- note -->
@@ -563,7 +527,6 @@ onBeforeMount(async () => {
             >
             </textarea>
           </div>
-
           <!-- booking button -->
           <div class="inline-flex m-auto p-5 w-60">
             <a
@@ -575,14 +538,12 @@ onBeforeMount(async () => {
           </div>
         </div>
       </div>
-
       <!-- for submit  -->
       <div id="submit" class="overlay">
         <div class="popup2 h-96">
           <h2 class="mb-5 text-xl font-bold bg-white mx-auto w-fit">
             Are you sure ?
           </h2>
-
           <div class="option flex m-auto w-full mt-10">
             <a
               @click="submitt"
@@ -598,84 +559,70 @@ onBeforeMount(async () => {
           </div>
         </div>
       </div>
-
       <!-- for alert -->
       <div class="alert-area">
         <div v-if="validateNameisNotNull == false" class="alert text-sm">
           <span class="closebtn" @click="validateNameisNotNull = true">x</span>
           <strong class="block">Error!</strong> Please input your name.
         </div>
-
         <div v-if="validateNameLength == false" class="alert text-sm">
           <span class="closebtn" @click="validateNameLength = true">x</span>
           <strong class="block">Error!</strong> The number of characters name is
           exceeded.
         </div>
-
         <div v-if="validateEmailisNotNull == false" class="alert text-sm">
           <span class="closebtn" @click="validateEmailisNotNull = true">x</span>
           <strong class="block">Error!</strong> Please input your email.
         </div>
-
         <div v-if="validateEmailValid == false" class="alert text-sm">
           <span class="closebtn" @click="validateEmailValid = true">x</span>
           <strong class="block">Error!</strong> Invalid email address!.
         </div>
-
         <div v-if="validateEmailLength == false" class="alert text-sm">
           <span class="closebtn" @click="validateEmailLength = true">x</span>
           <strong class="block">Error!</strong> The number of characters email
           is exceeded.
         </div>
-
         <div v-if="validateCategoryisNotNull == false" class="alert text-sm">
           <span class="closebtn" @click="validateCategoryisNotNull = true"
             >x</span
           >
           <strong class="block">Error!</strong> Please select category.
         </div>
-
         <div v-if="validateStartDateisNotNull == false" class="alert text-sm">
           <span class="closebtn" @click="validateStartDateisNotNull = true"
             >x</span
           >
           <strong class="block">Error!</strong> Please input date.
         </div>
-
         <div v-if="validateStartTimeisNotNull == false" class="alert text-sm">
           <span class="closebtn" @click="validateStartTimeisNotNull = true"
             >x</span
           >
           <strong class="block">Error!</strong> Please input time.
         </div>
-
         <div v-if="validateNoteLength == false" class="alert text-sm">
           <span class="closebtn" @click="validateNoteLength = true">x</span>
           <strong class="block">Error!</strong> Characters note beyond the limit
           .
         </div>
-
         <div v-if="validateIsPast == false" class="alert text-sm">
           <span class="closebtn" @click="validateIsPast = true">x</span>
           <strong class="block">Error!</strong> Can't select past date and time
           .
         </div>
-
         <div v-if="addSuccess == true" class="alert success text-sm">
           <span class="closebtn" @click="addSuccess = false">x</span>
           <strong class="block">Success!</strong> Add data success.
         </div>
-
         <div v-if="validateBetweenDate == true" class="alert warning text-sm">
           <span class="closebtn" @click="validateBetweenDate = false">x</span>
           <strong class="block">Warning!</strong> {{ betweenDateWarning }} 
         </div>
-
         <div v-if="isStatus == false" class="alert warning text-sm">
           <span class="closebtn" @click="isStatus = true">x</span>
           <strong class="block">Warning!</strong> Can't create booking.
         </div>
-
         <div
           v-if="
             getStatus == false ||
@@ -689,17 +636,14 @@ onBeforeMount(async () => {
       </div>
     </div>
   </div>
-
   <!-- for show category detail  -->
   <div id="category-detail" class="overlay">
     <div class="popup h-96 overflow-auto">
       <h2 class="text-xl font-semibold text-gray-100 p-6">Category detail :</h2>
       <a class="close" href="#">&times;</a>
-
       <div v-if="categoryList.length == 0" class="w-fit m-auto my-32 text-lg">
         No category details
       </div>
-
       <div v-else v-for="cat in categoryList">
         <ul>
           <li class="text-left">
@@ -722,30 +666,25 @@ onBeforeMount(async () => {
     </div>
   </div>
 </template>
-
 <style scoped>
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
 }
-
 /* Track */
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px rgb(255, 255, 255);
   border-radius: 10px;
 }
-
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: rgb(111, 129, 151);
   border-radius: 0px;
 }
-
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #53719d;
 }
-
 /* for notification */
 .overlay {
   position: fixed;
@@ -758,12 +697,10 @@ onBeforeMount(async () => {
   visibility: hidden;
   opacity: 0;
 }
-
 .overlay:target {
   visibility: visible;
   opacity: 1;
 }
-
 .popup {
   margin: 120px auto;
   padding: 20px;
@@ -773,12 +710,10 @@ onBeforeMount(async () => {
   position: relative;
   transition: all 5s ease-in-out;
 }
-
 .popup h2 {
   margin-top: 0;
   color: #333;
 }
-
 .popup .close {
   position: absolute;
   top: 20px;
@@ -789,49 +724,40 @@ onBeforeMount(async () => {
   text-decoration: none;
   color: #333;
 }
-
 .popup .close:hover {
   color: #06d85f;
 }
-
 @media screen and (max-width: 700px) {
   .popup {
     width: 70%;
   }
 }
-
 /* submit */
 .popup2 {
   margin: auto;
   margin-top: 17%;
   padding-top: 23px;
   background: #fff;
-
   width: 20%;
   height: 130px;
   position: relative;
   transition: all 5s ease-in-out;
 }
-
 .popup2 h2 {
   margin-top: 0;
   color: #333;
 }
-
 .popup2 .option {
   bottom: 0;
 }
-
 @media screen and (max-width: 700px) {
   .popup2 {
     width: 70%;
   }
-
   .option {
     width: 20%;
   }
 }
-
 /* alert */
 .alert-area {
   position: fixed;
@@ -841,7 +767,6 @@ onBeforeMount(async () => {
   width: 23%;
   margin-right: 10px;
 }
-
 .alert {
   position: relative;
   width: 100%;
@@ -857,19 +782,15 @@ onBeforeMount(async () => {
   transition: opacity 0.6s;
   margin-bottom: 15px;
 }
-
 .alert.success {
   background-color: #04aa6d;
 }
-
 .alert.info {
   background-color: #2196f3;
 }
-
 .alert.warning {
   background-color: #ff9800;
 }
-
 .closebtn {
   margin-left: 15px;
   color: white;
@@ -880,11 +801,9 @@ onBeforeMount(async () => {
   cursor: pointer;
   transition: 0.3s;
 }
-
 .closebtn:hover {
   color: black;
 }
-
 /* animetion */
 @keyframes moveLeft {
   0% {
@@ -892,24 +811,20 @@ onBeforeMount(async () => {
     top: 0px;
     opacity: 0;
   }
-
   100% {
     right: 0px;
     top: 0px;
     opacity: 1.5;
   }
 }
-
 @keyframes wii {
   0% {
     opacity: 0;
   }
-
   100% {
     opacity: 1.5;
   }
 }
-
 .showUp {
   position: relative;
   animation: wii 1s;

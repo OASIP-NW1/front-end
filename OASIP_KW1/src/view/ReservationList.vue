@@ -103,185 +103,189 @@ setInterval(clock, 1000);
 const fStartDate = ref("");
 const fStatus = ref("");
 const fCategory = ref("");
+const fEmail = ref("")
 const noInputFilter = ref(undefined);
 
-const search = () => {
-  noInputFilter.value = undefined;
+// const search = () => {
+//   noInputFilter.value = undefined;
 
-  if (fStartDate.value == "" && fStatus.value == "" && fCategory.value == "") {
-    // alert("input in form if you want to filter");
-    noInputFilter.value = true;
-  } else {
-    filterReservationList.value = [];
+//   if (fStartDate.value == "" && fStatus.value == "" && fCategory.value == "") {
+//     // alert("input in form if you want to filter");
+//     noInputFilter.value = true;
+//   } else {
+//     filterReservationList.value = [];
 
-    // หากมีแค่ start date จะทำการเลือก start date ตามนั้นแต่ว่าจะเลือเวลาทั้งวัน
-    if (
-      fStartDate.value !== "" &&
-      fStatus.value == "" &&
-      fCategory.value == ""
-    ) {
-      for (let filter of eventList.value) {
-        if (
-          Date.parse(filter.eventStartTime) >=
-            Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-          Date.parse(filter.eventStartTime) <=
-            Date.parse(`${fStartDate.value}T23:59:00+07:00`)
-        ) {
-          filterReservationList.value.push(filter);
-        }
-      }
-      // console.log(filterReservationList.value)
-    }
-    // สำหรับ past and upcoming จะ show ข้อมูลที่จะมีในอนาคต หรืออดีต
-    else if (
-      fStatus.value !== "" &&
-      fStartDate.value == "" &&
-      fCategory.value == ""
-    ) {
-      if (fStatus.value == "upcoming") {
-        for (let filter of eventList.value) {
-          if (
-            Date.parse(filter.eventStartTime) >
-            Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      } else if (fStatus.value == "past") {
-        for (let filter of eventList.value) {
-          if (
-            Date.parse(filter.eventStartTime) <=
-            Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      }
-    }
-    // category
-    else if (
-      fCategory.value !== "" &&
-      fStatus.value == "" &&
-      fStartDate.value == ""
-    ) {
-      for (let filter of eventList.value) {
-        if (filter.categoryName == fCategory.value) {
-          filterReservationList.value.push(filter);
-        }
-      }
-    }
-    // start date and status
-    else if (
-      fStatus.value !== "" &&
-      fStartDate.value !== "" &&
-      fCategory.value == ""
-    ) {
-      for (let filter of eventList.value) {
-        if (fStatus.value == "upcoming") {
-          if (
-            Date.parse(filter.eventStartTime) >=
-              Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
-            Date.parse(filter.eventStartTime) >
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        } else if (fStatus.value == "past") {
-          if (
-            Date.parse(filter.eventStartTime) >=
-              Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      }
-    }
-    // status and category
-    else if (
-      fStatus.value !== "" &&
-      fStartDate.value == "" &&
-      fCategory.value !== ""
-    ) {
-      for (let filter of eventList.value) {
-        if (fStatus.value == "upcoming") {
-          if (
-            filter.categoryName == fCategory.value &&
-            Date.parse(filter.eventStartTime) >
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        } else if (fStatus.value == "past") {
-          if (
-            filter.categoryName == fCategory.value &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      }
-    }
-    // start date and category
-    else if (
-      fStatus.value == "" &&
-      fStartDate.value !== "" &&
-      fCategory.value !== ""
-    ) {
-      for (let filter of eventList.value) {
-        if (
-          filter.categoryName == fCategory.value &&
-          Date.parse(filter.eventStartTime) >=
-            Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-          Date.parse(filter.eventStartTime) <=
-            Date.parse(`${fStartDate.value}T23:59:00+07:00`)
-        ) {
-          filterReservationList.value.push(filter);
-        }
-      }
-    }
-    // start date ,status, category
-    else if (
-      fStatus.value !== "" &&
-      fStartDate.value !== "" &&
-      fCategory.value !== ""
-    ) {
-      for (let filter of eventList.value) {
-        if (fStatus.value == "upcoming") {
-          if (
-            filter.categoryName == fCategory.value &&
-            Date.parse(filter.eventStartTime) >=
-              Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
-            Date.parse(filter.eventStartTime) >
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        } else if (fStatus.value == "past") {
-          if (
-            filter.categoryName == fCategory.value &&
-            Date.parse(filter.eventStartTime) >=
-              Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      }
-    }
-  }
-};
+//     // หากมีแค่ start date จะทำการเลือก start date ตามนั้นแต่ว่าจะเลือกเวลาทั้งวัน
+//     if (
+//       fStartDate.value !== "" &&
+//       fStatus.value == "" &&
+//       fCategory.value == "" &&
+//       fEmail.value == ""
+//     ) {
+//       for (let filter of eventList.value) {
+//         if (
+//           Date.parse(filter.eventStartTime) >=
+//             Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
+//           Date.parse(filter.eventStartTime) <=
+//             Date.parse(`${fStartDate.value}T23:59:00+07:00`)
+//         ) {
+//           filterReservationList.value.push(filter);
+//         }
+//       }
+//       // console.log(filterReservationList.value)
+//     }
+//     // สำหรับ past and upcoming จะ show ข้อมูลที่จะมีในอนาคต หรืออดีต
+//     else if (
+//       fStatus.value !== "" &&
+//       fStartDate.value == "" &&
+//       fCategory.value == "" &&
+//       fEmail.value == ""
+//     ) {
+//       if (fStatus.value == "upcoming") {
+//         for (let filter of eventList.value) {
+//           if (
+//             Date.parse(filter.eventStartTime) >
+//             Date.parse(`${date.value}T${time.value}:00+07:00`)
+//           ) {
+//             filterReservationList.value.push(filter);
+//           }
+//         }
+//       } else if (fStatus.value == "past") {
+//         for (let filter of eventList.value) {
+//           if (
+//             Date.parse(filter.eventStartTime) <=
+//             Date.parse(`${date.value}T${time.value}:00+07:00`)
+//           ) {
+//             filterReservationList.value.push(filter);
+//           }
+//         }
+//       }
+//     }
+//     // category
+//     else if (
+//       fCategory.value !== "" &&
+//       fStatus.value == "" &&
+//       fStartDate.value == "" &&
+//       fEmail.value == ""
+//     ) {
+//       for (let filter of eventList.value) {
+//         if (filter.categoryName == fCategory.value) {
+//           filterReservationList.value.push(filter);
+//         }
+//       }
+//     }
+//     // start date and status
+//     else if (
+//       fStatus.value !== "" &&
+//       fStartDate.value !== "" &&
+//       fCategory.value == ""
+//     ) {
+//       for (let filter of eventList.value) {
+//         if (fStatus.value == "upcoming") {
+//           if (
+//             Date.parse(filter.eventStartTime) >=
+//               Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
+//             Date.parse(filter.eventStartTime) <=
+//               Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
+//             Date.parse(filter.eventStartTime) >
+//               Date.parse(`${date.value}T${time.value}:00+07:00`)
+//           ) {
+//             filterReservationList.value.push(filter);
+//           }
+//         } else if (fStatus.value == "past") {
+//           if (
+//             Date.parse(filter.eventStartTime) >=
+//               Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
+//             Date.parse(filter.eventStartTime) <=
+//               Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
+//             Date.parse(filter.eventStartTime) <=
+//               Date.parse(`${date.value}T${time.value}:00+07:00`)
+//           ) {
+//             filterReservationList.value.push(filter);
+//           }
+//         }
+//       }
+//     }
+//     // status and category
+//     else if (
+//       fStatus.value !== "" &&
+//       fStartDate.value == "" &&
+//       fCategory.value !== ""
+//     ) {
+//       for (let filter of eventList.value) {
+//         if (fStatus.value == "upcoming") {
+//           if (
+//             filter.categoryName == fCategory.value &&
+//             Date.parse(filter.eventStartTime) >
+//               Date.parse(`${date.value}T${time.value}:00+07:00`)
+//           ) {
+//             filterReservationList.value.push(filter);
+//           }
+//         } else if (fStatus.value == "past") {
+//           if (
+//             filter.categoryName == fCategory.value &&
+//             Date.parse(filter.eventStartTime) <=
+//               Date.parse(`${date.value}T${time.value}:00+07:00`)
+//           ) {
+//             filterReservationList.value.push(filter);
+//           }
+//         }
+//       }
+//     }
+//     // start date and category
+//     else if (
+//       fStatus.value == "" &&
+//       fStartDate.value !== "" &&
+//       fCategory.value !== ""
+//     ) {
+//       for (let filter of eventList.value) {
+//         if (
+//           filter.categoryName == fCategory.value &&
+//           Date.parse(filter.eventStartTime) >=
+//             Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
+//           Date.parse(filter.eventStartTime) <=
+//             Date.parse(`${fStartDate.value}T23:59:00+07:00`)
+//         ) {
+//           filterReservationList.value.push(filter);
+//         }
+//       }
+//     }
+//     // start date ,status, category
+//     else if (
+//       fStatus.value !== "" &&
+//       fStartDate.value !== "" &&
+//       fCategory.value !== ""
+//     ) {
+//       for (let filter of eventList.value) {
+//         if (fStatus.value == "upcoming") {
+//           if (
+//             filter.categoryName == fCategory.value &&
+//             Date.parse(filter.eventStartTime) >=
+//               Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
+//             Date.parse(filter.eventStartTime) <=
+//               Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
+//             Date.parse(filter.eventStartTime) >
+//               Date.parse(`${date.value}T${time.value}:00+07:00`)
+//           ) {
+//             filterReservationList.value.push(filter);
+//           }
+//         } else if (fStatus.value == "past") {
+//           if (
+//             filter.categoryName == fCategory.value &&
+//             Date.parse(filter.eventStartTime) >=
+//               Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
+//             Date.parse(filter.eventStartTime) <=
+//               Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
+//             Date.parse(filter.eventStartTime) <=
+//               Date.parse(`${date.value}T${time.value}:00+07:00`)
+//           ) {
+//             filterReservationList.value.push(filter);
+//           }
+//         }
+//       }
+//     }
+//   }
+// };
 
 // reset filter
 const reset = () => {
@@ -290,50 +294,69 @@ const reset = () => {
   fCategory.value = "";
   filterReservationList.value = eventList.value;
 };
+
+const searchLastest = () =>{
+   filterReservationList.value = eventList.value
+    if(fEmail.value !== ''){
+      filterReservationList.value = filterReservationList.value.filter((event) =>{
+      return event.bookingEmail == fEmail.value.trim()
+    })
+    }
+    if(fCategory.value !== ''){
+      filterReservationList.value = filterReservationList.value.filter((event) => {
+      return event.eventCategoryName == fCategory.value
+    })
+    }
+    if(fStartDate.value !== ''){
+      filterReservationList.value = filterReservationList.value.filter((event) => {
+      return new Date(fStartDate.value).setHours(0,0,0,0) == new Date(event.eventStartTime).setHours(0,0,0,0)
+    })
+      filterReservationList.value.reverse();
+    }else{
+      if(fStatus.value == 'Past'){
+          filterReservationList.value = filterReservationList.value.filter((event) => {
+            return new Date() > new Date(event.eventStartTime)
+          })
+      }else if(fStatus.value == 'Upcoming'){
+          filterReservationList.value = filterReservationList.value.filter((event) => {
+            return new Date() < new Date(event.eventStartTime)
+          })
+          filterReservationList.value.reverse();
+      }
+    }
+    console.log(filterReservationList.value)
+}
 </script>
 
 <template>
   <!-- for filter -->
-  <div
-    class="showUp md:inline-block ml-52 mt-16 bg-gray-200 p-4 ml-20 w-1/3 rounded-l"
-    style="height: 475px; width: 25%"
-  >
+  <div class="showUp md:inline-block ml-50 mt-16 bg-gray-200 p-6 ml-20 w-1/3 rounded-l"
+    style="height: 550px; width: 25%">
     <div class="border-gray-500 border-4 border-double w-full">
-      <h1 class="my-8 text-xl font-semibold text-gray-600 w-fit m-auto">
-        Filter Booking
-      </h1>
+      <h1 class="my-8 text-xl font-semibold text-gray-600 w-fit m-auto">Filter Booking</h1>
 
       <!-- start date -->
       <div class="w-full my-1 block my-2">
         <div class="px-3 w-full m-auto block">
-          <label for="date" class="font-medium text-sm text-gray-600"
-            >Start date :</label
-          >
+          <label for="date" class="font-medium text-sm text-gray-600">Start date :</label>
         </div>
 
         <div class="px-3 w-5/6 block">
-          <input
-            id="date"
+          <input id="date"
             class="w-full drop-shadow-md px-3 py-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
-            type="date"
-            v-model="fStartDate"
-          />
+            type="date" v-model="fStartDate"/>
         </div>
       </div>
 
       <!-- status -->
       <div class="block w-full my-3">
         <div class="px-3 my-1 w-fit block">
-          <label for="category" class="font-medium text-sm text-gray-600"
-            >Status :</label
-          >
+          <label for="category" class="font-medium text-sm text-gray-600">Status :</label>
         </div>
         <div class="px-1.5 w-5/6 block">
-          <select
-            id="category"
+          <select id="category"
             class="w-full text-ellipsis overflow-hidden drop-shadow-md cursor-pointer px-3 py-2 mx-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
-            v-model="fStatus"
-          >
+            v-model="fStatus">
             <option value="" disable selected>All</option>
             <option value="upcoming">Upcoming</option>
             <option value="past">Past</option>
@@ -344,25 +367,27 @@ const reset = () => {
       <!-- category -->
       <div class="block w-full my-3">
         <div class="px-3 my-1 w-fit block">
-          <label for="category" class="font-medium text-sm text-gray-600"
-            >Category :</label
-          >
+          <label for="category" class="font-medium text-sm text-gray-600">Category :</label>
         </div>
         <div class="px-1.5 w-5/6 block">
-          <select
-            id="category"
+          <select id="category"
             class="w-full text-ellipsis overflow-hidden drop-shadow-md cursor-pointer px-3 py-2 mx-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
-            v-model="fCategory"
-          >
+            v-model="fCategory">
             <option value="" disable selected>All</option>
-            <option
-              v-for="cat in categoryList"
-              :key="cat.id"
-              :value="cat.eventCategoryName"
-            >
-              {{ cat.eventCategoryName }}
-            </option>
+            <option v-for="cat in categoryList" :key="cat.id" :value="cat.eventCategoryName">{{ cat.eventCategoryName }}</option>
           </select>
+        </div>
+      </div>
+
+      <!-- email -->
+        <div class="block w-full my-3">
+          <div class="px-3 my-1 w-fit block">
+            <label for="category" class="font-medium text-sm text-gray-600">Email :</label>
+        </div>
+        <div class="px-1.5 w-5/6 block">
+           <input
+            class="w-full drop-shadow-md px-3 py-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+            type="text" v-model="fEmail"/>
         </div>
       </div>
 
@@ -373,31 +398,20 @@ const reset = () => {
         </div>
 
         <div class="inline-flex w-1/2 m-auto">
-          <button @click="search" class="custom-btn search">Search</button>
+          <button @click="searchLastest" class="custom-btn search">Search</button>
         </div>
       </div>
     </div>
   </div>
   <!-- for booking table -->
-  <div
-    class="showUp bg-gray-200 md:inline-block mr-28 mt-16 p-4 rounded-r"
-    style="height: 475px; width: 65%"
-  >
+  <div class="showUp bg-gray-200 md:inline-block mr-28 mt-16 p-4 rounded-r" style="height: 475px; width: 65%">
     <div v-if="filterReservationList.length === 0">
-      <h1 class="drop-shadow-2xl mx-auto w-fit my-20 font-semibold">
-        No event
-      </h1>
+      <h1 class="drop-shadow-2xl mx-auto w-fit my-20 font-semibold">No event</h1>
     </div>
 
-    <div
-      v-if="filterReservationList.length !== 0"
-      class="drop-shadow-2xl bg-white overflow-y-auto mx-auto h-fit"
-      style="height: 440px; width: 100%"
-    >
+    <div v-if="filterReservationList.length !== 0" class="drop-shadow-2xl bg-white overflow-y-auto mx-auto h-fit" style="height: 440px; width: 100%">
       <table class="table-fixed m-auto md:table-flexed w-full">
-        <thead
-          class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-        >
+        <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3">Name</th>
             <th scope="col" class="px-3 py-3">Start date</th>
@@ -407,15 +421,10 @@ const reset = () => {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="Booking in filterReservationList"
-            :key="Booking.id"
-            class="text-center border-y border-t-0 dark:border-gray-700"
-          >
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 font-semibold whitespace-nowrap text-ellipsis overflow-hidden"
-            >
+          <!-- show data -->
+          <tr v-for="Booking in filterReservationList" :key="Booking.id"
+            class="text-center border-y border-t-0 dark:border-gray-700">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
               {{ Booking.bookingName }}
             </th>
             <td class="px-1 py-4">
@@ -436,11 +445,9 @@ const reset = () => {
               {{ Booking.eventCategory.eventCategoryName }}
             </td>
             <td class="px-14 py-4">
-              <button
-                @click="goReservation(Booking)"
+              <button @click="goReservation(Booking)"
                 class="text-black hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-              >
-                Detail
+              >Detail
               </button>
             </td>
           </tr>
@@ -455,16 +462,8 @@ const reset = () => {
         <strong class="block">Info!</strong> Please input information to filter
       </div>
 
-      <div
-        v-else-if="
-          getStatus == false ||
-          (categoryList.length == 0 && eventList.length == 0)
-        "
-        class="alert warning text-sm"
-      >
-        <strong class="block">Warning!</strong> A system error has occurred,
-        please try again.
-      </div>
+      <div v-else-if="getStatus == false ||(categoryList.length == 0 && eventList.length == 0)" class="alert warning text-sm">
+        <strong class="block">Warning!</strong> A system error has occurred,please try again.</div>
     </div>
   </div>
 </template>
@@ -609,6 +608,7 @@ const reset = () => {
 
 .showUp {
   position: relative;
+
   animation: wii 1s;
   animation-timing-function: ease-in-out;
 }
