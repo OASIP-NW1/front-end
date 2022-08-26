@@ -34,7 +34,6 @@ const sendd =async ()=>{
     body: JSON.stringify({
      email:eMail.value,
      password:passwordd.value
-
     })
   });if(res.status==200){
     console.log("good status")
@@ -44,9 +43,16 @@ const sendd =async ()=>{
 // validate
 const checkEMailN=ref(undefined)
 const checkPasswordN=ref(undefined)
+// submit
+const submitt =()=>{
+
+// validate
+const checkEMailN=ref(undefined)
+const checkPasswordN=ref(undefined)
 
 // submit
 const submitt =()=>{
+
 
     // check email null
     if(eMail.value.length==0){
@@ -58,7 +64,6 @@ const submitt =()=>{
         checkPasswordN.value=false
         console.log("password is null")
     } checkPasswordN.value=true
-
     if(checkEMailN.value==true&&checkPasswordN.value==true){
         console.log("get in last check")
         sendd()
@@ -84,5 +89,4 @@ const submitt =()=>{
 </template>
  
 <style>
-
 </style>

@@ -2,7 +2,6 @@
 import {ref} from 'vue'
 import { useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
-
 const name=ref('')
 const eMail=ref('')
 const role= ref('')
@@ -12,20 +11,15 @@ const passwordL=14
 const userList=ref([])
 const passwordd=ref('')
 const passwordC=ref('')
-
 //router
 const myRouter = useRouter();
 const goHome = () =>
   myRouter.push({
     name: "Home"
   });
-
   
-
 const db="http://localhost:5000/user"
 const userLink=`${import.meta.env.BASE_URL}api/users`
-
-
 //GET user
 const userCheck=ref(undefined)
 const getUser = async () => {
@@ -42,7 +36,6 @@ const getUser = async () => {
 onBeforeMount(async()=>{
     await getUser();
 })
-
 // validate
 const checkNameN=ref(undefined)
 const checkEMailN=ref(undefined)
@@ -60,7 +53,6 @@ const valFormEmail = (input) => {
     return false;
   }
 };
-
 // submit
 const submitt = ()=>{
     // console.log(name.value)
@@ -72,8 +64,6 @@ const submitt = ()=>{
     checkUniqueName()
     checkUniqueEmail()
     checkUniqueNameAndRole()
-
-
     // check name is null?
     if(name.value.trim()==''){
         checkNameN.value=false
@@ -85,7 +75,6 @@ const submitt = ()=>{
         checkEMailN.value=false
         console.log("email is null")
     }else checkEMailN.value=true
-
     // check password null
     if(passwordC.value.length==0||passwordd.value.length==0){
         checkPasswordN.value=false
@@ -97,25 +86,21 @@ const submitt = ()=>{
       console.log("name over 100")
       checkNameL.value=false
     }else checkNameL.value=true //;console.log('checkName Length',checkNameL.value)
-
     //check e-mail length
     if(eMail.value.length>eMailL){
       console.log("email over 50")
       checkEMailL.value=false
     }else checkEMailL.value=true //;console.log('checkEMail Length',checkEMailL.value)
-
     // check e-mail form
     if(valFormEmail(eMail.value)==false){
       console.log("email invalid form")
       checkEmailF.value=false
     }else checkEmailF.value=true
-
     // check password is length ?
     if(passwordC.value.length>passwordL ||passwordd.value.length>passwordL){
         checkPasswordL.value=false
         console.log("Passwords is over 14 ")
     }else checkPasswordL.value=true
-
     // check unique
     if(isUniqueName.value==true){
         console.log("name is ununique 😏")
@@ -135,7 +120,6 @@ const submitt = ()=>{
         addNewUser()
     } 
   }    
-
 //add new user
 const addNewUser=async ()=>{
  const  res = await fetch(userLink, {
@@ -158,18 +142,15 @@ const addNewUser=async ()=>{
         eMail.value=''
         role.value=''
         goHome()      
-
     }else{
         console.log("can not add new user pls try again")
         
     }
 }
-
 // functoin for check unique
 const isUniqueName =ref(undefined)
 const isUniqueEmail =ref(undefined)
 const isUniqueNameAndRole =ref(undefined)
-
 const checkUniqueName =()=>{
   for(let check of userList.value){
     if(check.name==name.value){
@@ -178,7 +159,6 @@ const checkUniqueName =()=>{
     }
   }
 }
-
 const checkUniqueEmail =()=>{
   for(let check of userList.value){
     if(check.email==eMail.value){
@@ -187,7 +167,6 @@ const checkUniqueEmail =()=>{
     }
   }
 }
-
 const checkUniqueNameAndRole =()=>{
   for(let check of userList.value){
     if(check.role==role.value &&check.name==name.value){
@@ -196,14 +175,13 @@ const checkUniqueNameAndRole =()=>{
     }
   }
 }
-
 </script>
  
 <template>
     <div class="w-2/5 h-2/6 bg-white rounded-md p-4 m-auto mt-10">
         <!-- head -->
         <div class="m-auto w-fit">
-            <h2>Sign-up</h2> 
+            <h2>Sign In</h2> 
         </div>
         <!-- body -->
         <div class="m-auto w-2/5">
@@ -224,7 +202,6 @@ const checkUniqueNameAndRole =()=>{
                   <option  value="student">Student</option>
                   <option  value="lecturer">Lecturer</option>
                   <option  value="admin">Admin</option>
-
                 </select>
             </div>
             <div class="m-4">
@@ -242,18 +219,14 @@ const checkUniqueNameAndRole =()=>{
                 submit
             </a>
         </div>
-
-
            
     </div>
-
          <!-- for submit  -->
   <div id="submit" class="overlay">
     <div class="popup2 ">
       <h2 class="mb-5 text-xl font-bold bg-white mx-auto w-fit">
         Are you sure ?
       </h2>
-
       <div class="option flex m-auto w-full mt-10">
         <a
           @click="submitt"
@@ -293,30 +266,24 @@ const checkUniqueNameAndRole =()=>{
   margin-top: 17%;
   padding-top: 23px;
   background: #fff;
-
   width: 20%;
   height: 130px;
   position: relative;
   transition: all 5s ease-in-out;
 }
-
 .popup2 h2 {
   margin-top: 0;
   color: #333;
 }
-
 .popup2 .option {
   bottom: 0;
 }
-
 @media screen and (max-width: 700px) {
   .popup2 {
     width: 70%;
   }
-
   .option {
     width: 20%;
   }
 }
-
 </style>
