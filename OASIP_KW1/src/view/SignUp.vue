@@ -8,7 +8,10 @@ const eMail=ref('')
 const role= ref('')
 const nameL=100
 const eMailL=50
+const passwordL=14
 const userList=ref([])
+const passwordd=ref('')
+const passwordC=ref('')
 
 //router
 const myRouter = useRouter();
@@ -46,6 +49,8 @@ const checkEMailN=ref(undefined)
 const checkNameL=ref(undefined)
 const checkEMailL=ref(undefined)
 const checkEmailF =ref(undefined)
+const checkPasswordN=ref(undefined)
+const checkPasswordL=ref(undefined)
 const valFormEmail = (input) => {
   let valid =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -70,17 +75,23 @@ const submitt = ()=>{
 
 
     // check name is null?
-    if(name.value==''){
+    if(name.value.trim()==''){
         checkNameN.value=false
-        console.log("pls input your name")
+        console.log("name is null")
     }else checkNameN.value=true 
  
     // check e-mail is null?    
-    if(eMail.value==''){
+    if(eMail.value.trim()==''){
         checkEMailN.value=false
-        console.log("pls input your email")
+        console.log("email is null")
     }else checkEMailN.value=true
-    
+
+    // check password null
+    if(passwordC.value.length==0||passwordd.value.length==0){
+        checkPasswordN.value=false
+        console.log("password is null")
+    }else checkPasswordN.value=true;console.log(checkPasswordN.value)
+
     //check name length
     if(name.value.length>nameL){
       console.log("name over 100")
@@ -99,6 +110,12 @@ const submitt = ()=>{
       checkEmailF.value=false
     }else checkEmailF.value=true
 
+    // check password is length ?
+    if(passwordC.value.length>passwordL ||passwordd.value.length>passwordL){
+        checkPasswordL.value=false
+        console.log("Passwords is over 14 ")
+    }else checkPasswordL.value=true
+
     // check unique
     if(isUniqueName.value==true){
         console.log("name is ununique 😏")
@@ -109,8 +126,11 @@ const submitt = ()=>{
     if(isUniqueNameAndRole.value==true ){
         console.log("role and name is ununique")
     }else
+    if(passwordC.value.trim()!==passwordd.value.trim()){
+        console.log("Passwords do not match.")
+    }else
     // last check
-    if(checkEMailN.value==true && checkNameN.value==true &&checkEMailL.value==true &&checkNameL.value==true&&checkEmailF.value==true&&isUniqueName.value!==true&&isUniqueEmail.value!==true&&isUniqueNameAndRole.value!==true){
+    if(checkEMailN.value==true && checkNameN.value==true &&checkEMailL.value==true &&checkNameL.value==true&&checkEmailF.value==true&&isUniqueName.value!==true&&isUniqueEmail.value!==true&&isUniqueNameAndRole.value!==true&&checkPasswordL.value==true&&checkPasswordN.value==true){
         console.log("status good")
         addNewUser()
     } 
@@ -126,9 +146,8 @@ const addNewUser=async ()=>{
     body: JSON.stringify({
       name: name.value.trim(),
       email: eMail.value.trim(),
-      role: role.value==''?null:role.value,
-      createdOn:null,
-      updatedOn:null
+      role: role.value==''?null:role.value.trim(),
+      password: passwordd.value.trim()
 
     })
   });if( res.status==201){
@@ -208,10 +227,14 @@ const checkUniqueNameAndRole =()=>{
 
                 </select>
             </div>
-            <!-- <div class="m-4">
-                <h3>password :</h3> 
-                <input class="border-black border-2" type="text" v-model="role">
-            </div> -->
+            <div class="m-4">
+                <label for="pw">Password ({{passwordd.length}}) :</label>
+                <input id="pw" class="border-black border-2" type="password" v-model="passwordd">
+            </div>                 
+            <div class="m-4">
+                <label for="cpw">Confirm Password ({{passwordC.length}}) :</label>
+                <input id="cpw" class="border-black border-2" type="password" v-model="passwordC">
+            </div>        
         </div>
         <!-- button -->
         <div class="m-auto w-fit bg-lime-400">
