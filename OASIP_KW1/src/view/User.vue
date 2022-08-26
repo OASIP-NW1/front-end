@@ -234,7 +234,7 @@ const cancelEdit=()=>{
             <div class="w-5/6 ml-12  pt-3">
               <!-- name -->
               <div  class="block w-full  pt-2">
-                <div class="w-5/6 mx-auto">
+                <div class="w-5/6 ml-12">
                 <h3 class="w-fit inline font-semibold text-gray-400 pr-2">Name : </h3>
                 <span v-if="isEdit==true" class="inline-block text-sm text-gray-300" :style="[nameEdit.length>nameL?'color: red;':'']">{{nameEdit.length }}/{{nameL}} charector</span>                  
                 </div>
@@ -617,41 +617,7 @@ const cancelEdit=()=>{
   width: 100%;
   transition: 800ms ease all;
 }
-/* submit */
-.overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  transition: opacity 500ms;
-  visibility: hidden;
-  opacity: 0;
-}
-.overlay:target {
-  visibility: visible;
-  opacity: 1;
-}
-.popup2 {
-  margin: auto;
-  margin-top: 17%;
-  padding-top: 23px;
-  background: #fff;
-  width: 20%;
-  height: 130px;
-  position: relative;
-  transition: all 5s ease-in-out;
-}
-.popup2 h2 {
-  margin-top: 0;
-  color: #333;
-}
-.popup2 .option {
-  bottom: 0;
-}
-<<<<<<< HEAD
-=======
+
 
 
 
@@ -729,31 +695,4 @@ const cancelEdit=()=>{
   }
 }
 
->>>>>>> 6bc5184190c384369c56b794b0796d53600be518
-@media screen and (max-width: 700px) {
-  .popup2 {
-    width: 70%;
-  }
-  .option {
-    width: 20%;
-  }
-}
-<<<<<<< HEAD
-.showUp {
-  position: relative;
-  animation: wii 1s;
-  animation-timing-function: ease-in-out;
-}
-/* animatio* */
-=======
-
->>>>>>> 6bc5184190c384369c56b794b0796d53600be518
-@keyframes wii {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1.5;
-  }
-}
 </style>
