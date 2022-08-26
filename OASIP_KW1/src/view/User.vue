@@ -253,7 +253,7 @@ const cancelEdit=()=>{
             <div class="w-5/6 ml-12  pt-3">
               <!-- name -->
               <div  class="block w-full  pt-2">
-                <div class="w-5/6 mx-auto">
+                <div class="w-5/6 ml-12">
                 <h3 class="w-fit inline font-semibold text-gray-400 pr-2">Name : </h3>
                 <span v-if="isEdit==true" class="inline-block text-sm text-gray-300" :style="[nameEdit.length>nameL?'color: red;':'']">{{nameEdit.length }}/{{nameL}} charector</span>                  
                 </div>
