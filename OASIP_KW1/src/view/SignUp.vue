@@ -200,75 +200,134 @@ const checkUniqueNameAndRole =()=>{
 </script>
  
 <template>
-    <div class="w-2/5 h-2/6 bg-white rounded-md p-4 m-auto mt-10">
-        <!-- head -->
-        <div class="m-auto w-fit">
-            <h2>Sign-up</h2> 
-        </div>
-        <!-- body -->
-        <div class="m-auto w-2/5">
-            <div class="m-4 ">
-                <label for="name">Username ({{name.length}}) :</label> 
-                <input id="name" class="border-black border-2" type="text" v-model="name">
-            </div>
-            <div class="m-4">
-                <label for="email">E-mail ({{eMail.length}}) :</label>
-                <input id="email" class="border-black border-2" type="text" v-model="eMail">
-            </div>
-            <div class="m-4">
-                <!-- <h3>role :</h3> 
+  <!-- <div class="w-2/5 h-2/6 bg-white rounded-md p-4 m-auto mt-10"> -->
+  <!-- head -->
+  <!-- <div class="m-auto w-fit"> -->
+  <!-- <h2>Register</h2> -->
+  <!-- </div> -->
+  <!-- body -->
+  <!-- <div class="m-auto w-2/5">
+      <div class="m-4 ">
+        <label for="name">Username ({{ name.length }}) :</label>
+        <input id="name" class="border-black border-2" type="text" v-model="name">
+      </div>
+      <div class="m-4">
+        <label for="email">E-mail ({{ eMail.length }}) :</label>
+        <input id="email" class="border-black border-2" type="text" v-model="eMail">
+      </div>
+      <div class="m-4">
+        <h3>role :</h3> 
                 <input class="border-black border-2" type="text" v-model="role"> -->
-                <label for="role">Role:</label>
-                <select  id="role" v-model="role">
-                  <option value="" disabled selected>select your role.</option>
-                  <option  value="student">Student</option>
-                  <option  value="lecturer">Lecturer</option>
-                  <option  value="admin">Admin</option>
+  <!-- <label for="role">Role:</label>
+        <select id="role" v-model="role">
+          <option value="" disabled selected>select your role.</option>
+          <option value="student">Student</option>
+          <option value="lecturer">Lecturer</option>
+          <option value="admin">Admin</option>
+        </select> -->
+  <!-- </div> -->
+  <!-- <div class="m-4">
+        <label for="pw">Password ({{ passwordd.length }}) :</label>
+        <input id="pw" class="border-black border-2" type="password" v-model="passwordd">
+      </div> -->
+  <!-- <div class="m-4">
+        <label for="cpw">Confirm Password ({{ passwordC.length }}) :</label>
+        <input id="cpw" class="border-black border-2" type="password" v-model="passwordC">
+      </div> -->
+  <!-- </div> -->
+  <!-- button -->
+  <!-- <div class="m-auto w-fit bg-lime-400">
+      <a href="#submit" class="p-6 m-2"> submit </a>
+    </div> -->
 
-                </select>
-            </div>
-            <div class="m-4">
-                <label for="pw">Password ({{passwordd.length}}) :</label>
-                <input id="pw" class="border-black border-2" type="password" v-model="passwordd">
-            </div>                 
-            <div class="m-4">
-                <label for="cpw">Confirm Password ({{passwordC.length}}) :</label>
-                <input id="cpw" class="border-black border-2" type="password" v-model="passwordC">
-            </div>        
-        </div>
-        <!-- button -->
-        <div class="m-auto w-fit bg-lime-400">
-            <a href="#submit" class="p-6 m-2" >
-                submit
-            </a>
-        </div>
-
-
-           
-    </div>
-
-         <!-- for submit  -->
+  <!-- </div> -->
+  <!-- for submit  -->
   <div id="submit" class="overlay">
     <div class="popup2 ">
-      <h2 class="mb-5 text-xl font-bold bg-white mx-auto w-fit">
-        Are you sure ?
-      </h2>
-
+      <h2 class="mb-5 text-xl font-bold bg-white mx-auto w-fit">Are you sure ?</h2>
       <div class="option flex m-auto w-full mt-10">
-        <a
-          @click="submitt"
-          href="#"
-          class="w-full text-center p-2 px-2 bg-gray-200 hover:bg-green-500 font-bold hover:text-white"
-          >Yes</a
-        >
-        <a
-          href="#"
-          class="w-full text-center p-2 px-2 bg-gray-200 hover:bg-rose-500 font-bold hover:text-white"
-          >No</a
-        >
+        <a @click="submitt" href="#"
+          class="w-full text-center p-2 px-2 bg-gray-200 hover:bg-green-500 font-bold hover:text-white">Yes</a>
+        <a href="#" class="w-full text-center p-2 px-2 bg-gray-200 hover:bg-rose-500 font-bold hover:text-white">No</a>
       </div>
     </div>
   </div>
+
+  <section class="bg-gray-50 dark:bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+        <img class="w-8 h-8 mr-2" src="../assets/icon.png" alt="logo"> Register </a>
+      <div
+        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            Create and account
+          </h1>
+          <form class="space-y-4 md:space-y-6" action="#">
+            <div>
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+              <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 
+                      sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
+                      dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                      dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""
+                v-model="name">
+            </div>
+            <div>
+              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+              <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 
+                      sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
+                      dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                      dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""
+                v-model="eMail">
+            </div>
+            <div>
+              <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+              <select id="role" v-model="role">
+                <option value="" disabled selected>select your role.</option>
+                <option value="student">Student</option>
+                <option value="lecturer">Lecturer</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div>
+              <label for="password"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+              <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border 
+                      border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
+                      block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""
+                      v-model="passwordd">
+            </div>
+            <div>
+              <label for="cpw" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
+                password</label>
+              <input type="confirm-password" name="confirm-password" id="confirm-password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
+                      focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" v-model="passwordd"
+                >
+            </div>
+            <!-- <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input id="terms" aria-describedby="terms" type="checkbox"
+                  class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                  required="">
+              </div>
+            </div> -->
+            <!-- <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 
+              font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 
+              dark:focus:ring-primary-800" a href="#submit" @click="submitt">Create an account</button> -->
+               <div class="m-auto w-fit bg-lime-400">
+      <a href="#submit" class="p-6 m-2"> submit </a>
+    </div>
+            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+              Already have an account? <a href="#" class="font-medium text-primary-600 hover:underline 
+              dark:text-primary-500">Login here</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
  
 <style scoped>

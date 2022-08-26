@@ -20,7 +20,7 @@ const goBooking = () => myRouter.push({ name: "Booking" });
       </div>
       <div class="w-fit">
         <button
-          class="hover:underline bg-white text-gray-800 font-bold rounded-full py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+          class="hover:underline bg-white text-gray-800 font-bold rounded-full py-6 px-10 shadow-lg  focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
           @click="goBooking"
         >
           Start
