@@ -1,27 +1,27 @@
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
-const name=ref('')
-const eMail=ref('')
-const role= ref('')
-const nameL=100
-const eMailL=50
-const passwordL=14
-const userList=ref([])
-const passwordd=ref('')
-const passwordC=ref('')
+const name = ref('')
+const eMail = ref('')
+const role = ref('')
+const nameL = 100
+const eMailL = 50
+const passwordL = 14
+const userList = ref([])
+const passwordd = ref('')
+const passwordC = ref('')
 //router
 const myRouter = useRouter();
 const goHome = () =>
   myRouter.push({
     name: "Home"
   });
-  
-const db="http://localhost:5000/user"
-const userLink=`${import.meta.env.BASE_URL}api/users`
+
+const db = "http://localhost:5000/user"
+const userLink = `${import.meta.env.BASE_URL}api/users`
 //GET user
-const userCheck=ref(undefined)
+const userCheck = ref(undefined)
 const getUser = async () => {
   const res = await fetch(userLink);
   if (res.status === 200) {
@@ -33,17 +33,17 @@ const getUser = async () => {
     userCheck.value = false
   }
 };
-onBeforeMount(async()=>{
-    await getUser();
+onBeforeMount(async () => {
+  await getUser();
 })
 // validate
-const checkNameN=ref(undefined)
-const checkEMailN=ref(undefined)
-const checkNameL=ref(undefined)
-const checkEMailL=ref(undefined)
-const checkEmailF =ref(undefined)
-const checkPasswordN=ref(undefined)
-const checkPasswordL=ref(undefined)
+const checkNameN = ref(undefined)
+const checkEMailN = ref(undefined)
+const checkNameL = ref(undefined)
+const checkEMailL = ref(undefined)
+const checkEmailF = ref(undefined)
+const checkPasswordN = ref(undefined)
+const checkPasswordL = ref(undefined)
 const valFormEmail = (input) => {
   let valid =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -54,75 +54,75 @@ const valFormEmail = (input) => {
   }
 };
 // submit
-const submitt = ()=>{
-    // console.log(name.value)
-    // console.log(eMail.value)
-    // console.log(role.value)
-    isUniqueName.value=undefined
-    isUniqueEmail.value=undefined
-    isUniqueNameAndRole.value=undefined
-    checkUniqueName()
-    checkUniqueEmail()
-    checkUniqueNameAndRole()
-    // check name is null?
-    if(name.value.trim()==''){
-        checkNameN.value=false
-        console.log("name is null")
-    }else checkNameN.value=true 
- 
-    // check e-mail is null?    
-    if(eMail.value.trim()==''){
-        checkEMailN.value=false
-        console.log("email is null")
-    }else checkEMailN.value=true
-    // check password null
-    if(passwordC.value.length==0||passwordd.value.length==0){
-        checkPasswordN.value=false
-        console.log("password is null")
-    }else checkPasswordN.value=true;console.log(checkPasswordN.value)
+const submitt = () => {
+  // console.log(name.value)
+  // console.log(eMail.value)
+  // console.log(role.value)
+  isUniqueName.value = undefined
+  isUniqueEmail.value = undefined
+  isUniqueNameAndRole.value = undefined
+  checkUniqueName()
+  checkUniqueEmail()
+  checkUniqueNameAndRole()
+  // check name is null?
+  if (name.value.trim() == '') {
+    checkNameN.value = false
+    console.log("name is null")
+  } else checkNameN.value = true
 
-    //check name length
-    if(name.value.length>nameL){
-      console.log("name over 100")
-      checkNameL.value=false
-    }else checkNameL.value=true //;console.log('checkName Length',checkNameL.value)
-    //check e-mail length
-    if(eMail.value.length>eMailL){
-      console.log("email over 50")
-      checkEMailL.value=false
-    }else checkEMailL.value=true //;console.log('checkEMail Length',checkEMailL.value)
-    // check e-mail form
-    if(valFormEmail(eMail.value)==false){
-      console.log("email invalid form")
-      checkEmailF.value=false
-    }else checkEmailF.value=true
-    // check password is length ?
-    if(passwordC.value.length>passwordL ||passwordd.value.length>passwordL){
-        checkPasswordL.value=false
-        console.log("Passwords is over 14 ")
-    }else checkPasswordL.value=true
-    // check unique
-    if(isUniqueName.value==true){
-        console.log("name is ununique 😏")
-    }else 
-    if(isUniqueEmail.value==true){
-        console.log("email is ununique 😏")
-    }else
-    if(isUniqueNameAndRole.value==true ){
+  // check e-mail is null?    
+  if (eMail.value.trim() == '') {
+    checkEMailN.value = false
+    console.log("email is null")
+  } else checkEMailN.value = true
+  // check password null
+  if (passwordC.value.length == 0 || passwordd.value.length == 0) {
+    checkPasswordN.value = false
+    console.log("password is null")
+  } else checkPasswordN.value = true; console.log(checkPasswordN.value)
+
+  //check name length
+  if (name.value.length > nameL) {
+    console.log("name over 100")
+    checkNameL.value = false
+  } else checkNameL.value = true //;console.log('checkName Length',checkNameL.value)
+  //check e-mail length
+  if (eMail.value.length > eMailL) {
+    console.log("email over 50")
+    checkEMailL.value = false
+  } else checkEMailL.value = true //;console.log('checkEMail Length',checkEMailL.value)
+  // check e-mail form
+  if (valFormEmail(eMail.value) == false) {
+    console.log("email invalid form")
+    checkEmailF.value = false
+  } else checkEmailF.value = true
+  // check password is length ?
+  if (passwordC.value.length > passwordL || passwordd.value.length > passwordL) {
+    checkPasswordL.value = false
+    console.log("Passwords is over 14 ")
+  } else checkPasswordL.value = true
+  // check unique
+  if (isUniqueName.value == true) {
+    console.log("name is ununique 😏")
+  } else
+    if (isUniqueEmail.value == true) {
+      console.log("email is ununique 😏")
+    } else
+      if (isUniqueNameAndRole.value == true) {
         console.log("role and name is ununique")
-    }else
-    if(passwordC.value.trim()!==passwordd.value.trim()){
-        console.log("Passwords do not match.")
-    }else
-    // last check
-    if(checkEMailN.value==true && checkNameN.value==true &&checkEMailL.value==true &&checkNameL.value==true&&checkEmailF.value==true&&isUniqueName.value!==true&&isUniqueEmail.value!==true&&isUniqueNameAndRole.value!==true&&checkPasswordL.value==true&&checkPasswordN.value==true){
-        console.log("status good")
-        addNewUser()
-    } 
-  }    
+      } else
+        if (passwordC.value.trim() !== passwordd.value.trim()) {
+          console.log("Passwords do not match.")
+        } else
+          // last check
+          if (checkEMailN.value == true && checkNameN.value == true && checkEMailL.value == true && checkNameL.value == true && checkEmailF.value == true && isUniqueName.value !== true && isUniqueEmail.value !== true && isUniqueNameAndRole.value !== true && checkPasswordL.value == true && checkPasswordN.value == true) {
+            console.log("status good")
+            addNewUser()
+          }
+}
 //add new user
-const addNewUser=async ()=>{
- const  res = await fetch(userLink, {
+const addNewUser = async () => {
+  const res = await fetch(userLink, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -130,48 +130,48 @@ const addNewUser=async ()=>{
     body: JSON.stringify({
       name: name.value.trim(),
       email: eMail.value.trim(),
-      role: role.value==''?null:role.value.trim(),
+      role: role.value == '' ? null : role.value.trim(),
       password: passwordd.value.trim()
 
     })
-  });if( res.status==201){
-        console.log("add new user")
-        checkNameN.value=undefined
-        checkEMailN.value=undefined
-        name.value=''
-        eMail.value=''
-        role.value=''
-        goHome()      
-    }else{
-        console.log("can not add new user pls try again")
-        
-    }
+  }); if (res.status == 201) {
+    console.log("add new user")
+    checkNameN.value = undefined
+    checkEMailN.value = undefined
+    name.value = ''
+    eMail.value = ''
+    role.value = ''
+    goHome()
+  } else {
+    console.log("can not add new user pls try again")
+
+  }
 }
 // functoin for check unique
-const isUniqueName =ref(undefined)
-const isUniqueEmail =ref(undefined)
-const isUniqueNameAndRole =ref(undefined)
-const checkUniqueName =()=>{
-  for(let check of userList.value){
-    if(check.name==name.value){
+const isUniqueName = ref(undefined)
+const isUniqueEmail = ref(undefined)
+const isUniqueNameAndRole = ref(undefined)
+const checkUniqueName = () => {
+  for (let check of userList.value) {
+    if (check.name == name.value) {
       console.log(`Name :${check.name}`)
-      isUniqueName.value=true
+      isUniqueName.value = true
     }
   }
 }
-const checkUniqueEmail =()=>{
-  for(let check of userList.value){
-    if(check.email==eMail.value){
+const checkUniqueEmail = () => {
+  for (let check of userList.value) {
+    if (check.email == eMail.value) {
       console.log(`E-mail :${check.email}`)
-      isUniqueEmail.value=true
+      isUniqueEmail.value = true
     }
   }
 }
-const checkUniqueNameAndRole =()=>{
-  for(let check of userList.value){
-    if(check.role==role.value &&check.name==name.value){
+const checkUniqueNameAndRole = () => {
+  for (let check of userList.value) {
+    if (check.role == role.value && check.name == name.value) {
       console.log(`Role :${check.role} Name : ${check.name}`)
-      isUniqueNameAndRole.value=true
+      isUniqueNameAndRole.value = true
     }
   }
 }
@@ -231,19 +231,19 @@ const checkUniqueNameAndRole =()=>{
     </div>
   </div>
 
-  <section class="bg-gray-50 dark:bg-gray-900">
+  <section class="mx-auto pr-16 pl-16 mt-0 bg-gray-50 dark:bg-gray-900 rounded-lg justify-center">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
       <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
         <img class="w-8 h-8 mr-2" src="../assets/icon.png" alt="logo"> Register </a>
       <div
-        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 ml-28 mr-28 ">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
           <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             Create and account
           </h1>
           <form class="space-y-4 md:space-y-6" action="#">
             <div>
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Username </label>
               <input type="text" name="email" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 
                       sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
@@ -251,14 +251,14 @@ const checkUniqueNameAndRole =()=>{
                 v-model="name">
             </div>
             <div>
-              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white ">Your email</label>
               <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 
                       sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                       dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""
                 v-model="eMail">
             </div>
-            <div>
+            <div class="block m-0">
               <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
               <select id="role" v-model="role">
                 <option value="" disabled selected>select your role.</option>
@@ -297,7 +297,7 @@ const checkUniqueNameAndRole =()=>{
                 <a href="#submit" class="p-6 m-2"> submit </a>
                </div>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-              Already have an account? <a href="#" class="font-medium text-primary-600 hover:underline 
+              Already have an account? <a href="SignIn.vue" class="font-medium text-primary-600 hover:underline 
               dark:text-primary-500">Login here</a>
             </p>
           </form>

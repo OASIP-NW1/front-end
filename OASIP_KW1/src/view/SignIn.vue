@@ -61,10 +61,11 @@ const submitt =()=>{
 </script>
  
 <template>
+    <div class="mx-auto my-14 max-w-screen-md p-5 pb-7 mx-auto mt-14 bg-gray-200 rounded-md shadow-sm shadow-xl justify-center">
     <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
     <div>
-      <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="Workflow">
+      <img class="mx-auto h-12 w-auto" src="../assets/login-img.png" alt="Workflow">
       <h2 class="mt-6 text-center text-3xl tracking-tight font-bold text-gray-900">Sign in to your account</h2>
       <p class="mt-2 text-center text-sm text-gray-600"></p>
     </div>
@@ -112,6 +113,7 @@ const submitt =()=>{
       </div>
     <!-- </form> -->
   </div>
+</div>
 </div>
 </template>
 
