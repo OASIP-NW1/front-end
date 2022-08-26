@@ -1,12 +1,14 @@
 <script setup>
 import {ref} from 'vue'
 import { onBeforeMount } from 'vue';
+
 const passwordd=ref('')
 const eMail=ref('')
 const userList=ref([])
 const userCheck=ref(undefined)
 const userLink=`${import.meta.env.BASE_URL}api/users`
 const matchLink =`${import.meta.env.BASE_URL}api/match`
+
 //GET user
 const getAllUser = async () => {
   const res = await fetch(userLink);
@@ -21,6 +23,7 @@ const getAllUser = async () => {
 onBeforeMount(async()=>{
     await getAllUser();
 })
+
 // send to back for check
 const sendd =async ()=>{
     const res = await fetch(matchLink, {
@@ -36,11 +39,21 @@ const sendd =async ()=>{
     console.log("good status")
   }else console.log("Password no match pls sign up")
 }
+
 // validate
 const checkEMailN=ref(undefined)
 const checkPasswordN=ref(undefined)
 // submit
 const submitt =()=>{
+
+// validate
+const checkEMailN=ref(undefined)
+const checkPasswordN=ref(undefined)
+
+// submit
+const submitt =()=>{
+
+
     // check email null
     if(eMail.value.length==0){
         checkEMailN.value=false
@@ -60,7 +73,7 @@ const submitt =()=>{
  
 <template>
     <div>
-        <h1>Sign Up</h1>
+        <h1>sign in</h1>
         <div class="mt-3">
             <label for="eMail" class="inline">e-mail :</label>
             <input id="eMail" type="text" v-model="eMail">

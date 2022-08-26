@@ -80,6 +80,7 @@ const submitt = ()=>{
         checkPasswordN.value=false
         console.log("password is null")
     }else checkPasswordN.value=true;console.log(checkPasswordN.value)
+
     //check name length
     if(name.value.length>nameL){
       console.log("name over 100")
@@ -131,6 +132,7 @@ const addNewUser=async ()=>{
       email: eMail.value.trim(),
       role: role.value==''?null:role.value.trim(),
       password: passwordd.value.trim()
+
     })
   });if( res.status==201){
         console.log("add new user")
