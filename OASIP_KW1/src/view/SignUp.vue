@@ -2,7 +2,6 @@
 import {ref} from 'vue'
 import { useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
-
 const name=ref('')
 const eMail=ref('')
 const role= ref('')
@@ -12,20 +11,15 @@ const passwordL=14
 const userList=ref([])
 const passwordd=ref('')
 const passwordC=ref('')
-
 //router
 const myRouter = useRouter();
 const goHome = () =>
   myRouter.push({
     name: "Home"
   });
-
   
-
 const db="http://localhost:5000/user"
 const userLink=`${import.meta.env.BASE_URL}api/users`
-
-
 //GET user
 const userCheck=ref(undefined)
 const getUser = async () => {
@@ -42,7 +36,6 @@ const getUser = async () => {
 onBeforeMount(async()=>{
     await getUser();
 })
-
 // validate
 const checkNameN=ref(undefined)
 const checkEMailN=ref(undefined)
@@ -60,7 +53,6 @@ const valFormEmail = (input) => {
     return false;
   }
 };
-
 // submit
 const submitt = ()=>{
     // console.log(name.value)
@@ -72,8 +64,6 @@ const submitt = ()=>{
     checkUniqueName()
     checkUniqueEmail()
     checkUniqueNameAndRole()
-
-
     // check name is null?
     if(name.value.trim()==''){
         checkNameN.value=false
@@ -85,7 +75,6 @@ const submitt = ()=>{
         checkEMailN.value=false
         console.log("email is null")
     }else checkEMailN.value=true
-
     // check password null
     if(passwordC.value.length==0||passwordd.value.length==0){
         checkPasswordN.value=false
@@ -97,25 +86,21 @@ const submitt = ()=>{
       console.log("name over 100")
       checkNameL.value=false
     }else checkNameL.value=true //;console.log('checkName Length',checkNameL.value)
-
     //check e-mail length
     if(eMail.value.length>eMailL){
       console.log("email over 50")
       checkEMailL.value=false
     }else checkEMailL.value=true //;console.log('checkEMail Length',checkEMailL.value)
-
     // check e-mail form
     if(valFormEmail(eMail.value)==false){
       console.log("email invalid form")
       checkEmailF.value=false
     }else checkEmailF.value=true
-
     // check password is length ?
     if(passwordC.value.length>passwordL ||passwordd.value.length>passwordL){
         checkPasswordL.value=false
         console.log("Passwords is over 14 ")
     }else checkPasswordL.value=true
-
     // check unique
     if(isUniqueName.value==true){
         console.log("name is ununique 😏")
@@ -135,7 +120,6 @@ const submitt = ()=>{
         addNewUser()
     } 
   }    
-
 //add new user
 const addNewUser=async ()=>{
  const  res = await fetch(userLink, {
@@ -158,18 +142,15 @@ const addNewUser=async ()=>{
         eMail.value=''
         role.value=''
         goHome()      
-
     }else{
         console.log("can not add new user pls try again")
         
     }
 }
-
 // functoin for check unique
 const isUniqueName =ref(undefined)
 const isUniqueEmail =ref(undefined)
 const isUniqueNameAndRole =ref(undefined)
-
 const checkUniqueName =()=>{
   for(let check of userList.value){
     if(check.name==name.value){
@@ -178,7 +159,6 @@ const checkUniqueName =()=>{
     }
   }
 }
-
 const checkUniqueEmail =()=>{
   for(let check of userList.value){
     if(check.email==eMail.value){
@@ -187,7 +167,6 @@ const checkUniqueEmail =()=>{
     }
   }
 }
-
 const checkUniqueNameAndRole =()=>{
   for(let check of userList.value){
     if(check.role==role.value &&check.name==name.value){
@@ -196,7 +175,6 @@ const checkUniqueNameAndRole =()=>{
     }
   }
 }
-
 </script>
  
 <template>
@@ -266,7 +244,7 @@ const checkUniqueNameAndRole =()=>{
           <form class="space-y-4 md:space-y-6" action="#">
             <div>
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-              <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 
+              <input type="text" name="email" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 
                       sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                       dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""
@@ -290,9 +268,8 @@ const checkUniqueNameAndRole =()=>{
               </select>
             </div>
             <div>
-              <label for="password"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-              <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border 
+              <label for="pw" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+              <input type="password" name="password" id="pw" placeholder="••••••••" class="bg-gray-50 border 
                       border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                       block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                       dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""
@@ -301,9 +278,9 @@ const checkUniqueNameAndRole =()=>{
             <div>
               <label for="cpw" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
                 password</label>
-              <input type="confirm-password" name="confirm-password" id="confirm-password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
+              <input type="confirm-password" name="confirm-password" id="cpw" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
                       focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" v-model="passwordd"
+                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" v-model="passwordC"
                 >
             </div>
             <!-- <div class="flex items-start">
@@ -315,10 +292,10 @@ const checkUniqueNameAndRole =()=>{
             </div> -->
             <!-- <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 
               font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 
-              dark:focus:ring-primary-800" a href="#submit" @click="submitt">Create an account</button> -->
+              dark:focus:ring-primary-800" a href="#submit" >Create an account</button> -->
                <div class="m-auto w-fit bg-lime-400">
-      <a href="#submit" class="p-6 m-2"> submit </a>
-    </div>
+                <a href="#submit" class="p-6 m-2"> submit </a>
+               </div>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               Already have an account? <a href="#" class="font-medium text-primary-600 hover:underline 
               dark:text-primary-500">Login here</a>
@@ -343,16 +320,17 @@ const checkUniqueNameAndRole =()=>{
   visibility: hidden;
   opacity: 0;
 }
+
 .overlay:target {
   visibility: visible;
   opacity: 1;
 }
+
 .popup2 {
   margin: auto;
   margin-top: 17%;
   padding-top: 23px;
   background: #fff;
-
   width: 20%;
   height: 130px;
   position: relative;
@@ -377,5 +355,4 @@ const checkUniqueNameAndRole =()=>{
     width: 20%;
   }
 }
-
 </style>

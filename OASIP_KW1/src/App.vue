@@ -1,149 +1,123 @@
 <script setup>
-import {ref,computed} from 'vue'
+import { ref, computed } from 'vue'
 import BaseDate from './components/BaseDate.vue'
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 
 console.clear()
 const logoSize = 'width:75px;';
 
 const myRouter = useRouter()
-const goHome = ()=>myRouter.push({name:'Home'})
-const goBooking = ()=>myRouter.push({name:'Booking'})
-const goCategory = ()=>myRouter.push({name:'Category'})
-const goReservationList =()=>myRouter.push({name:'ReservationList'})
-const goContactUs = ()=>myRouter.push({name:'ContactUs'})
-const goAllUser = ()=>myRouter.push({name:'AllUser'})
-const goSignUp = ()=>myRouter.push({name:'SignUp'})
-const goSignIn = ()=>myRouter.push({name:'SignIn'})
+const goHome = () => myRouter.push({ name: 'Home' })
+const goBooking = () => myRouter.push({ name: 'Booking' })
+const goCategory = () => myRouter.push({ name: 'Category' })
+const goReservationList = () => myRouter.push({ name: 'ReservationList' })
+const goContactUs = () => myRouter.push({ name: 'ContactUs' })
+const goAllUser = () => myRouter.push({ name: 'AllUser' })
+const goSignUp = () => myRouter.push({ name: 'SignUp' })
+const goSignIn = () => myRouter.push({ name: 'SignIn' })
 
 </script>
 
 <template>
-<!--   
-  <router-link :to="{ name:'Home'}" class="font-bold">home</router-link>
-  <router-view></router-view> -->
- 
-  <div class=" lg:pt-2 md:w-screen h-screen" id="bg_color">
-    <nav class="bg-transparent drop-shadow-md md:rounded-lg md:mx-auto w-full">
-                <div class="max-w-screen-xl mx-auto px-4 mx-auto ">
-                    <div class="md:flex justify-between drop-shadow-lg">
-                        <div class="md:flex space-x-4">
-                            <!-- logo -->
-                            <div>
-                                <a href="#" class="flex md:items-center py-5 px-0.5 text-gray-700 hover:text-gray-900"
-                                    @click="goHome">
-                                    <img src="./assets/icon.png" alt="LOGO" :style="logoSize" />
-                                    <span class="font-bold text-xl text-white mx-4">
-                                        <BaseDate :isTime='true' />
-                                        
-                                        <br>
-                                        <span class=" font-medium">
-                                          <BaseDate :isDate="true" />
-                                        </span>
-                                    </span>
- 
-                                </a>
-                            </div>
-                        </div>
-                        
+    <div id="bg_color">
+        <nav class="relative px-5 py-7 flex justify-center items-center bg-transparent drop-shadow-md md:rounded-lg md:mx-auto w-full">
+            <img src="./assets/icon.png" alt="LOGO" :style="logoSize" />
+            <span class="font-bold text-xl text-white mx-4">
+                <BaseDate :isTime='true' />
 
-
-                        <!-- secondary nav -->
-                        <div class=" lg:flex items-center space-x-1 px-6 py-3   ml-28" >
-                            <ul>
-                                <li>
-                                    <button type="button" class="inline-block px-2 py-2  bg-transparent text-white 
+                <br>
+                <span class=" font-medium">
+                    <BaseDate :isDate="true" />
+                </span>
+            </span>
+            <ul class="hidden absolute lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
+                <li>
+                            <button type="button" class="inline-block px-2 py-2 bg-transparent text-white 
                             font-medium text-lg leading-tight  rounded  
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg 
+                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
+                            focus:outline-none focus:ring-0 active:bg-blue-300 active:shadow-lg 
                             transition duration-150 ease-in-out " @click="goHome">Home</button>
                                 </li>
                                 <li>
                                     <button type="button" class="inline-block px-2 py-2  bg-transparent text-white 
                             font-medium text-lg leading-tight  rounded  
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg 
+                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
+                            focus:outline-none focus:ring-0 active:bg-gray-300 active:shadow-lg 
                             transition duration-150 ease-in-out " @click="goCategory">Category</button>
                                 </li>
                                 <li>
                                     <button type="button" class="inline-block px-4 py-2 bg-transparent text-white 
                             font-medium text-lg leading-tight  rounded 
-                             hover:bg-gray-900 hover:shadow-lg focus:bg-blue-500
-                            focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600
+                             hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400
+                            focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-300
                             active:shadow-lg transition duration-150 ease-in-out" @click="goBooking">Booking</button>
 
                                 </li>
                                 <li>
                             <button type="button" class="inline-block px-2 py-2  bg-transparent text-white 
                             font-medium text-lg leading-tight  rounded  
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg 
+                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
+                            focus:outline-none focus:ring-0 active:bg-gray-300 active:shadow-lg 
                             transition duration-150 ease-in-out " @click="goReservationList">Reservation</button>
                                 </li>
 
                                 <li>
                             <button type="button" class="inline-block px-2 py-2  bg-transparent text-white 
                             font-medium text-lg leading-tight  rounded 
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg 
+                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
+                            focus:outline-none focus:ring-0 active:bg-gray-300 active:shadow-lg 
                             transition duration-150 ease-in-out " @click="goAllUser">Show all user</button>
                                 </li>
                                 <li>
                             <button type="button" class="inline-block px-2 py-2  bg-transparent text-white 
                             font-medium text-lg leading-tight  rounded 
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg 
+                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
+                            focus:outline-none focus:ring-0 active:bg-gray-300 active:shadow-lg 
                             transition duration-150 ease-in-out " @click="goContactUs">Contact us</button>
-                                </li>                                
-                            </ul>
-                        </div>
-                        <div class="flex m-auto">
-                            <button @click="goSignIn" class="mt-2 text-black hover:text-white  hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">sign in</button>
-                            <button @click="goSignUp" class="bg-rose-400 mt-2 text-gray-900 hover:text-white  hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">sign up</button>
+                                </li>
+            </ul>
+            <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-blue-500 hover:bg-blue-600 text-l text-white 
+        font-bold  rounded-xl transition duration-200" href="#" @click="goSignIn">Sign Up</a>
+            <a class="hidden lg:inline-block lg:ml-right py-2 px-6 bg-emerald-500 hover:bg-emerald-600 text-l text-white 
+        font-bold rounded-xl " href="#" @click="goSignUp">Log In</a>
+        </nav>
+        <div class="flex object-cover ">
+            <router-view></router-view>
+        </div>
+    </div>
 
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            <div class="flex  object-cover ">
-                <router-view></router-view> 
-
-            </div>
-  </div>
- 
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
 
 ul li {
-      list-style: none;
-      margin: 0 auto;
-      border-left: 2px solid #000000;
-      display: inline-block;
-      padding: 0 10px;
-      position: relative;
-      text-decoration: none;
-      text-align: center;
-      font-family: arvo;
-    }
-#bg_color {
-	background: linear-gradient(-45deg, #a1a1aa, #fca5a5,#a5f3fc);
-	background-size: 400% 400%;
-	animation: gradient 20s ease infinite;
-	height: 100vh;
+    list-style: none;
+    margin: 0 auto;
+    display: inline-block;
+    padding: 0 10px;
+    position: relative;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
 }
 
-/* animation */
+#bg_color {
+    /* background-color: rgb(252 165 165); */
+    background: linear-gradient(-45deg, #a1a1aa, #fca5a5,#a5f3fc);
+    background-size: 400% 400%;
+    height: 100vh;
+    animation: gradient 20s ease infinite;
+}
 @keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+ 0% {
+  background-position: 0% 50%;
+ }
+ 50% {
+  background-position: 100% 50%;
+ }
+ 100% {
+  background-position: 0% 50%;
+ }
 }
 </style>

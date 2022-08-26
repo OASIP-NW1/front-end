@@ -36,11 +36,13 @@ const sendd =async ()=>{
     console.log("good status")
   }else console.log("Password no match pls sign up")
 }
+
 // validate
 const checkEMailN=ref(undefined)
 const checkPasswordN=ref(undefined)
 // submit
 const submitt =()=>{
+
     // check email null
     if(eMail.value.length==0){
         checkEMailN.value=false
@@ -112,5 +114,7 @@ const submitt =()=>{
   </div>
 </div>
 </template>
- 
-<style></style>
+
+<style>
+</style>
+
