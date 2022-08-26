@@ -40,11 +40,7 @@ const sendd =async ()=>{
   }else console.log("Password no match pls sign up")
 }
 
-// validate
-const checkEMailN=ref(undefined)
-const checkPasswordN=ref(undefined)
-// submit
-const submitt =()=>{
+
 
 // validate
 const checkEMailN=ref(undefined)
