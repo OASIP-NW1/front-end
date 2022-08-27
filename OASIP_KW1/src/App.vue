@@ -104,10 +104,10 @@ ul li {
 
 #bg_color {
     /* background-color: rgb(252 165 165); */
-    background: linear-gradient(-45deg, #a1a1aa, #fca5a5,#a5f3fc);
+    background: linear-gradient(-45deg, #fdba74,#fca5a5,#a5f3fc);
     background-size: 400% 400%;
     height: 100vh;
-    animation: gradient 20s ease infinite;
+    animation: gradient 10s ease infinite;
 }
 @keyframes gradient {
  0% {

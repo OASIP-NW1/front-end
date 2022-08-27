@@ -178,47 +178,6 @@ const checkUniqueNameAndRole = () => {
 </script>
  
 <template>
-  <!-- <div class="w-2/5 h-2/6 bg-white rounded-md p-4 m-auto mt-10"> -->
-  <!-- head -->
-  <!-- <div class="m-auto w-fit"> -->
-  <!-- <h2>Register</h2> -->
-  <!-- </div> -->
-  <!-- body -->
-  <!-- <div class="m-auto w-2/5">
-      <div class="m-4 ">
-        <label for="name">Username ({{ name.length }}) :</label>
-        <input id="name" class="border-black border-2" type="text" v-model="name">
-      </div>
-      <div class="m-4">
-        <label for="email">E-mail ({{ eMail.length }}) :</label>
-        <input id="email" class="border-black border-2" type="text" v-model="eMail">
-      </div>
-      <div class="m-4">
-        <h3>role :</h3> 
-                <input class="border-black border-2" type="text" v-model="role"> -->
-  <!-- <label for="role">Role:</label>
-        <select id="role" v-model="role">
-          <option value="" disabled selected>select your role.</option>
-          <option value="student">Student</option>
-          <option value="lecturer">Lecturer</option>
-          <option value="admin">Admin</option>
-        </select> -->
-  <!-- </div> -->
-  <!-- <div class="m-4">
-        <label for="pw">Password ({{ passwordd.length }}) :</label>
-        <input id="pw" class="border-black border-2" type="password" v-model="passwordd">
-      </div> -->
-  <!-- <div class="m-4">
-        <label for="cpw">Confirm Password ({{ passwordC.length }}) :</label>
-        <input id="cpw" class="border-black border-2" type="password" v-model="passwordC">
-      </div> -->
-  <!-- </div> -->
-  <!-- button -->
-  <!-- <div class="m-auto w-fit bg-lime-400">
-      <a href="#submit" class="p-6 m-2"> submit </a>
-    </div> -->
-
-  <!-- </div> -->
   <!-- for submit  -->
   <div id="submit" class="overlay">
     <div class="popup2 ">
@@ -230,84 +189,81 @@ const checkUniqueNameAndRole = () => {
       </div>
     </div>
   </div>
-
-  <section class="mx-auto pr-16 pl-16 mt-0 bg-gray-50 dark:bg-gray-900 rounded-lg justify-center">
-    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-        <img class="w-8 h-8 mr-2" src="../assets/icon.png" alt="logo"> Register </a>
-      <div
-        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 ml-28 mr-28 ">
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
-          <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-            Create and account
-          </h1>
-          <form class="space-y-4 md:space-y-6" action="#">
+  <div class="container mx-7 my-3">
+    <div class="flex justify-center px-4 my-10">
+      <!-- Row -->
+      <div class="w-full 2xl:w-3/4 xl:w9/12 flex">
+        <!-- Col -->
+        <div class="w-500 h-auto bg-gray-400 hidden lg:block 2xl:w-1/2 bg-cover rounded-l-lg"
+          style="background-image: url('https://source.unsplash.com/K4mSJ7kc0As/600x800')"></div>
+        <!-- Col -->
+        <div class="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none">
+          <h3 class="pt-4 text-2xl text-center">Register</h3>
+          <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
             <div>
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Username </label>
-              <input type="text" name="email" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 
+              <label for="name" class="block mb-2 text-sm font-bold text-gray-700"> Username </label>
+              <input type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 
                       sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
-                      dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""
+                      dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="oasip" required=""
                 v-model="name">
             </div>
             <div>
-              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white ">Your email</label>
+              <label for="email" class="block mb-2 text-sm font-bold text-gray-700">Your email</label>
               <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 
                       sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
-                      dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""
-                v-model="eMail">
+                      dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="oasip@sit.kmutt.ac.th"
+                required="" v-model="eMail">
             </div>
-            <div class="block m-0">
-              <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-              <select id="role" v-model="role">
-                <option value="" disabled selected>select your role.</option>
+            <div>
+              <label for="role" class="block mb-2 text-sm font-bold text-gray-700">Role</label>
+              <select id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
+            focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+            dark:focus:ring-blue-500 dark:focus:border-blue-500" v-model="role">
+                <option value="" disabled selected>select your role</option>
                 <option value="student">Student</option>
                 <option value="lecturer">Lecturer</option>
                 <option value="admin">Admin</option>
               </select>
             </div>
             <div>
-              <label for="pw" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+              <label for="pw" class="block mb-2 text-sm font-bold text-gray-700">Password</label>
               <input type="password" name="password" id="pw" placeholder="••••••••" class="bg-gray-50 border 
                       border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                       block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                       dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""
-                      v-model="passwordd">
+                v-model="passwordd">
             </div>
             <div>
-              <label for="cpw" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
-                password</label>
-              <input type="confirm-password" name="confirm-password" id="cpw" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
+              <label for="cpw" class="block mb-2 text-sm font-bold text-gray-700">Confirm password</label>
+              <input type="password" name="confirm-password" id="cpw" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
                       focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" v-model="passwordC"
-                >
+                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""
+                v-model="passwordC">
             </div>
-            <!-- <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <input id="terms" aria-describedby="terms" type="checkbox"
-                  class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                  required="">
-              </div>
-            </div> -->
-            <!-- <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 
-              font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 
-              dark:focus:ring-primary-800" a href="#submit" >Create an account</button> -->
-               <div class="m-auto w-fit bg-lime-400">
-                <a href="#submit" class="p-6 m-2"> submit </a>
+            <br>
+                <div class="w-full px-4 py-2 font-bold text-center text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline">
+                <a href="#submit" class="p-6 m-2"> Sign In </a>
                </div>
-            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-              Already have an account? <a href="SignIn.vue" class="font-medium text-primary-600 hover:underline 
-              dark:text-primary-500">Login here</a>
-            </p>
+            <hr class="mb-6 border-t" />
+            <!-- <div class="text-center">
+              <a class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800" href="./register.html">Create an Account!</a>
+            </div>
+            <div class="text-center">
+              <a class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800" href="./forgot-password.html">Forgot Password?</a>
+            </div> -->
           </form>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
  
 <style scoped>
+.container{
+  margin-top: -4em;
+}
 /* submit */
 .overlay {
   position: fixed;
