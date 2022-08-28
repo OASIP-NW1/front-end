@@ -229,7 +229,7 @@ const checkUniqueNameAndRole = () => {
             </div>
             <div>
               <label for="pw" class="block mb-2 text-sm font-bold text-gray-700">Password</label>
-              <input type="password" name="password" id="pw" placeholder="••••••••" class="bg-gray-50 border 
+              <input type="password" name="password" id="pw"  class="bg-gray-50 border 
                       border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                       block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                       dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""
@@ -237,7 +237,7 @@ const checkUniqueNameAndRole = () => {
             </div>
             <div>
               <label for="cpw" class="block mb-2 text-sm font-bold text-gray-700">Confirm password</label>
-              <input type="password" name="confirm-password" id="cpw" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
+              <input type="password" name="confirm-password" id="cpw"  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
                       focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                       dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""
                 v-model="passwordC">
