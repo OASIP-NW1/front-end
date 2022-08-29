@@ -20,7 +20,7 @@ const goSignIn = () => myRouter.push({ name: 'SignIn' })
 
 <template>
     <div id="bg_color">
-        <nav class="relative px-5 mb-5 py-2 flex justify-center items-center bg-gray-400 drop-shadow-md md:rounded-b-lg md:mx-auto w-fit">
+        <nav class="relative px-5 mb-5 py-2 flex justify-center items-center bg-gray-500 opacity-75 drop-shadow-md md:rounded-b-lg md:mx-auto w-fit">
             <img src="./assets/icon.png" alt="LOGO" :style="logoSize" />
            
             <span class="font-bold text-xl text-white mx-4">
@@ -77,10 +77,10 @@ const goSignIn = () => myRouter.push({ name: 'SignIn' })
                             transition duration-150 ease-in-out " @click="goContactUs">Contact us</button>
                                 </div>
             </div>
-            <button class="hidden lg:inline-block mx-2 py-2 px-6 bg-blue-500 hover:bg-blue-600 text-l text-white 
-        font-bold  rounded-xl transition duration-200"  @click="goSignIn">Sign In</button>
-            <a class="hidden lg:inline-block mx-2 py-2 px-6 bg-emerald-500 hover:bg-emerald-600 text-l text-white 
-        font-bold rounded-xl " href="#" @click="goSignUp">Register</a>
+            <button class="hidden lg:inline-block mx-2 py-2 px-6 bg-blue-500 hover:bg-rose-500 text-l text-white 
+            font-bold  rounded-xl transition duration-200"  @click="goSignIn">Sign In</button>
+            <button class="hidden lg:inline-block mx-2 py-2 px-6 hover:bg-emerald-500 bg-rose-500 text-l text-white 
+            font-bold  rounded-xl transition duration-200"  @click="goSignUp">Sign up</button>
         </nav>
         <div class="flex object-cover ">
             <router-view></router-view>
