@@ -267,7 +267,7 @@ const addBooking = async () => {
       bookingName: name.value,
       bookingEmail: eMail.value,
       eventStartTime: `${startDate.value}T${startTime.value}:00+07:00`,
-      eventDuration: durationTime.value,
+      eventDuration: parseInt(durationTime.value),
       eventNote: noteText.value,
       eventCategory:{
         id:cateId.value
