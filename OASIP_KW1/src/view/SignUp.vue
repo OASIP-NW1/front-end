@@ -57,6 +57,7 @@
   };
   // submit
   const submitt = () => {
+    getUser()
     // console.log(name.value)
     // console.log(eMail.value)
     // console.log(role.value)
@@ -199,7 +200,7 @@
             <form class="px-8 pt-4 pb-4 mb-1 bg-white rounded">
               <div class="mt-1">
                 <label for="name" class="inline-block mr-1.5 mb-2 text-sm font-bold text-gray-500"> Username </label> 
-                <span class="text-xs"> {{name.length}}/{{nameL}} character</span>
+                <span class="text-xs text-gray-500"> {{name.length}}/{{nameL}} character</span>
                 <input type="text" id="name" class="bg-gray-500 border border-gray-300 text-gray-900 
                         sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 
                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
@@ -208,7 +209,7 @@
               </div>
               <div class="mt-1">
                 <label for="email" class="inline-block mr-1.5 mb-2 text-sm font-bold text-gray-500">Your email</label>
-                <span class="text-xs">{{eMail.length}}/{{eMailL}} character</span>
+                <span class="text-xs text-gray-500">{{eMail.length}}/{{eMailL}} character</span>
                 <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 
                         sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 
                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
@@ -228,19 +229,19 @@
               </div>
               <div class="mt-1">
                 <label for="pw" class="inline-block mr-1.5 mb-2 text-sm font-bold text-gray-500">Password</label>
-                <span class="text-xs">{{passwordd.length}}/{{pwMaxL}} character</span>
+                <span class="text-xs text-gray-500">{{passwordd.length}}/{{pwMaxL}} character</span>
                 <span v-if="passwordd.length>14 || passwordd.length<8" class="text-rose-400 ml-1 text-xs">* The characters should be at least 8-14 characters. *</span>
-                <input type="password" name="password" id="pw"  class="bg-gray-50 border 
+                <input type="password" name="password" id="pw" :style="[noMatchP==true ?'border-style: solid;border-color: red;border-width: thin;':'']" class="bg-gray-50 border 
                         border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                         block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""
                   v-model="passwordd">
               </div>
-              <div class="mt-1">
-                <label for="cpw" class="inline-block mb-2 text-sm font-bold text-gray-500 ">Confirm password</label> 
-                <span v-if="noMatchP==true" class="text-xs text-rose-400">* password not match *</span>
-                <span></span>
-                <input type="password" name="confirm-password" id="cpw"  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
+              <div class="mt-1" >
+                <label for="cpw" class="inline-block mr-1.5 mb-2 text-sm font-bold text-gray-500 ">Confirm password</label> 
+                <span class="text-xs text-gray-500">{{passwordC.length}}/{{pwMaxL}} character</span>                
+                <span v-if="noMatchP==true" class="text-xs ml-1 text-rose-400">* password not match *</span>
+                <input type="password" name="confirm-password" id="cpw" :style="[noMatchP==true ?'border-style: solid;border-color: red;border-width: thin;':'']" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
                         focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""
                   v-model="passwordC">
@@ -282,10 +283,39 @@
   const checkPasswordL = ref(undefined)
   const noMatchP =ref(undefined) -->
     <div class="alert-area">
-      <div v-if="true== true" class="alert warning text-sm">
-          <span class="closebtn" @click="checkEMailN = false">x</span>
+      <div v-if="checkNameN== false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkNameN = undefined">x</span>
+          <strong class="block">Warning!</strong> Please enter your name.
+        </div>
+      <div v-if="checkEMailN== false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkEMailN = undefined">x</span>
           <strong class="block">Warning!</strong> Please enter your email.
         </div>
+        <div v-if="checkNameL == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkNameL = undefined">x</span>
+          <strong class="block">Warning!</strong> Name over {{nameL}} character.
+        </div>
+        <div v-if="checkEMailL == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkEMailL = undefined">x</span>
+          <strong class="block">Warning!</strong> E-mail over {{eMailL}} character.
+        </div>
+        <div v-if="checkEmailF == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkEmailF = undefined">x</span>
+          <strong class="block">Warning!</strong> E-mail invalid form.
+        </div>
+        <div v-if="checkPasswordN == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkPasswordN = undefined">x</span>
+          <strong class="block">Warning!</strong> Password is null.
+        </div>
+        <div v-if="checkPasswordL == false" class="alert warning text-sm">
+          <span class="closebtn" @click="checkPasswordL = undefined">x</span>
+          <strong class="block">Warning!</strong> The characters should be at least 8-14 characters.
+        </div>
+        <div v-if="noMatchP == true" class="alert warning text-sm">
+          <span class="closebtn" @click="noMatchP = undefined">x</span>
+          <strong class="block">Warning!</strong> Password not match.
+        </div>
+
     </div>
 
 
