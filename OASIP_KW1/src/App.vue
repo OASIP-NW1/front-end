@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import BaseDate from './components/BaseDate.vue'
 import { useRouter } from 'vue-router'
+import { computed } from '@vue/reactivity';
 
 console.clear()
 const logoSize = 'width:75px;';
@@ -15,12 +16,30 @@ const goContactUs = () => myRouter.push({ name: 'ContactUs' })
 const goAllUser = () => myRouter.push({ name: 'AllUser' })
 const goSignUp = () => myRouter.push({ name: 'SignUp' })
 const goSignIn = () => myRouter.push({ name: 'SignIn' })
+// const isLogIn =ref(false)
+// const localS =computed(()=>localStorage.getItem('token'))
+
+// const check=computed(()=>{
+//     let checkk=undefined
+//    if(localS.value!=null){
+//         checkk=true
+//    }else checkk=false
+//     return checkk
+// })
+
+console.log(localStorage.length)
+const logOut=()=>{
+     localStorage.removeItem('token')
+    //localStorage.getItem('token')
+     goHome()
+    //console.log(localStorage.getItem('token'))
+}
 
 </script>
 
 <template>
     <div id="bg_color">
-        <nav class="relative px-5 mb-5 py-2 flex justify-center items-center bg-gray-500 opacity-75 drop-shadow-md md:rounded-b-lg md:mx-auto w-fit">
+        <nav class="relative px-5 mb-5 py-2 flex justify-center items-center bg-gray-500  drop-shadow-md md:rounded-b-lg md:mx-auto w-fit">
             <img src="./assets/icon.png" alt="LOGO" :style="logoSize" />
            
             <span class="font-bold text-xl text-white mx-4">
@@ -77,10 +96,17 @@ const goSignIn = () => myRouter.push({ name: 'SignIn' })
                             transition duration-150 ease-in-out " @click="goContactUs">Contact us</button>
                                 </div>
             </div>
-            <button class="hidden lg:inline-block mx-2 py-2 px-6 bg-blue-500 hover:bg-rose-500 text-l text-white 
-            font-bold  rounded-xl transition duration-200"  @click="goSignIn">Sign In</button>
-            <button class="hidden lg:inline-block mx-2 py-2 px-6 hover:bg-emerald-500 bg-rose-500 text-l text-white 
-            font-bold  rounded-xl transition duration-200"  @click="goSignUp">Sign up</button>
+            <div v-if="true">
+                <button class="hidden lg:inline-block mx-2 py-2 px-6 bg-blue-500 hover:bg-rose-500 text-l text-white 
+                font-bold  rounded-xl transition duration-200"  @click="goSignIn">Sign In</button>
+                <button class="hidden lg:inline-block mx-2 py-2 px-6 hover:bg-emerald-500 bg-rose-500 text-l text-white 
+                font-bold  rounded-xl transition duration-200"  @click="goSignUp">Sign up</button>                
+            </div>
+            <div v-if="true">
+                <button class="hidden lg:inline-block mx-2 py-2 px-6 hover:bg-emerald-500 bg-rose-500 text-l text-white 
+                font-bold  rounded-xl transition duration-200"  @click="logOut">log out</button>                
+            </div>
+
         </nav>
         <div class="flex object-cover ">
             <router-view></router-view>
