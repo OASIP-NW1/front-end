@@ -6,7 +6,7 @@ const userCheck = ref(undefined)
 
 const userLink = `${import.meta.env.BASE_URL}api/users`
 //const db="http://localhost:5000/user"
-
+const auther=localStorage.getItem('token')
 
 //router
 const myRouter = useRouter();
@@ -21,17 +21,23 @@ const goUser = (input) =>
 
 //GET user
 const getAllUser = async () => {
-  const res = await fetch(userLink);
-  if (res.status === 200) {
+  const res = await fetch(userLink,{
+    method:'GET',
+    headers:{
+      "Authorization":`Bearer ${auther}`
+    }
+  });
+   if (res.status === 200) {
     userList.value = await res.json();
     userCheck.value = true;
     console.log(userList.value)
   } else {
     userCheck.value = false;
+    console.log('say somthing')
   }
 };
-onBeforeMount(async () => {
-  await getAllUser();
+onBeforeMount( () => {
+   getAllUser();
 })
 </script>
  

@@ -6,6 +6,7 @@ const categoryList = ref([]);
 
 const getStatus =ref(undefined) 
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
+const auther=localStorage.getItem('token')
 
 const photo =ref([
   "../assets/project-manage.png",
@@ -19,7 +20,12 @@ const photo =ref([
 //GET category
 // first get Category
 const getCategory = async () => {
-  const res = await fetch(categoryLink);
+  const res = await fetch(categoryLink,{
+    method:'GET',
+    headers:{
+      "Authorization":`Bearer ${auther}`
+    }
+  });
   if (res.status === 200) {
     categoryList.value = await res.json();
     getStatus.value = true;

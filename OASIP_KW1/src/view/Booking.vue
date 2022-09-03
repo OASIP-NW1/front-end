@@ -15,6 +15,7 @@ const noteLength = 500;
 //const db = "http://localhost:5000/booking";
 const eventLink = `${import.meta.env.BASE_URL}api/events`;
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
+const auther =localStorage.getItem('token')
 const eventList = ref([]);
 const categoryList = ref([]);
 const addSuccess = ref(undefined);
@@ -262,6 +263,7 @@ const addBooking = async () => {
     method: "POST",
     headers: {
       "content-type": "application/json",
+      "Authorization": `Bearer ${auther}`
     },
     body: JSON.stringify({
       bookingName: name.value,
@@ -270,7 +272,7 @@ const addBooking = async () => {
       eventDuration: parseInt(durationTime.value),
       eventNote: noteText.value,
       eventCategory:{
-        id:cateId.value
+        id:parseInt(cateId.value)
         } 
     }),
   });
@@ -292,7 +294,12 @@ const addBooking = async () => {
 //GET category
 // first get Category
 const getCategory = async () => {
-  const res = await fetch(categoryLink);
+  const res = await fetch(categoryLink,{
+    method:'GET',
+    headers:{
+      "Authorization":`Bearer ${auther}`
+    }
+  });
   if (res.status === 200) {
     categoryList.value = await res.json();
     getStatus.value = true;
@@ -304,17 +311,27 @@ const getCategory = async () => {
 const resGetEvent = ref(undefined);
 //const countGetEvent=ref(0)
 // check every 10 second
-setInterval(async () => {
-  //console.log(countGetEvent.value++)
-  resGetEvent.value = await fetch(eventLink);
-  if (resGetEvent.value.status === 200) {
-    eventList.value = await resGetEvent.value.json();
-    getStatus.value = true;
-  } else getStatus.value = false;
-}, 10000);
+// setInterval(async () => {
+//   //console.log(countGetEvent.value++)
+//   resGetEvent.value = await fetch(eventLink,{
+//     method:'GET',
+//     headers:{
+//       'autherization':`Bearer ${auther}`
+//     }
+//   });
+//   if (resGetEvent.value.status === 200) {
+//     eventList.value = await resGetEvent.value.json();
+//     getStatus.value = true;
+//   } else getStatus.value = false;
+// }, 10000);
 // first get event
 const getEvent = async () => {
-  const res = await fetch(eventLink);
+  const res = await fetch(eventLink,{
+    method:'GET',
+    headers:{
+      "Authorization":`Bearer ${auther}`
+    }
+  });
   if (res.status === 200) {
     eventList.value = await res.json();
     getStatus.value = true;
