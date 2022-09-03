@@ -3,24 +3,33 @@ import {ref} from 'vue'
 import { onBeforeMount } from 'vue';
 const passwordd=ref('')
 const eMail=ref('')
-const userList=ref([])
+// const userList=ref([])
+let token=ref(undefined)
 const userCheck=ref(undefined)
 const userLink=`${import.meta.env.BASE_URL}api/users`
-const matchLink =`${import.meta.env.BASE_URL}api/match`
-//GET user
-const getAllUser = async () => {
-  const res = await fetch(userLink);
-  if (res.status === 200) {
-    userList.value = await res.json();
-    userCheck.value = true;
-    console.log(userList.value)
-  } else {
-    userCheck.value = false;
-  }
-};
-onBeforeMount(async()=>{
-    await getAllUser();
-})
+const matchLink =`${import.meta.env.BASE_URL}api/login`
+// //GET user
+// const getAllUser = async () => {
+//   const res = await fetch(userLink);
+//   if (res.status === 200) {
+//     userList.value = await res.json();
+//     userCheck.value = true;
+//     console.log(userList.value)
+//   } else {
+//     userCheck.value = false;
+//   }
+// };
+// onBeforeMount(async()=>{
+//     await getAllUser();
+// })
+
+// validate
+const check_404=ref(false)
+const check_200=ref(false)
+const check_401 =ref(false)
+const check_400 =ref(false)
+const checkOther=ref(false)
+
 // send to back for check
 const sendd =async ()=>{
     const res = await fetch(matchLink, {
@@ -33,30 +42,64 @@ const sendd =async ()=>{
      password:passwordd.value
     })
   });if(res.status==200){
-    console.log("good status")
-  }else console.log("Password no match pls sign up")
+    console.log("sign in successful")
+    check_200.value=true
+    token.value=await res.json()
+    // console.log(token.value.jwtToken)
+    saveLocal()
+  
+  }
+  else
+  if(res.status==404){
+    console.log('not found')
+    check_404.value=true
+  }
+  else
+  if(res.status==401){
+    console.log("Password Incorrect")
+    check_401.value=true
+  }
+  else
+  if(res.status==400){
+    console.log('Bad request')
+    check_400.value=true
+  }else{
+    console.log('can not sign-in please try again later')
+    checkOther.value=true 
+  } 
 }
 
+
 // validate
-const checkEMailN=ref(undefined)
-const checkPasswordN=ref(undefined)
+const checkEMailN=ref(false)
+const checkPasswordN=ref(false)
 // submit
 const submitt =()=>{
-
+   check_404.value=false
+    check_200.value=false
+    check_401.value=false
+    check_400.value=false
+    checkOther.value=false
     // check email null
     if(eMail.value.length==0){
-        checkEMailN.value=false
+        checkEMailN.value=true
         console.log("e-mail is null")
-    } checkEMailN.value=true
+    }else checkEMailN.value=false
         // check password null
     if(passwordd.value.length==0){
-        checkPasswordN.value=false
+        checkPasswordN.value=true
         console.log("password is null")
-    } checkPasswordN.value=true
-    if(checkEMailN.value==true&&checkPasswordN.value==true){
+    }else checkPasswordN.value=false
+
+    if(checkEMailN.value==false&&checkPasswordN.value==false){
         console.log("get in last check")
         sendd()
     }
+}
+
+// local storage
+const saveLocal=()=>{
+  localStorage.setItem('token',`${token.value.jwtToken}`)
 }
 </script>
  
@@ -74,30 +117,30 @@ const submitt =()=>{
       <div class="rounded-md shadow-sm -space-y-px">
         <div>
           <label for="email-address" class="sr-only">Email address</label>
-          <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative 
+          <input :style="[check_400==true||checkEMailN==true?' border-style: solid;border-color: red;':'']" id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative 
           block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none 
           focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address" v-model="eMail">
         </div>
         <div>
           <label for="password" class="sr-only">Password</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" 
+          <input :style="[check_401==true||checkPasswordN==true?' border-style: solid;border-color: red;':'']" id="password" name="password" type="password" autocomplete="current-password" 
           required class="appearance-none rounded-none relative block w-full px-3 py-2 border 
           border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none 
           focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password" v-model="passwordd">
         </div>
       </div>
 
-      <div class="flex items-center justify-between">
+      <!-- <div class="flex items-center justify-between">
         <div class="flex items-center">
           <input id="remember-me" name="remember-me" type="checkbox" 
           class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
           <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Remember me </label>
-        </div>
+        </div> -->
 
-        <div class="text-sm">
+        <!-- <div class="text-sm">
           <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
         </div>
-      </div>
+      </div> -->
 
       <div>
         <button class="group relative w-full flex justify-center py-2 px-4 border 
@@ -115,8 +158,99 @@ const submitt =()=>{
   </div>
 </div>
 </div>
+
+<!-- for alert -->
+<div class="alert-area">
+        <div v-if="check_200==true" class="alert success text-sm">
+          <span class="closebtn" @click="check_200 = false">x</span>
+          <strong class="block">Success !</strong> Sign-in successful.
+        </div>
+        <div v-if="checkEMailN==true" class="alert warning text-sm">
+          <span class="closebtn" @click="checkEMailN = false">x</span>
+          <strong class="block">Warning!</strong> Please input your e-mail.
+        </div>
+        <div v-if="checkPasswordN==true" class="alert warning text-sm">
+          <span class="closebtn" @click="checkPasswordN = false">x</span>
+          <strong class="block">Warning!</strong> Please input your password.
+        </div>
+        <div v-if="check_400==true" class="alert text-sm">
+          <span class="closebtn" @click="check_400 = false">x</span>
+          <strong class="block">Warning!</strong> E-mail invalid form.
+        </div>
+        <div v-if="check_401==true" class="alert text-sm">
+          <span class="closebtn" @click="check_401 = false">x</span>
+          <strong class="block">Error!</strong> Password Incorrect.
+        </div>
+        <div v-if="check_404==true" class="alert text-sm">
+          <span class="closebtn" @click="check_404 = false">x</span>
+          <strong class="block">Error!</strong> Not found this user.
+        </div>
+        <div v-if="checkOther==true" class="alert warning text-sm">
+          <span class="closebtn" @click="checkOther = false">x</span>
+          <strong class="block">Warning !</strong> A system error has occurred,please try again.
+        </div>
+</div>
 </template>
 
-<style>
+<style scoped>
+  /* alert */
+.alert-area {
+  position: fixed;
+  top: 150px;
+  right: 0;
+  background-color: transparent;
+  width: 23%;
+  margin-right: 10px;
+}
+.alert {
+  position: relative;
+  width: 100%;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  animation: moveLeft 0.9s;
+  animation-timing-function: ease-in-out;
+  background-color: #f44336;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.6s;
+  margin-bottom: 15px;
+}
+.alert.success {
+  background-color: #04aa6d;
+}
+.alert.info {
+  background-color: #2196f3;
+}
+.alert.warning {
+  background-color: #ff9800;
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.closebtn:hover {
+  color: black;
+}
+/* animetion */
+@keyframes moveLeft {
+  0% {
+    right: -300px;
+    top: 0px;
+    opacity: 0;
+  }
+  100% {
+    right: 0px;
+    top: 0px;
+    opacity: 1.5;
+  }
+}
 </style>
 
