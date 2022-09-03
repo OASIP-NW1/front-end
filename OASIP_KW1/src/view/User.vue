@@ -16,9 +16,17 @@ const nameL=100
 const eMailL=50
 const goAllUser = () => myRouoter.push({ name: "AllUser" });
 const userLink=`${import.meta.env.BASE_URL}api/users`
+
+const author=localStorage.getItem('token')
+
 //GET user
 const getUser = async () => {
-  const res = await fetch(`${userLink}/${id}`);
+  const res = await fetch(`${userLink}/${id}`,{
+  method:'GET',
+  headers:{
+  'Authorization':`Bearer ${author}`  
+  }
+  });
   if (res.status === 200) {
     user.value = await res.json();
     userCheck.value = true;
@@ -40,8 +48,13 @@ onBeforeMount(async()=>{
 })
 //remove information
 const removeInfo = async () => {
-  const res = await fetch(`${userLink}/${id}`,
-   { method: "DELETE" });
+  const res = await fetch(`${userLink}/${id}`,{
+    method: "DELETE",
+    headers:{
+      'Authorization':`Bearer ${author}` 
+    }
+  
+   });
   if (res.status === 200) {
     console.log("delete successfully");
     goAllUser();
@@ -147,6 +160,7 @@ const updateUser=async ()=>{
     method: "PUT",
     headers: {
       "content-type": "application/json",
+      'Authorization':`Bearer ${author}` 
     },
     body: JSON.stringify({
       name: nameEdit.value.trim(),
