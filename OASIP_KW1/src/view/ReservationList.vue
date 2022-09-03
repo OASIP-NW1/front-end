@@ -11,6 +11,8 @@ const filterReservationList = ref([]);
 const eventLink = `${import.meta.env.BASE_URL}api/events`;
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
 
+const auther=localStorage.getItem('token')
+
 //GET event
 const getStatus = ref(undefined);
 const resGetEvent = ref(undefined);
@@ -27,7 +29,12 @@ const resGetEvent = ref(undefined);
 
 // first get event
 const getEvent = async () => {
-  const res = await fetch(eventLink);
+  const res = await fetch(eventLink,{
+    method:'GET',
+    headers:{
+      "Authorization":`Bearer ${auther}`
+    }
+  });
   //const res = await fetch(`${import.meta.env.VITE_BASE_URL}/events?page=0&pageSize=1`)
   if (res.status === 200) {
     eventList.value = await res.json();
@@ -38,11 +45,18 @@ const getEvent = async () => {
 
 //GET category
 const getCategory = async () => {
-  const res = await fetch(categoryLink);
+  const res = await fetch(categoryLink,{
+    method:'GET',
+    headers:{
+      "Authorization":`Bearer ${auther}`
+    }
+  });
   if (res.status === 200) {
     categoryList.value = await res.json();
     categoryCheck.value = true;
     //console.log(getCategory.value)
+    // console.log(localStorage.length)
+    
   } else {
     categoryCheck.value = false;
   }
@@ -364,13 +378,13 @@ const search = () =>{
 
 <template>
   <!-- for filter -->
-  <div class="showUp md:inline-block ml-50 mt-16 bg-gray-200 p-6 ml-20 w-1/3 rounded-l"
-    style="height: 550px; width: 25%">
+  <div class="showUp md:inline-block  mt-16 bg-gray-200 p-6 ml-20 w-1/4 rounded-l"
+    >
     <div class="border-gray-500 border-4 border-double w-full">
-      <h1 class="my-8 text-xl font-semibold text-gray-600 w-fit m-auto">Filter Booking</h1>
+      <h1 class="mt-4 mb-1 text-xl font-semibold text-gray-600 w-fit m-auto">Filter Booking</h1>
 
       <!-- start date -->
-      <div class="w-full  my-1 block my-2">
+      <div class="w-full  block mt-2">
         <div class="px-3 w-full m-auto block">
           <label for="date" class="ml-1.5 font-medium text-sm text-gray-600">Date :</label>
         </div>
@@ -383,7 +397,7 @@ const search = () =>{
       </div>
 
       <!-- status -->
-      <div class="block w-full my-3">
+      <div class="block w-full mt-2">
         <div class="px-3 my-1 w-fit block">
           <label for="category" class="ml-1.5 font-medium text-sm text-gray-600">Status :</label>
         </div>
@@ -399,7 +413,7 @@ const search = () =>{
       </div>
 
       <!-- category -->
-      <div class="block w-full my-3">
+      <div class="block w-full mt-2">
         <div class="px-3 my-1 w-fit block">
           <label for="category" class="ml-1.5 font-medium text-sm text-gray-600">Category :</label>
         </div>
@@ -414,7 +428,7 @@ const search = () =>{
       </div>
 
       <!-- email -->
-        <div class="block w-full my-3">
+        <div class="block w-full mt-2">
           <div class="px-3 my-1 w-fit block">
             <label for="category" class="ml-1.5 font-medium text-sm text-gray-600">Email :</label>
         </div>
@@ -426,12 +440,12 @@ const search = () =>{
       </div>
 
       <!-- search button -->
-      <div class="flex my-3 p-5 w-full">
-        <div class="inline-flex w-1/2 m-auto">
+      <div class="flex mt-1 p-3 w-full">
+        <div class="inline-flex w-w-1/4 m-auto">
           <button @click="reset" class="custom-btn reset">Reset</button>
         </div>
 
-        <div class="inline-flex w-1/2 m-auto">
+        <div class="inline-flex w-w-1/4 m-auto">
           <button @click="search" class="custom-btn search">Search</button>
         </div>
       </div>
