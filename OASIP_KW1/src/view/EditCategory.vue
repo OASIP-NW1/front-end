@@ -2,17 +2,40 @@
 import { computed } from '@vue/reactivity';
 import { ref, onBeforeMount } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-defineEmits(['edit'])
-const prop = defineProps({
-  categoryDetail: {
-    type: Array,
-    require: true
-  },
-})
+
+
+const myRouter = useRouter()
+const { params } = useRoute()
+const categoryName = ref(params.eventCategoryName);
+const categoryDescription = ref(params.eventCategoryDescription);
+const categoryDuration = ref(params.eventDuration);
+const check_name = ref(false);
+const check_name_over = ref(false);
+const check_duration = ref(false);
+const check_name_duplicate = ref(false);
+const updateComplete = ref(false);
 const allCategory = ref([])
 const nameOfCategory = ref([])
+console.log(params)
+// defineEmits(['edit'])
+// const prop = defineProps({
+//   categoryDetail: {
+//     type: Array,
+//     require: true
+//   },
+// })
+const categoryLink =`${import.meta.env.BASE_URL}api/eventCategory`
+
+const author=localStorage.getItem('token')
+
+// get category
 const getAllCategory = async () => {
-  const res = await fetch(`${import.meta.env.BASE_URL}api/eventCategory`)
+  const res = await fetch(`${categoryLink}/${id}`,{
+    method:'GET',
+    headers:{
+      'Authorization':`Bearer ${author}`
+    }
+  })
   if (res.status === 200) {
     allCategory.value = await res.json()
     allCategory.value.forEach((category) => {
@@ -25,11 +48,12 @@ onBeforeMount(async () => {
 })
 // modify
 const modifyCategory = async (category) => {
-  console.log(category);
-  const res = await fetch(`${import.meta.env.BASE_URL}api/eventCategory/${params.id}`, {
+  // console.log(category);
+  const res = await fetch(`${categoryLink}/${id}`, {
     method: 'PUT',
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      'Authorization':`Bearer ${author}`
     },
     body: JSON.stringify({
       id: category.id, eventCategoryName: category.name, eventCategoryDescription: category.detail, eventDuration: category.duration
@@ -40,17 +64,7 @@ const modifyCategory = async (category) => {
     console.log('update success')
   } else console.log('error, cannot update notes');
 }
-const myRouter = useRouter()
-const { params } = useRoute()
-const categoryName = ref(params.eventCategoryName);
-const categoryDescription = ref(params.eventCategoryDescription);
-const categoryDuration = ref(params.eventDuration);
-const check_name = ref(false);
-const check_name_over = ref(false);
-const check_duration = ref(false);
-const check_name_duplicate = ref(false);
-const updateComplete = ref(false);
-console.log(params)
+
 
 const getUpdate = computed(() => {
   if (categoryName.value == undefined || categoryName.value == "" || categoryName.value.length == 0) {
