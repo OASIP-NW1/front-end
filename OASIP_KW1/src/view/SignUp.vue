@@ -12,6 +12,8 @@
   const passwordC = ref('')
   const pwMaxL= 14
   const pwMinL = 8
+
+  const author =localStorage.getItem('token')
   //router
   const myRouter = useRouter();
   const goHome = () =>
@@ -20,23 +22,25 @@
     });
   
   const db = "http://localhost:5000/user"
-  const userLink = `${import.meta.env.BASE_URL}api/users`
+  const userLink = `${import.meta.env.BASE_URL}api/users/signup`
   //GET user
-  const userCheck = ref(undefined)
-  const getUser = async () => {
-    const res = await fetch(userLink);
-    if (res.status === 200) {
-      userList.value = await res.json();
-      userCheck.value = true
-      console.log("get user")
-      //console.log(userList.value)
-    } else {
-      userCheck.value = false
-    }
-  };
-  onBeforeMount(async () => {
-    await getUser();
-  })
+  // const userCheck = ref(undefined)
+  // const getUser = async () => {
+  //   const res = await fetch(userLink,{
+  //     method:'GET'
+  //   });
+  //   if (res.status === 200) {
+  //     userList.value = await res.json();
+  //     userCheck.value = true
+  //     console.log("get user")
+  //     //console.log(userList.value)
+  //   } else {
+  //     userCheck.value = false
+  //   }
+  // };
+  // onBeforeMount(async () => {
+  //   await getUser();
+  // })
   // validate
   const checkNameN = ref(undefined)
   const checkEMailN = ref(undefined)
@@ -57,17 +61,19 @@
   };
   // submit
   const submitt = () => {
-    getUser()
+    // getUser()
     // console.log(name.value)
     // console.log(eMail.value)
     // console.log(role.value)
     noMatchP.value = undefined
-    isUniqueName.value = undefined
-    isUniqueEmail.value = undefined
-    isUniqueNameAndRole.value = undefined
-    checkUniqueName()
-    checkUniqueEmail()
-    checkUniqueNameAndRole()
+    isError.value=undefined
+    // isUniqueName.value = undefined
+    // isUniqueEmail.value = undefined
+    // isUniqueNameAndRole.value = undefined
+    // checkUniqueName()
+    // checkUniqueEmail()
+    // checkUniqueNameAndRole()
+    isUnique.value=undefined
     // check name is null?
     if (name.value.trim() == '') {
       checkNameN.value = false
@@ -111,21 +117,21 @@
     } else checkPasswordL.value = true
 
     // check unique
-    if (isUniqueName.value == true) {
-      console.log("name is ununique 😏")
-    } else
-      if (isUniqueEmail.value == true) {
-        console.log("email is ununique 😏")
-      } else
-        if (isUniqueNameAndRole.value == true) {
-          console.log("role and name is ununique")
-        } else
+    // if (isUniqueName.value == true) {
+    //   console.log("name is ununique 😏")
+    // } else
+    //   if (isUniqueEmail.value == true) {
+    //     console.log("email is ununique 😏")
+    //   } else
+    //     if (isUniqueNameAndRole.value == true) {
+    //       console.log("role and name is ununique")
+    //     } else
           if (passwordC.value !== passwordd.value) {
             console.log("Passwords do not match.")
             noMatchP.value=true
           } else
             // last check
-            if (checkEMailN.value == true && checkNameN.value == true && checkEMailL.value == true && checkNameL.value == true && checkEmailF.value == true && isUniqueName.value !== true && isUniqueEmail.value !== true && isUniqueNameAndRole.value !== true && checkPasswordL.value == true && checkPasswordN.value == true && noMatchP.value!==true) {
+            if (checkEMailN.value == true && checkNameN.value == true && checkEMailL.value == true && checkNameL.value == true && checkEmailF.value == true  && checkPasswordL.value == true && checkPasswordN.value == true && noMatchP.value!==true) {
               console.log("status good")
               addNewUser()
             }
@@ -144,7 +150,7 @@
         password: passwordd.value.trim()
   
       })
-    }); if (res.status == 201) {
+    }); if (res.ok ||res.status==200) {
       console.log("add new user")
       checkNameN.value = undefined
       checkEMailN.value = undefined
@@ -153,40 +159,51 @@
       role.value = ''
       passwordC.value=''
       passwordd.value=''
-      goHome()
-    } else {
+      //goHome()
+    }else
+    if(res.status==400){
+      // console.log(res.status)
+      isUnique.value=false
+
+    }
+     else {
+      // console.log(res.ok)
+      // console.log(`error : ${res.status}`)
+      isError.value=true
       console.log("can not add new user pls try again")
   
     }
   }
   // functoin for check unique
-  const isUniqueName = ref(undefined)
-  const isUniqueEmail = ref(undefined)
-  const isUniqueNameAndRole = ref(undefined)
-  const checkUniqueName = () => {
-    for (let check of userList.value) {
-      if (check.name == name.value) {
-        console.log(`Name :${check.name}`)
-        isUniqueName.value = true
-      }
-    }
-  }
-  const checkUniqueEmail = () => {
-    for (let check of userList.value) {
-      if (check.email == eMail.value) {
-        console.log(`E-mail :${check.email}`)
-        isUniqueEmail.value = true
-      }
-    }
-  }
-  const checkUniqueNameAndRole = () => {
-    for (let check of userList.value) {
-      if (check.role == role.value && check.name == name.value) {
-        console.log(`Role :${check.role} Name : ${check.name}`)
-        isUniqueNameAndRole.value = true
-      }
-    }
-  }
+  const isUnique=ref(undefined)
+  const isError=ref(undefined)
+  // const isUniqueName = ref(undefined)
+  // const isUniqueEmail = ref(undefined)
+  // const isUniqueNameAndRole = ref(undefined)
+  // const checkUniqueName = () => {
+  //   for (let check of userList.value) {
+  //     if (check.name == name.value) {
+  //       console.log(`Name :${check.name}`)
+  //       isUniqueName.value = true
+  //     }
+  //   }
+  // }
+  // const checkUniqueEmail = () => {
+  //   for (let check of userList.value) {
+  //     if (check.email == eMail.value) {
+  //       console.log(`E-mail :${check.email}`)
+  //       isUniqueEmail.value = true
+  //     }
+  //   }
+  // }
+  // const checkUniqueNameAndRole = () => {
+  //   for (let check of userList.value) {
+  //     if (check.role == role.value && check.name == name.value) {
+  //       console.log(`Role :${check.role} Name : ${check.name}`)
+  //       isUniqueNameAndRole.value = true
+  //     }
+  //   }
+  // }
   </script>
    
   <template>      
@@ -307,13 +324,21 @@
           <span class="closebtn" @click="checkPasswordN = undefined">x</span>
           <strong class="block">Warning!</strong> Password is null.
         </div>
-        <div v-if="checkPasswordL == false" class="alert warning text-sm">
+        <div v-if="checkPasswordL == false" class="alert info text-sm">
           <span class="closebtn" @click="checkPasswordL = undefined">x</span>
           <strong class="block">Warning!</strong> The characters should be at least 8-14 characters.
         </div>
         <div v-if="noMatchP == true" class="alert warning text-sm">
           <span class="closebtn" @click="noMatchP = undefined">x</span>
           <strong class="block">Warning!</strong> Password not match.
+        </div>
+        <div v-if="isUnique == false" class="alert warning text-sm">
+          <span class="closebtn" @click="isUnique = undefined">x</span>
+          <strong class="block">Warning!</strong> This name or email address is already in use.
+        </div>
+        <div v-if="isError == true" class="alert warning text-sm">
+          <span class="closebtn" @click="isError = undefined">x</span>
+          <strong class="block">Warning!</strong> A system error has occurred,please try again.
         </div>
 
     </div>
@@ -385,7 +410,7 @@
   position: fixed;
   top: 150px;
   right: 0;
-  background-color: gray;
+  background-color: transparent;
   width: 18%;
   margin-right: 10px;
 }
