@@ -50,6 +50,7 @@
   const checkPasswordN = ref(undefined)
   const checkPasswordL = ref(undefined)
   const noMatchP =ref(undefined)
+  const isSuccess=ref(undefined)
   const valFormEmail = (input) => {
     let valid =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -67,6 +68,7 @@
     // console.log(role.value)
     noMatchP.value = undefined
     isError.value=undefined
+    isSuccess.value=undefined
     // isUniqueName.value = undefined
     // isUniqueEmail.value = undefined
     // isUniqueNameAndRole.value = undefined
@@ -159,6 +161,8 @@
       role.value = ''
       passwordC.value=''
       passwordd.value=''
+      isSuccess.value=true
+      setTimeout(()=>(goHome()),5000)
       //goHome()
     }else
     if(res.status==400){
@@ -339,6 +343,10 @@
         <div v-if="isError == true" class="alert warning text-sm">
           <span class="closebtn" @click="isError = undefined">x</span>
           <strong class="block">Warning!</strong> A system error has occurred,please try again.
+        </div>
+        <div v-if="isSuccess == true" class="alert success text-sm">
+          <span class="closebtn" @click="isSuccess = undefined">x</span>
+          <strong class="block">Success!</strong> Sign-in successful.
         </div>
 
     </div>
