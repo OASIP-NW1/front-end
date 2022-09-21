@@ -99,7 +99,7 @@ const submitt =()=>{
 
 // local storage
 const saveLocal=()=>{
-  localStorage.setItem('token',`${token.value.jwtToken}`)
+  localStorage.setItem('token',`${token.value.accessToken}`)
 }
 </script>
  
