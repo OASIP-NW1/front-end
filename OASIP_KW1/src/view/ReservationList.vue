@@ -6,12 +6,14 @@ const eventList = ref([]);
 const categoryList = ref([]);
 const categoryCheck = ref(false);
 const filterReservationList = ref([]);
+const token=ref(undefined)
 
 // const db = "http://localhost:5000/booking";
 const eventLink = `${import.meta.env.BASE_URL}api/events`;
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
+const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
 
-const auther=localStorage.getItem('token')
+
 
 //GET event
 const getStatus = ref(undefined);
@@ -29,26 +31,47 @@ const resGetEvent = ref(undefined);
 
 // first get event
 const getEvent = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   const res = await fetch(eventLink,{
     method:'GET',
     headers:{
-      "Authorization":`Bearer ${auther}`
+      "Authorization":`Bearer ${auther.value}`
     }
   });
   //const res = await fetch(`${import.meta.env.VITE_BASE_URL}/events?page=0&pageSize=1`)
   if (res.status === 200) {
     eventList.value = await res.json();
     filterReservationList.value = eventList.value;
+    
     //console.log(bookingList.value)
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getEvent()
+    }else console.log('something waring to get token')
+
+
   }
 };
 
 //GET category
 const getCategory = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   const res = await fetch(categoryLink,{
     method:'GET',
     headers:{
-      "Authorization":`Bearer ${auther}`
+      "Authorization":`Bearer ${auther.value}`
     }
   });
   if (res.status === 200) {
@@ -57,6 +80,22 @@ const getCategory = async () => {
     //console.log(getCategory.value)
     // console.log(localStorage.length)
     
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getCategory()
+    }else console.log('something waring to get token')
+
+
   } else {
     categoryCheck.value = false;
   }
@@ -373,6 +412,13 @@ const search = () =>{
       }
     }
     console.log(filterReservationList.value)
+}
+
+// local storage
+const saveLocal=()=>{
+  console.log('save to local')
+  localStorage.setItem('tokenA',`${token.value.accessToken}`)
+  localStorage.setItem('tokenR',`${token.value.refreshToken}`)
 }
 </script>
 

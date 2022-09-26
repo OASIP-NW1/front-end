@@ -27,14 +27,27 @@ const goSignIn = () => myRouter.push({ name: 'SignIn' })
 //     return checkk
 // })
 
-console.log(localStorage.length)
+
+// console.log(localStorage.length)
 const logOut=()=>{
-     localStorage.removeItem('token')
+      localStorage.removeItem('tokenA')
+      localStorage.removeItem('tokenR')
+      localStorage.removeItem('role')
+
     //localStorage.getItem('token')
      goHome()
     //console.log(localStorage.getItem('token'))
 }
 
+const decode=(token)=>{  
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
 </script>
 
 <template>

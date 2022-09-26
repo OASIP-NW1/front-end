@@ -26,14 +26,15 @@ console.log(params)
 // })
 const categoryLink =`${import.meta.env.BASE_URL}api/eventCategory`
 
-const author=localStorage.getItem('token')
+const auther=localStorage.getItem('tokenA')
+const refreshT=localStorage.getItem('tokenR')
 
 // get category
 const getAllCategory = async () => {
   const res = await fetch(`${categoryLink}/${id}`,{
     method:'GET',
     headers:{
-      'Authorization':`Bearer ${author}`
+      'Authorization':`Bearer ${auther.value}`
     }
   })
   if (res.status === 200) {
@@ -102,6 +103,12 @@ const getUpdate = computed(() => {
     }
   }
 })
+
+// local storage
+const saveLocal=()=>{
+  localStorage.setItem('tokenA',`${token.value.accessToken}`)
+  localStorage.setItem('tokenR',`${token.value.refreshToken}`)
+}
 </script>
  
 <template>

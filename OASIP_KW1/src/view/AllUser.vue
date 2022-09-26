@@ -5,8 +5,10 @@ const userList = ref([])
 const userCheck = ref(undefined)
 
 const userLink = `${import.meta.env.BASE_URL}api/users`
+const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
 //const db="http://localhost:5000/user"
-const auther=localStorage.getItem('token')
+const token =ref(undefined)
+
 
 //router
 const myRouter = useRouter();
@@ -21,24 +23,51 @@ const goUser = (input) =>
 
 //GET user
 const getAllUser = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   const res = await fetch(userLink,{
     method:'GET',
     headers:{
-      "Authorization":`Bearer ${auther}`
+      "Authorization":`Bearer ${auther.value}`
     }
   });
    if (res.status === 200) {
     userList.value = await res.json();
     userCheck.value = true;
-    console.log(userList.value)
+    console.log('get user successful')
+  }else
+  if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getAllUser()
+    }else console.log('something waring to get token')
+
+
   } else {
     userCheck.value = false;
-    console.log('say somthing')
+    console.log('can not to get user')
   }
 };
 onBeforeMount( () => {
    getAllUser();
 })
+
+
+
+// local storage
+const saveLocal=()=>{
+  localStorage.setItem('tokenA',`${token.value.accessToken}`)
+  localStorage.setItem('tokenR',`${token.value.refreshToken}`)
+}
 </script>
  
 <template>

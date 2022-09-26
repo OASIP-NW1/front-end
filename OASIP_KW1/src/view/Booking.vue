@@ -15,11 +15,12 @@ const noteLength = 500;
 //const db = "http://localhost:5000/booking";
 const eventLink = `${import.meta.env.BASE_URL}api/events`;
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
-const auther =localStorage.getItem('token')
+const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
 const eventList = ref([]);
 const categoryList = ref([]);
 const addSuccess = ref(undefined);
 const getStatus = ref(undefined);
+const token=ref(undefined)
 // validate past
 const validateIsPast = ref(undefined);
 // validate name
@@ -258,12 +259,14 @@ const submitt = () => {
 // fetch create
 const isStatus = ref(undefined);
 const addBooking = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   let createStatus = undefined;
   const res = await fetch(eventLink, {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "Authorization": `Bearer ${auther}`
+      "Authorization": `Bearer ${auther.value}`
     },
     body: JSON.stringify({
       bookingName: name.value,
@@ -285,6 +288,23 @@ const addBooking = async () => {
   } else if (res.status === 400) {
     validateBetweenDate.value = true;
     isStatus.value = false;
+
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      addBooking()
+    }else console.log('something waring to get token')
+
+
   } else {
     createStatus = false;
     isStatus.value = false;
@@ -294,21 +314,40 @@ const addBooking = async () => {
 //GET category
 // first get Category
 const getCategory = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   const res = await fetch(categoryLink,{
     method:'GET',
     headers:{
-      "Authorization":`Bearer ${auther}`
+      "Authorization":`Bearer ${auther.value}`
     }
   });
   if (res.status === 200) {
     categoryList.value = await res.json();
     getStatus.value = true;
+  }else
+  if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getCategory()
+    }else console.log('something waring to get token')
+
+
   } else {
     getStatus.value = false;
   }
 };
 // get event
-const resGetEvent = ref(undefined);
+// const resGetEvent = ref(undefined);
 //const countGetEvent=ref(0)
 // check every 10 second
 // setInterval(async () => {
@@ -326,15 +365,34 @@ const resGetEvent = ref(undefined);
 // }, 10000);
 // first get event
 const getEvent = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   const res = await fetch(eventLink,{
     method:'GET',
     headers:{
-      "Authorization":`Bearer ${auther}`
+      "Authorization":`Bearer ${auther.value}`
     }
   });
   if (res.status === 200) {
     eventList.value = await res.json();
     getStatus.value = true;
+  }else
+  if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getEvent()
+    }else console.log('something waring to get token')
+
+
   } else getStatus.value = false;
 };
 //get duration
@@ -352,6 +410,13 @@ onBeforeMount(async () => {
   await getCategory();
   await getEvent();
 });
+
+// local storage
+const saveLocal=()=>{
+  console.log('save to local')
+  localStorage.setItem('tokenA',`${token.value.accessToken}`)
+  localStorage.setItem('tokenR',`${token.value.refreshToken}`)
+}
 </script>
 <template>
   <div class="showUp container mx-auto">
@@ -633,9 +698,13 @@ onBeforeMount(async () => {
           <span class="closebtn" @click="addSuccess = false">x</span>
           <strong class="block">Success!</strong> Add data success.
         </div>
-        <div v-if="validateBetweenDate == true" class="alert warning text-sm">
+        <div v-if="validateBetweenDate == true && betweenDateWarning !== undefined" class="alert warning text-sm">
           <span class="closebtn" @click="validateBetweenDate = false">x</span>
           <strong class="block">Warning!</strong> {{ betweenDateWarning }} 
+        </div>
+        <div v-if="isStatus == false" class="alert info text-sm">
+          <span class="closebtn" @click="isStatus = true">x</span>
+          <strong class="block">Infomation!</strong> Try refreshing the page and inputting the information again.
         </div>
         <div v-if="isStatus == false" class="alert warning text-sm">
           <span class="closebtn" @click="isStatus = true">x</span>

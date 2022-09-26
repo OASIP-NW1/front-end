@@ -2,6 +2,7 @@
 import { ref ,onBeforeMount} from "vue";
 import { useRoute, useRouter } from "vue-router";
 const { params } = useRoute();
+const token=ref(undefined)
 const userCheck= ref(undefined)
 const userList=ref([])
 const user =ref([])
@@ -16,15 +17,18 @@ const nameL=100
 const eMailL=50
 const goAllUser = () => myRouoter.push({ name: "AllUser" });
 const userLink=`${import.meta.env.BASE_URL}api/users`
+const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
 
-const author=localStorage.getItem('token')
+
 
 //GET user
 const getUser = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   const res = await fetch(`${userLink}/${id}`,{
   method:'GET',
   headers:{
-  'Authorization':`Bearer ${author}`  
+  'Authorization':`Bearer ${auther.value}`  
   }
   });
   if (res.status === 200) {
@@ -38,6 +42,22 @@ const getUser = async () => {
       updated.value=user.value.updatedOn
     }
     //console.log(userList.value)
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getUser()
+    }else console.log('something waring to get token')
+
+
   } else {
     userCheck.value = false;
   }
@@ -48,18 +68,37 @@ onBeforeMount(async()=>{
 })
 //remove information
 const removeInfo = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   const res = await fetch(`${userLink}/${id}`,{
     method: "DELETE",
     headers:{
-      'Authorization':`Bearer ${author}` 
+      'Authorization':`Bearer ${auther.value}` 
     }
   
    });
   if (res.status === 200) {
     console.log("delete successfully");
     goAllUser();
-  } else console.log("error");
+  } else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      removeInfo()
+    }else console.log('something waring to get token')
+
+
+  }else console.log("error! can not delete user");
 };
+
 // edit
 const nameEdit=ref('')
 const eMailEdit=ref('')
@@ -70,7 +109,7 @@ const editMode=()=>{
  nameEdit.value=name.value
  eMailEdit.value=eMail.value
  roleEdit.value=role.value
- console.log(isEdit.value)
+ //console.log(isEdit.value)
  
 }
 // validate
@@ -155,12 +194,14 @@ const submitt=()=>{
 //update user
 const statusNoSend=ref(false)
 const updateUser=async ()=>{
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   statusNoSend.value=undefined
- const  res = await fetch(`${userLink}/${id}`, {
+  const  res = await fetch(`${userLink}/${id}`, {
     method: "PUT",
     headers: {
       "content-type": "application/json",
-      'Authorization':`Bearer ${author}` 
+      'Authorization':`Bearer ${auther.value}` 
     },
     body: JSON.stringify({
       name: nameEdit.value.trim(),
@@ -184,7 +225,23 @@ const updateUser=async ()=>{
         isEdit.value=false
         setTimeout(()=>(updateSuccess.value=false),5000)        
 
- }else{
+    }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      updateUser()
+    }else console.log('something waring to get token')
+
+
+  }else{
         statusNoSend.value=true
         console.log("can not add new user pls try again")
         
@@ -230,6 +287,12 @@ const cancelEdit=()=>{
     checkEMailL.value=undefined
     isSame.value=undefined
     isEdit.value=false
+}
+
+// local storage
+const saveLocal=()=>{
+  localStorage.setItem('tokenA',`${token.value.accessToken}`)
+  localStorage.setItem('tokenR',`${token.value.refreshToken}`)
 }
 </script>
  

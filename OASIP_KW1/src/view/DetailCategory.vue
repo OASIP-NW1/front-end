@@ -8,27 +8,45 @@ const categoryList = ref([]);
 const id = params.id
 const getStatus = ref(false);
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
-
-const auther=localStorage.getItem('token')
+const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
+const token =ref(undefined)
 
 console.log(id)
 
 
 // get Category
 const getCategory = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   const res = await fetch(`${categoryLink}/${id}`,{
     method:'GET',
     headers:{
-      "Authorization":`Bearer ${auther}`
+      "Authorization":`Bearer ${auther.value}`
     }
   });
   if (res.status === 200) {
     categoryList.value = await res.json();
     getStatus.value = true;
 
-    console.log(details.value);
+    
 
     console.log(categoryList.value);
+
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getCategory()
+    }else console.log('something waring to get token')
+
 
   } else {
     getStatus.value = false;
@@ -46,6 +64,12 @@ const goCategory = () => myRouter.push({ name: 'Category' })
 
 // for edit
 const isEdit=ref(false)
+
+// local storage
+const saveLocal=()=>{
+  localStorage.setItem('tokenA',`${token.value.accessToken}`)
+  localStorage.setItem('tokenR',`${token.value.refreshToken}`)
+}
 </script>
 <template>
   <!-- for show -->

@@ -6,7 +6,8 @@ const { params } = useRoute();
 
 //const db = "http://localhost:5000/booking";
 const eventLink = `${import.meta.env.BASE_URL}api/events`;
-
+const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
+const token=ref(undefined)
 const id = params.id;
 const name = ref("");
 const eMail = ref("");
@@ -57,33 +58,63 @@ let clock = () => {
 };
 setInterval(clock, 1000);
 
-// get every 10 sec
-const getStatus=ref(undefined)
+// // get every 10 sec
+ const getStatus=ref(undefined)
 const resGetEvent=ref(undefined)
 
-setInterval(async ()=>{
-  resGetEvent.value= await fetch(eventLink)
-  if (resGetEvent.value.status === 200) {
-    eventList.value = await resGetEvent.value.json();
-    getStatus.value = true;
-  } else getStatus.value = false;
-},10000)
+// setInterval(async ()=>{
+//   resGetEvent.value= await fetch(eventLink)
+//   if (resGetEvent.value.status === 200) {
+//     eventList.value = await resGetEvent.value.json();
+//     getStatus.value = true;
+//   } else getStatus.value = false;
+// },10000)
 
-// first get event
+//first get event ทั้งหมดเพื่อเอามาเช็ค
 const getEvent =async()=>{
- resGetEvent.value= await fetch(eventLink)
-  if (resGetEvent.value.status === 200) {
-    eventList.value = await resGetEvent.value.json();
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
+ const res= await fetch(eventLink,{
+  method:'GET',
+  headers:{
+    "Authorization":`Bearer ${auther.value}`
+  }
+ })
+  if (res.status === 200) {
+    eventList.value = await res.json();
     getStatus.value = true;
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getEvent()
+    }else console.log('something waring to get token')
+
+
   } else getStatus.value = false;       
 }
 
-// get value
+// get detail ของ event นั่นๆ
 const getDetail = async () => {
-  const res = await fetch(`${eventLink}/${params.id}`);
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
+  const res = await fetch(`${eventLink}/${params.id}`,{
+    method:'GET',
+    headers:{
+      'Authorization':`Bearer ${auther.value}`
+    }
+  });
   if (res.status === 200) {
     detailBooking.value = await res.json();
-    console.log(detailBooking.value);
+    //console.log(detailBooking.value);
 
     //console.log(Date.parse("2022-06-01T15:00:00+07:00"));
     if (detailBooking.value.id == id) {
@@ -96,20 +127,59 @@ const getDetail = async () => {
       duration.value = detailBooking.value.eventDuration;
       noteT.value = detailBooking.value.eventNote;
     }
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getDetail()
+    }else console.log('something waring to get token')
+
+
   }
 };
 
 onBeforeMount(async()=>{
-       await  getEvent()
+        await  getEvent()
        await getDetail()
 });
 
 //remove information
 const removeInfo = async () => {
-  const res = await fetch(`${eventLink}/${id}`, { method: "DELETE" });
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
+  const res = await fetch(`${eventLink}/${id}`,{ 
+    method: "DELETE",
+    headers:{
+      "Authorization":`Bearer ${auther.value}`
+    }
+  });
   if (res.status === 200) {
     console.log("delete successfully");
     goReservation();
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      removeInfo()
+    }else console.log('something waring to get token')
+
+
   } else console.log("error");
 };
 
@@ -133,12 +203,15 @@ const cancel = () => {
 };
 
 const edit =async(input)=>{
-  console.log(`${editStartDate.value}T${editStartTime.value}:00+07:00`)
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
+  //console.log(`${editStartDate.value}T${editStartTime.value}:00+07:00`)
        let canEdit=undefined
         const res = await fetch(`${eventLink}/${id}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
+          "Authorization":`Bearer ${auther.value}`
         },
         body: JSON.stringify({
 
@@ -148,14 +221,28 @@ const edit =async(input)=>{
         }),
       });
       if (res.status == 200) {
-        let editDetailNote = await res.json();
-        startDate.value = editDetailNote.eventStartTime.substring(0, 10);
-        startTime.value = editDetailNote.eventStartTime.substring(11, 16);
-        noteT.value = editDetailNote.eventNotes;
+        getDetail()
         isEdit.value = false;
         canEdit=true
         editSuccess.value=true
-       }else {
+       }else 
+       if(res.status === 401){
+        const ress= await fetch(refreshTLink,{
+          method:'GET',
+          headers:{
+            "Authorization":`Bearer ${refreshT.value}`
+          }
+        });
+
+        if(ress.status === 200){
+          token.value =await ress.json()
+          saveLocal()
+          console.log('refresh token successful')
+          edit()
+        }else console.log('something waring to get token')
+
+
+      }else {
               canEdit=false
               editSuccess.value=false
        }
@@ -285,6 +372,12 @@ const calTime = (hour, minute, addTime) => {
   // console.log(sum)
   return sum;
 };
+
+// local storage
+const saveLocal=()=>{
+  localStorage.setItem('tokenA',`${token.value.accessToken}`)
+  localStorage.setItem('tokenR',`${token.value.refreshToken}`)
+}
 </script>
 
 <template>

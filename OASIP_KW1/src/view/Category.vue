@@ -3,10 +3,11 @@ import { onBeforeMount, onUpdated, ref } from "vue";
 import {useRouter} from 'vue-router'
 
 const categoryList = ref([]);
-
+const token=ref(undefined)
 const getStatus =ref(undefined) 
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
-const auther=localStorage.getItem('token')
+const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
+
 
 const photo =ref([
   "../assets/project-manage.png",
@@ -20,15 +21,33 @@ const photo =ref([
 //GET category
 // first get Category
 const getCategory = async () => {
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
   const res = await fetch(categoryLink,{
     method:'GET',
     headers:{
-      "Authorization":`Bearer ${auther}`
+      "Authorization":`Bearer ${auther.value}`
     }
   });
   if (res.status === 200) {
     categoryList.value = await res.json();
     getStatus.value = true;
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getCategory()
+    }else console.log('something waring to get token')
+
+
   } else {
     getStatus.value = false;
   }
@@ -41,6 +60,12 @@ onBeforeMount(async () => {
 const myRouter = useRouter()
 const goCategoryDetail = (input)=>myRouter.push({name:'DetailCategory',params:{id:input.id}})
 // const goCategoryDetail=(input)=>{console.log(input)}
+
+// local storage
+const saveLocal=()=>{
+  localStorage.setItem('tokenA',`${token.value.accessToken}`)
+  localStorage.setItem('tokenR',`${token.value.refreshToken}`)
+}
 </script>
 
 <template>
