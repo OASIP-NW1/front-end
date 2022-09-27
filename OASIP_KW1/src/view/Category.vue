@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "@vue/reactivity";
 import { onBeforeMount, onUpdated, ref } from "vue";
 import {useRouter} from 'vue-router'
 
@@ -32,6 +33,7 @@ const getCategory = async () => {
   if (res.status === 200) {
     categoryList.value = await res.json();
     getStatus.value = true;
+     console.log(categoryList.value)
   }else if(res.status === 401){
     const ress= await fetch(refreshTLink,{
       method:'GET',
@@ -66,21 +68,25 @@ const saveLocal=()=>{
   localStorage.setItem('tokenA',`${token.value.accessToken}`)
   localStorage.setItem('tokenR',`${token.value.refreshToken}`)
 }
+
+//เรียงรูปตาม id
+const imgById =(input)=>{
+  const text="src/assets/categorys/"+input+".png"
+return text 
+}
 </script>
 
 <template>
-<div class="grid grid-cols-3 gap-4 justify-center">
-  <div v-for="cat in categoryList">
-  <div class="mx-auto my-auto p-4 pb-4 mx-auto mt-auto bg-gray-200 rounded-md shadow-sm shadow-xl justify-center">
-    <img src="../assets/project-manage.png" v-if="cat.id == 1">
-        <img src="../assets/devops.png" v-if="cat.id == 2">
-        <img src="../assets/data.png" v-if="cat.id == 3">
-        <img src="../assets/client.png" v-if="cat.id == 4">
-        <img src="../assets/back.png" v-if="cat.id == 5">
-    <p>CategoryName : {{cat.eventCategoryName}}</p><br>
-    <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-3 border border-gray-400 
-    rounded shadow justify-center"  id="button1" @click="goCategoryDetail(cat)">More Details</button>
-  </div>
+<div class="mt-8 mx-auto w-4/5">
+  <div class="grid grid-cols-3 gap-4 mx-auto my-auto w-full ">
+    <div v-for="cat in categoryList" class="bg-gray-400 rounded p-5">
+    
+        <img :src="imgById(cat.id)" alt="Icon" class="mx-auto w-1/3"  />
+      <p class="w-fit mx-auto">CategoryName : {{cat.eventCategoryName}}</p>
+      <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-3 border border-gray-400 
+    rounded shadow justify-center m-2 "  id="button1" @click="goCategoryDetail(cat)">More Details</button>
+      
+    </div>
   </div>
 </div>
 </template>
