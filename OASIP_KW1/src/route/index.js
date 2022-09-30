@@ -12,74 +12,94 @@ import SignIn from '../view/SignIn.vue'
 import SignUp from '../view/SignUp.vue'
 import DetailCategory from '../view/DetailCategory.vue'
 import EditCategory from '../view/EditCategory.vue'
+import Main from '../view/Main.vue'
+import Public from '../view/public.vue'
 
 const history=createWebHistory(import.meta.env.BASE_URL)
       
 const routes=[
     {   path:'/',
-        name:'Home',
-        component: Home
+        name:'Public',
+        component: Public,
+        children:[
+            {
+                path:'/home',
+            name:'Home',
+            component: Home,
+            },
+            {
+                path:'/contact-us',
+                name:'ContactUs',
+                component: ContactUs
+            },
+            {   
+                path:'/sign-in',
+                name:'SignIn',
+                component: SignIn        
+            },
+            {   
+                path:'/sign-up',
+                name:'SignUp',
+                component: SignUp        
+            },
+
+        ]
     },
+    
+    {
+        path:'/account/',
+        name: 'Main',
+        component: Main,
+        children:[
+        {
+            path:'/account/booking',
+            name:'Booking',
+            component: Booking
+        },
+        {
+            path:'/account/category',
+            name:'Category',
+            component: Category
+        },
+        {
+            path:'/account/category/DetailCategory/:id',
+            name:'DetailCategory',
+            component: DetailCategory
+        },
+        {
+            path:'/account/reservation-list/reservation/:id',
+            name:'Reservation',
+            component: Reservation
+        },
+        {
+            path:'/account/reservation-list',
+            name:'ReservationList',
+            component: ReservationList
+        },
+        {
+            path:'/account/all-user/user/:id',
+            name:'User',
+            component: User
+        },
+        {
+            path:'/account/all-user',
+            name:'AllUser',
+            component: AllUser
+        }
+
+        ]
+    },
+    // {
+    //     path:'/EditCategory/:id',
+    //     name:'EditCategory',
+    //     component: EditCategory
+    // },
+    
     {
         path:'/:NoPage(.*)',
         name:'NotFound',
         component: NotFound
-    },
-    {
-        path:'/booking',
-        name:'Booking',
-        component: Booking
-    },
-    {
-        path:'/category',
-        name:'Category',
-        component: Category
-    },
-    {
-        path:'/DetailCategory/:id',
-        name:'DetailCategory',
-        component: DetailCategory
-    },
-    {
-        path:'/EditCategory/:id',
-        name:'EditCategory',
-        component: EditCategory
-    },
-    {
-        path:'/reservation/:id',
-        name:'Reservation',
-        component: Reservation
-    },
-    {
-        path:'/reservation-list',
-        name:'ReservationList',
-        component: ReservationList
-    },
-    {
-        path:'/contact-us',
-        name:'ContactUs',
-        component: ContactUs
-    },
-    {
-        path:'/all-user',
-        name:'AllUser',
-        component: AllUser
-    },
-    {
-        path:'/user/:id',
-        name:'User',
-        component: User
-    },
-    {   
-        path:'/sign-in',
-        name:'SignIn',
-        component: SignIn        
-    },
-    {   
-        path:'/sign-up',
-        name:'SignUp',
-        component: SignUp        
-    }
+    }, 
 ]
 
 const router=createRouter({history,routes})

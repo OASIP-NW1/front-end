@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import BaseDate from './components/BaseDate.vue'
+import BaseNav from './components/BaseNav.vue'
 import { useRouter } from 'vue-router'
 import { computed } from '@vue/reactivity';
 
@@ -30,12 +31,12 @@ const goSignIn = () => myRouter.push({ name: 'SignIn' })
 
 // console.log(localStorage.length)
 const logOut=()=>{
-      localStorage.removeItem('tokenA')
-      localStorage.removeItem('tokenR')
-      localStorage.removeItem('role')
+    //   localStorage.removeItem('tokenA')
+    //   localStorage.removeItem('tokenR')
+    //   localStorage.removeItem('role')
 
     //localStorage.getItem('token')
-     goHome()
+     //goHome()
     //console.log(localStorage.getItem('token'))
 }
 
@@ -52,78 +53,7 @@ const decode=(token)=>{
 
 <template>
     <div id="bg_color">
-        <nav class="relative px-5 mb-5 py-2 flex justify-center items-center bg-gray-500  drop-shadow-md md:rounded-b-lg md:mx-auto w-fit">
-            <img src="./assets/icon.png" alt="LOGO" :style="logoSize" />
-           
-            <span class="font-bold text-xl text-white mx-4">
-                <BaseDate :isTime='true' />
-
-                <br>
-                <span class=" font-medium ">
-                    <BaseDate :isDate="true" />
-                </span>
-            </span>
-            
-            <div class=" flex mx-10 lg:flex lg:items-center lg:w-auto lg:space-x-6">
-                                <div>
-                            <button type="button" class="inline-block px-2 py-2 bg-transparent text-white 
-                            font-medium text-lg leading-tight  rounded  
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-blue-300 active:shadow-lg 
-                            transition duration-150 ease-in-out " @click="goHome">Home</button>
-                                </div>
-                                <div>
-                                    <button type="button" class="inline-block px-2 py-2  bg-transparent text-white 
-                            font-medium text-lg leading-tight  rounded  
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-gray-300 active:shadow-lg 
-                            transition duration-150 ease-in-out " @click="goCategory">Category</button>
-                                </div>
-                                <div>
-                                    <button type="button" class="inline-block px-4 py-2 bg-transparent text-white 
-                            font-medium text-lg leading-tight  rounded 
-                             hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400
-                            focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-300
-                            active:shadow-lg transition duration-150 ease-in-out" @click="goBooking">Booking</button>
-
-                                </div>
-                                <div>
-                            <button type="button" class="inline-block px-2 py-2  bg-transparent text-white 
-                            font-medium text-lg leading-tight  rounded  
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-gray-300 active:shadow-lg 
-                            transition duration-150 ease-in-out " @click="goReservationList">Reservation</button>
-                                </div>
-                                <div>
-                            <button type="button" class="inline-block px-2 py-2  bg-transparent text-white 
-                            font-medium text-lg leading-tight  rounded 
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-gray-300 active:shadow-lg 
-                            transition duration-150 ease-in-out " @click="goAllUser">Show all user</button>
-                                </div>
-                                <div>
-                            <button type="button" class="inline-block px-2 py-2  bg-transparent text-white 
-                            font-medium text-lg leading-tight  rounded 
-                            hover:bg-gray-900 hover:shadow-lg focus:bg-blue-400 focus:shadow-lg 
-                            focus:outline-none focus:ring-0 active:bg-gray-300 active:shadow-lg 
-                            transition duration-150 ease-in-out " @click="goContactUs">Contact us</button>
-                                </div>
-            </div>
-            <div v-if="true">
-                <button class="hidden lg:inline-block mx-2 py-2 px-6 bg-blue-500 hover:bg-rose-500 text-l text-white 
-                font-bold  rounded-xl transition duration-200"  @click="goSignIn">Sign In</button>
-                <button class="hidden lg:inline-block mx-2 py-2 px-6 hover:bg-emerald-500 bg-rose-500 text-l text-white 
-                font-bold  rounded-xl transition duration-200"  @click="goSignUp">Sign up</button>                
-            </div>
-            <div v-if="true">
-                <button class="hidden lg:inline-block mx-2 py-2 px-6 hover:bg-emerald-500 bg-rose-500 text-l text-white 
-                font-bold  rounded-xl transition duration-200"  @click="logOut">log out</button>                
-            </div>
-
-        </nav>
-        <div class="flex object-cover ">
             <router-view></router-view>
-        </div>
     </div>
 
 </template>

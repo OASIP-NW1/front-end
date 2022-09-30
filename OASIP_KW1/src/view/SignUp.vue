@@ -2,6 +2,7 @@
   import { ref } from 'vue'
   import { useRouter } from 'vue-router';
   import { onBeforeMount } from 'vue';
+ import BaseNav from '../components/BaseNav.vue'
   const name = ref('')
   const eMail = ref('')
   const role = ref('')
@@ -13,12 +14,12 @@
   const pwMaxL= 14
   const pwMinL = 8
 
-  const author =localStorage.getItem('token')
+  
   //router
   const myRouter = useRouter();
-  const goHome = () =>
+  const goSignIn= () =>
     myRouter.push({
-      name: "Home"
+      name: "SignIn"
     });
   
   const db = "http://localhost:5000/user"
@@ -162,7 +163,7 @@
       passwordC.value=''
       passwordd.value=''
       isSuccess.value=true
-      setTimeout(()=>(goHome()),5000)
+      setTimeout(()=>(goSignIn()),2000)
       //goHome()
     }else
     if(res.status==400){
@@ -210,13 +211,15 @@
   // }
   </script>
    
-  <template>      
-        <div class="w-fit mx-auto 2xl:w-3/4 xl:w9/12 flex">
+  <template>
+      
+         
+        <div class=" mx-auto w-fit  ">
           <!-- Col -->
           <!-- <div class="w-500 h-auto bg-gray-400 hidden  lg:block 2xl:w-1/2 bg-cover rounded-l-lg"
             style="background-image: url('https://source.unsplash.com/K4mSJ7kc0As/600x800')"></div> -->
           <!-- Col -->
-          <div class="w-fit  mx-auto lg:w-1/2 bg-white p-5 rounded">
+          <div class="w-fit  mx-auto  bg-white p-5 rounded">
             <h3 class="pt-2 text-2xl font-semibold text-gray-600 text-center">Register</h3>
             <form class="px-8 pt-4 pb-4 mb-1 bg-white rounded">
               <div class="mt-1">
@@ -282,6 +285,7 @@
             </form>
           </div>
         </div>
+       
 
       <!-- for submit  -->
     <div id="submit" class="overlay">

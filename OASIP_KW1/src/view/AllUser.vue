@@ -1,6 +1,9 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRouter } from "vue-router";
+import BaseLoading from "../components/BaseLoading.vue"
+
+
 const userList = ref([])
 const userCheck = ref(undefined)
 
@@ -60,8 +63,11 @@ const getAllUser = async () => {
 onBeforeMount( () => {
    getAllUser();
 })
+onMounted(()=>{
+  console.log(userCheck.value)
+})
 
-
+console.log(userCheck.value)
 
 // local storage
 const saveLocal=()=>{
@@ -71,13 +77,18 @@ const saveLocal=()=>{
 </script>
  
 <template>
+  <!-- for loading -->
+  <div v-if="userCheck==undefined" class="  p-5  mx-auto mt-40  ">
+    <BaseLoading :heightt="100" :widthh="100" :thick="15" />
+    
+  </div>
   <!-- for show no user -->
-  <div v-if="userList.length == 0" class="w-64 h-28 p-5  mx-auto mt-10 bg-white rounded-md shadow-xl">
+  <div v-else-if="userCheck==false" class="w-64 h-28 p-5  mx-auto mt-10 bg-white rounded-md shadow-xl">
     <h4 class="text-center w-fit m-auto ">No User</h4>
   </div>
 
   <!-- for show user -->
-  <div v-else class="showUp w-5/6 p-5 pb-7 mx-auto mt-10 bg-white rounded-md shadow-xl overflow-auto">
+  <div v-else-if="userCheck==true" class="showUp w-5/6 p-5 pb-7 mx-auto mt-10 bg-white rounded-md shadow-xl overflow-auto">
     <div class="drop-shadow-2xl bg-white overflow-y-auto mx-auto h-fit" style="height: 440px; width: 100%">
       <table class="table-fixed m-auto md:table-flexed w-full">
         <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

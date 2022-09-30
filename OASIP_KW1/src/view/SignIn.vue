@@ -1,6 +1,8 @@
 <script setup>
 import {ref} from 'vue'
 import { onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
+import BaseNav from '../components/BaseNav.vue'
 const passwordd=ref('')
 const eMail=ref('')
 // const userList=ref([])
@@ -8,6 +10,13 @@ let token=ref(undefined)
 const userCheck=ref(undefined)
 const userLink=`${import.meta.env.BASE_URL}api/users`
 const matchLink =`${import.meta.env.BASE_URL}api/login`
+
+ //router
+ const myRouter = useRouter();
+  const goBooking= () =>
+    myRouter.push({
+      name: "Booking"
+    });
 // //GET user
 // const getAllUser = async () => {
 //   const res = await fetch(userLink);
@@ -47,6 +56,7 @@ const sendd =async ()=>{
     token.value=await res.json()
     // console.log(token.value.jwtToken)
     saveLocal()
+    setTimeout(()=>(goBooking()),2000)
   
   }
   else
@@ -100,10 +110,14 @@ const submitt =()=>{
 // local storage
 const saveLocal=()=>{
   let role = undefined
-  role=decode(token.value.accessToken)
+  let name = undefined
+  role=decode(token.value.accessToken).Roles
+  name=decode(token.value.accessToken).sub
   localStorage.setItem('tokenA',`${token.value.accessToken}`)
   localStorage.setItem('tokenR',`${token.value.refreshToken}`)
-  localStorage.setItem('role',`${role.Roles}`)
+  localStorage.setItem('role',`${role.substring(5)}`)
+  localStorage.setItem('name',`${name}`)
+
 }
 //decode jwt key
 const decode=(token)=>{  
@@ -118,6 +132,8 @@ const decode=(token)=>{
 </script>
  
 <template>
+  
+  
     <div class="mx-auto my-14 max-w-screen-md p-5 pb-7 mx-auto mt-14 bg-gray-200 rounded-md shadow-sm shadow-xl justify-center">
     <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">

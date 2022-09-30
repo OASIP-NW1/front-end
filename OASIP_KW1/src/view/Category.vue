@@ -71,23 +71,23 @@ const saveLocal=()=>{
 
 //เรียงรูปตาม id
 const imgById =(input)=>{
-  const text="src/assets/categorys/"+input+".png"
+  const text="../../src/assets/categorys/"+input+".png"
 return text 
 }
 </script>
 
 <template>
 <div class="mt-8 mx-auto w-4/5">
-  <div class="grid grid-cols-3 gap-4 mx-auto my-auto w-full ">
-    <div v-for="cat in categoryList" class="bg-gray-400 rounded p-5">
+  <ul class="grid grid-cols-3 gap-4 mx-auto my-auto w-full ">
+    <li v-for="(cat,index) in categoryList" class="bg-gray-400 rounded p-5" :key="index">
     
-        <img :src="imgById(cat.id)" alt="Icon" class="mx-auto w-1/3"  />
+        <img :src="'../src/assets/categorys/'+(index+1)+'.png'" alt="Icon" class="mx-auto w-1/3"  />
       <p class="w-fit mx-auto">CategoryName : {{cat.eventCategoryName}}</p>
       <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-3 border border-gray-400 
     rounded shadow justify-center m-2 "  id="button1" @click="goCategoryDetail(cat)">More Details</button>
       
-    </div>
-  </div>
+    </li>
+  </ul>
 </div>
 </template>
  
