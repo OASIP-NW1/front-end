@@ -16,17 +16,17 @@ const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
 
 
 //GET event
-const getStatus = ref(undefined);
+const checkGetEvent = ref(undefined);
 const resGetEvent = ref(undefined);
 // get every 10 sec
 // setInterval(async () => {
-//   getStatus.value = undefined;
+//   checkGetEvent.value = undefined;
 //   resGetEvent.value = await fetch(eventLink);
 //   if (resGetEvent.value.status === 200) {
 //     eventList.value = await resGetEvent.value.json();
-//     getStatus.value = true;
+//     checkGetEvent.value = true;
 //     filterReservationList.value = eventList.value;
-//   } else getStatus.value = false;
+//   } else checkGetEvent.value = false;
 // }, 10000);
 
 // first get event
@@ -43,7 +43,7 @@ const getEvent = async () => {
   if (res.status === 200) {
     eventList.value = await res.json();
     filterReservationList.value = eventList.value;
-    
+    checkGetEvent.value=true
     //console.log(bookingList.value)
   }else if(res.status === 401){
     const ress= await fetch(refreshTLink,{
@@ -61,7 +61,7 @@ const getEvent = async () => {
     }else console.log('something waring to get token')
 
 
-  }
+  }else console.log('can not get event ,something warng');checkGetEvent.value=false
 };
 
 //GET category
@@ -497,8 +497,13 @@ const saveLocal=()=>{
       </div>
     </div>
   </div>
+
   <!-- for booking table -->
   <div class="showUp bg-gray-200 md:inline-block mr-28 mt-16 p-4 rounded-r" style="height: 475px; width: 65%">
+    <div v-if="filterReservationList.length === 0">
+      <h1 class="drop-shadow-2xl mx-auto w-fit my-20 font-semibold">No event</h1>
+    </div>
+
     <div v-if="filterReservationList.length === 0">
       <h1 class="drop-shadow-2xl mx-auto w-fit my-20 font-semibold">No event</h1>
     </div>
@@ -556,7 +561,7 @@ const saveLocal=()=>{
         <strong class="block">Info!</strong> Please input information to filter
       </div>
 
-      <div v-else-if="getStatus == false ||(categoryList.length == 0 && eventList.length == 0)" class="alert warning text-sm">
+      <div v-else-if="checkGetEvent == false &&categoryList.length == 0 " class="alert warning text-sm">
         <strong class="block">Warning!</strong> A system error has occurred,please try again.</div>
     </div>
   </div>
