@@ -40,7 +40,7 @@ console.clear()
  
 <template>
     <nav
-        class=" px-5 mb-5  flex justify-between flex-wrap container mx-auto  items-center bg-gray-500  drop-shadow-md   ">
+        class=" px-5   flex justify-between flex-wrap container mx-auto  items-center bg-gray-500  drop-shadow-md   " style="height:12%">
         
 
         <div class="w-fit m-2 ml-10">

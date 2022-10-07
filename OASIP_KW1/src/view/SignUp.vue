@@ -214,7 +214,7 @@
   <template>
       
          
-        <div class=" mx-auto w-fit  ">
+        <div class=" mx-auto w-fit mt-10 ">
           <!-- Col -->
           <!-- <div class="w-500 h-auto bg-gray-400 hidden  lg:block 2xl:w-1/2 bg-cover rounded-l-lg"
             style="background-image: url('https://source.unsplash.com/K4mSJ7kc0As/600x800')"></div> -->

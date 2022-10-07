@@ -2,6 +2,7 @@
 import { computed } from "@vue/reactivity";
 import { onBeforeMount, onUpdated, ref } from "vue";
 import {useRouter} from 'vue-router'
+import BaseLoading from "../components/BaseLoading.vue";
 
 const categoryList = ref([]);
 const token=ref(undefined)
@@ -77,8 +78,19 @@ return text
 </script>
 
 <template>
-<div class="mt-8 mx-auto w-4/5">
-  <ul class="grid grid-cols-3 gap-4 mx-auto my-auto w-full ">
+  <!-- loading -->
+<div v-if="getStatus==undefined" class="mt-8 m-auto mt-[18%]">
+  <BaseLoading :heightt="90" :widthh="90" :thick="20" />
+</div>
+
+  <!-- no data -->
+  <div v-if="getStatus==false" class="mt-8 m-auto mt-[18%] bg-white w-fit py-6 px-8 border rounded">
+    No data
+  </div>
+
+  <!-- content -->
+<div v-if="getStatus==true" class="mt-[5%] mx-auto w-4/5">
+  <ul class="grid grid-cols-3 gap-4  text-center ">
     <li v-for="(cat,index) in categoryList" class="bg-gray-400 rounded p-5" :key="index">
     
         <img :src="'../src/assets/categorys/'+(index+1)+'.png'" alt="Icon" class="mx-auto w-1/3"  />
@@ -91,11 +103,6 @@ return text
 </div>
 </template>
  
-<style>
-.grid{
-    text-align: center;
-    justify-content: center;
-    margin-left: 15em;
-    margin-top: -2em;
-}
+<style scoped>
+
 </style>

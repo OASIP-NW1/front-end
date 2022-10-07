@@ -2,6 +2,7 @@
 import { computed, onBeforeUpdate } from "vue";
 import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
+import BaseLoading from "../components/BaseLoading.vue";
 const eventList = ref([]);
 const categoryList = ref([]);
 const categoryCheck = ref(false);
@@ -39,12 +40,12 @@ const getEvent = async () => {
       "Authorization":`Bearer ${auther.value}`
     }
   });
-  //const res = await fetch(`${import.meta.env.VITE_BASE_URL}/events?page=0&pageSize=1`)
   if (res.status === 200) {
     eventList.value = await res.json();
     filterReservationList.value = eventList.value;
     checkGetEvent.value=true
-    //console.log(bookingList.value)
+    console.log(checkGetEvent.value)
+    console.log(eventList.value)
   }else if(res.status === 401){
     const ress= await fetch(refreshTLink,{
       method:'GET',
@@ -61,7 +62,11 @@ const getEvent = async () => {
     }else console.log('something waring to get token')
 
 
-  }else console.log('can not get event ,something warng');checkGetEvent.value=false
+  }else{
+    console.log('can not get event ,something warng')
+    checkGetEvent.value=false
+    console.log(checkGetEvent.value)
+  } 
 };
 
 //GET category
@@ -111,9 +116,9 @@ const goReservation = (input) =>
     },
   });
 
-onBeforeMount(async () => {
-  await getEvent();
-  await getCategory();
+onBeforeMount(() => {
+   getEvent();
+   getCategory();
 });
 
 // timer
@@ -424,8 +429,9 @@ const saveLocal=()=>{
 
 <template>
   <!-- for filter -->
-  <div class="showUp md:inline-block  mt-16 bg-gray-200 p-6 ml-20 w-1/4 rounded-l"
-    >
+  <div class="showUp md:inline-block  mt-16 bg-gray-200 p-6 ml-20  rounded-l"
+  style="height: 475px; width: 25%"  
+  >
     <div class="border-gray-500 border-4 border-double w-full">
       <h1 class="mt-4 mb-1 text-xl font-semibold text-gray-600 w-fit m-auto">Filter Booking</h1>
 
@@ -500,15 +506,15 @@ const saveLocal=()=>{
 
   <!-- for booking table -->
   <div class="showUp bg-gray-200 md:inline-block mr-28 mt-16 p-4 rounded-r" style="height: 475px; width: 65%">
-    <div v-if="filterReservationList.length === 0">
+    <div v-if="checkGetEvent==undefined" class="m-auto w-fit mt-[23%]">
+      <BaseLoading :heightt="70" :widthh="70" :thick="15" />
+    </div>
+
+    <div v-if="checkGetEvent==false">
       <h1 class="drop-shadow-2xl mx-auto w-fit my-20 font-semibold">No event</h1>
     </div>
 
-    <div v-if="filterReservationList.length === 0">
-      <h1 class="drop-shadow-2xl mx-auto w-fit my-20 font-semibold">No event</h1>
-    </div>
-
-    <div v-if="filterReservationList.length !== 0" class="drop-shadow-2xl bg-white overflow-y-auto mx-auto h-fit" style="height: 440px; width: 100%">
+    <div v-if="checkGetEvent==true" class="drop-shadow-2xl bg-white overflow-y-auto mx-auto h-fit h-[440px] w-[100%]" >
       <table class="table-fixed m-auto md:table-flexed w-full">
         <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>

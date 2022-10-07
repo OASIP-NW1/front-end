@@ -23,22 +23,22 @@ const routes=[
         component: Public,
         children:[
             {
-                path:'/home',
+                path:'/',
             name:'Home',
             component: Home,
             },
             {
-                path:'/contact-us',
+                path:'contact-us',
                 name:'ContactUs',
                 component: ContactUs
             },
             {   
-                path:'/sign-in',
+                path:'sign-in',
                 name:'SignIn',
                 component: SignIn        
             },
             {   
-                path:'/sign-up',
+                path:'sign-up',
                 name:'SignUp',
                 component: SignUp        
             },

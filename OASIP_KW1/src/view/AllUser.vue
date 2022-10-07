@@ -88,7 +88,13 @@ const saveLocal=()=>{
   </div>
 
   <!-- for show user -->
-  <div v-else-if="userCheck==true" class="showUp w-5/6 p-5 pb-7 mx-auto mt-10 bg-white rounded-md shadow-xl overflow-auto">
+  <div v-else-if="userCheck==true" class="showUp  p-5 pt-10 pb-7 mx-auto  bg-white  overflow-auto">
+    <!-- this for filter -->
+    <div class="mx-auto  bg-gray-400">
+      for filter
+      --
+      --
+    </div>
     <div class="drop-shadow-2xl bg-white overflow-y-auto mx-auto h-fit" style="height: 440px; width: 100%">
       <table class="table-fixed m-auto md:table-flexed w-full">
         <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

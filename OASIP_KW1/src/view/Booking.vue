@@ -2,6 +2,7 @@
 import { computed } from "@vue/reactivity";
 import { onBeforeMount, onUpdated, ref } from "vue";
 import { useRouter } from "vue-router";
+import BaseLoading from "../components/BaseLoading.vue";
 const name = ref("");
 const eMail = ref("");
 const startDate = ref("");
@@ -20,6 +21,7 @@ const eventList = ref([]);
 const categoryList = ref([]);
 const addSuccess = ref(undefined);
 const getStatus = ref(undefined);
+const isSend =ref(false)
 const token=ref(undefined)
 // validate past
 const validateIsPast = ref(undefined);
@@ -216,10 +218,10 @@ const submitt = () => {
       validateIsPast.value = false;
     } else if (overlap()) {
       validateBetweenDate.value = true;
+      isSend.value=true
       //  alert(`event is overlap`)
     } else if (addBooking()) {
       name.value = "";
-      eMail.value = "";
       category.value = "";
       startDate.value = "";
       startTime.value = "";
@@ -271,25 +273,28 @@ const addBooking = async () => {
     body: JSON.stringify({
       bookingName: name.value,
       bookingEmail: eMail.value,
-      eventStartTime: `${startDate.value}T${startTime.value}:00+07:00`,
+      eventStartTime: `${startDate.value}T${startTime.value}:00`,
       eventDuration: parseInt(durationTime.value),
       eventNote: noteText.value,
+      eventCategoryName:category.value ,
       eventCategory:{
         id:parseInt(cateId.value)
         } 
     }),
   });
   console.log(res.status)
-  if (res.status === 200) {
+  if (res.status === 201) {
     addSuccess.value = true;
     createStatus = true;
     isStatus.value = true;
+    isSend.value=false
     setTimeout(() => (addSuccess.value = false), 5000);
   } else if (res.status === 400) {
     validateBetweenDate.value = true;
     isStatus.value = false;
 
   }else if(res.status === 401){
+    isSend.value=false
     const ress= await fetch(refreshTLink,{
       method:'GET',
       headers:{
@@ -308,6 +313,7 @@ const addBooking = async () => {
   } else {
     createStatus = false;
     isStatus.value = false;
+    isSend.value = false
   }
   return createStatus;
 };
@@ -407,9 +413,11 @@ const durationTime = computed(() => {
   return value;
 });
 onBeforeMount(async () => {
+  eMail.value=localStorage.getItem("name")==null?'':localStorage.getItem("name")
   await getCategory();
   await getEvent();
 });
+
 
 // local storage
 const saveLocal=()=>{
@@ -473,6 +481,7 @@ const saveLocal=()=>{
             </div>
             <div>
               <input
+                disabled
                 v-model="eMail"
                 type="email"
                 name="email"
@@ -644,6 +653,10 @@ const saveLocal=()=>{
       </div>
       <!-- for alert -->
       <div class="alert-area">
+        <div v-if="isSend== true" class="alert info text-sm">
+          <span class="closebtn" @click="isSend = false">x</span>
+          <strong class="flex w-fit items-center"><BaseLoading :heightt="15" class="mx-auto w-fit mr-[10px]" />Sending!</strong> Processing please wait.
+        </div>
         <div v-if="validateNameisNotNull == false" class="alert text-sm">
           <span class="closebtn" @click="validateNameisNotNull = true">x</span>
           <strong class="block">Error!</strong> Please input your name.
@@ -711,10 +724,7 @@ const saveLocal=()=>{
           <strong class="block">Warning!</strong> Can't create booking.
         </div>
         <div
-          v-if="
-            getStatus == false ||
-            (categoryList.length == 0 && eventList.length == 0)
-          "
+          v-if=" getStatus == false "
           class="alert warning text-sm"
         >
           <strong class="block">Warning!</strong> A system error has occurred,
@@ -917,4 +927,6 @@ const saveLocal=()=>{
   animation: wii 1s;
   animation-timing-function: ease-in-out;
 }
+
+
 </style>

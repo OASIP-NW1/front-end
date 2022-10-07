@@ -9,7 +9,7 @@ const goSignIn = () => myRouter.push({ name: 'SignIn' })
 
 <template>
  
-  <div class="flex object-cover ">
+  
   <div class="w-3/4 m-auto mt-20 p-10 flex text-gray-100">
     <!--Left Col-->
     <div class="showUp ">
@@ -24,7 +24,7 @@ const goSignIn = () => myRouter.push({ name: 'SignIn' })
 <img src="../assets/login-img.png" alt="picture" id="picture" width="500">
     </div>
   </div>
-  </div>
+
 </template>
 
 <style scoped>
