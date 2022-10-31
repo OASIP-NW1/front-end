@@ -3,6 +3,8 @@ import { computed } from "@vue/reactivity";
 import { onBeforeMount, onUpdated, ref } from "vue";
 import { useRouter } from "vue-router";
 import BaseLoading from "../components/BaseLoading.vue";
+
+// หน้านี้ยังทำไม่ได้เชื่อมกับ db category
 const name = ref("");
 const eMail = ref("");
 const startDate = ref("");
@@ -13,12 +15,54 @@ const cateId = ref("");
 const nameLength = 100;
 const emailLength = 100;
 const noteLength = 500;
+
+
 //const db = "http://localhost:5000/booking";
 const eventLink = `${import.meta.env.BASE_URL}api/events`;
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
 const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
 const eventList = ref([]);
-const categoryList = ref([]);
+
+
+// const categoryList = ref([]);
+const categoryList =ref([{
+        "id": 1,
+        "eventCategoryName": "Project Management Clinic",
+        "eventCategoryDescription": "ตารางนัดหมายนี้ใช้สำหรับนัดหมาย project management clinic ในวิชา INT221 integrated project | ให้นักศึกษาเตรียมเอกสารที่เกี่ยวขงเพื่อแสดงระหว่างขอคำปรึกษา",
+        "eventDuration": 30,
+        "categoryName": "Project Management Clinic"
+    },
+    {
+        "id": 2,
+        "eventCategoryName": "DevOps/Infra Clinic",
+        "eventCategoryDescription": "Use this event category for DevOps/Infra clinic",
+        "eventDuration": 20,
+        "categoryName": "DevOps/Infra Clinic"
+    },
+    {
+        "id": 3,
+        "eventCategoryName": "Database Clinic",
+        "eventCategoryDescription": "ตารางนัดหมายนี้ใช้สำหรับนัดหมาย  database clinic ในวิชา INT221 integrated project |",
+        "eventDuration": 15,
+        "categoryName": "Database Clinic"
+    },
+    {
+        "id": 4,
+        "eventCategoryName": "Client-side Clinic",
+        "eventCategoryDescription": "ตารางนัดหมายนี้ใช้สำหรับนัดหมาย  client-side clinic ในวิชา INT221 integrated project |",
+        "eventDuration": 30,
+        "categoryName": "Client-side Clinic"
+    },
+    {
+        "id": 5,
+        "eventCategoryName": "Server-side Clinic",
+        "eventCategoryDescription": null,
+        "eventDuration": 30,
+        "categoryName": "Server-side Clinic"
+    }
+  ])
+
+
 const addSuccess = ref(undefined);
 const getStatus = ref(undefined);
 const isSend =ref(false)
@@ -261,15 +305,20 @@ const submitt = () => {
 // fetch create
 const isStatus = ref(undefined);
 const addBooking = async () => {
-  const auther=ref(localStorage.getItem('tokenA'))
-  const refreshT=ref(localStorage.getItem('tokenR'))
+ console.log('name:'+name.value)
+ console.log('email:'+eMail.value)
+ console.log('time:'+startDate.value+'T'+startTime.value)
+ console.log('duration:'+durationTime.value)
+ console.log('note:'+noteText.value)
+
+
+
   let createStatus = undefined;
-  console.log(noteText.value)
   const res = await fetch(eventLink, {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "Authorization": `Bearer ${auther.value}`
+      
     },
     body: JSON.stringify({
       bookingName: name.value,
@@ -279,7 +328,8 @@ const addBooking = async () => {
       eventNote: noteText.value,
       eventCategoryName:category.value ,
       eventCategory:{
-        id:parseInt(cateId.value)
+        id:parseInt(cateId.value),
+        eventCategoryName:category.value
         } 
     }),
   });
@@ -293,66 +343,23 @@ const addBooking = async () => {
   } else if (res.status === 400) {
     validateBetweenDate.value = true;
     isStatus.value = false;
-
-  }else if(res.status === 401){
-    isSend.value=false
-    const ress= await fetch(refreshTLink,{
-      method:'GET',
-      headers:{
-        "Authorization":`Bearer ${refreshT.value}`
-      }
-    });
-
-    if(ress.status === 200){
-      token.value =await ress.json()
-      saveLocal()
-      console.log('refresh token successful')
-      addBooking()
-    }else console.log('something waring to get token')
-
-
-  } else {
-    createStatus = false;
-    isStatus.value = false;
-    isSend.value = false
   }
   return createStatus;
 };
+
+
 //GET category
 // first get Category
-const getCategory = async () => {
-  const auther=ref(localStorage.getItem('tokenA'))
-  const refreshT=ref(localStorage.getItem('tokenR'))
-  const res = await fetch(categoryLink,{
-    method:'GET',
-    headers:{
-      "Authorization":`Bearer ${auther.value}`
-    }
-  });
-  if (res.status === 200) {
-    categoryList.value = await res.json();
-    getStatus.value = true;
-  }else
-  if(res.status === 401){
-    const ress= await fetch(refreshTLink,{
-      method:'GET',
-      headers:{
-        "Authorization":`Bearer ${refreshT.value}`
-      }
-    });
+// const getCategory = async () => {
+//   const res = await fetch(categoryLink,{
+//     method:'GET'
+//   });
+//   if (res.status === 200) {
+//     categoryList.value = await res.json();
+//     getStatus.value = true;
+//   }
+// };
 
-    if(ress.status === 200){
-      token.value =await ress.json()
-      saveLocal()
-      console.log('refresh token successful')
-      getCategory()
-    }else console.log('something waring to get token')
-
-
-  } else {
-    getStatus.value = false;
-  }
-};
 // get event
 // const resGetEvent = ref(undefined);
 //const countGetEvent=ref(0)
@@ -371,37 +378,19 @@ const getCategory = async () => {
 //   } else getStatus.value = false;
 // }, 10000);
 // first get event
-const getEvent = async () => {
-  const auther=ref(localStorage.getItem('tokenA'))
-  const refreshT=ref(localStorage.getItem('tokenR'))
-  const res = await fetch(eventLink,{
-    method:'GET',
-    headers:{
-      "Authorization":`Bearer ${auther.value}`
-    }
-  });
-  if (res.status === 200) {
-    eventList.value = await res.json();
-    getStatus.value = true;
-  }else
-  if(res.status === 401){
-    const ress= await fetch(refreshTLink,{
-      method:'GET',
-      headers:{
-        "Authorization":`Bearer ${refreshT.value}`
-      }
-    });
 
-    if(ress.status === 200){
-      token.value =await ress.json()
-      saveLocal()
-      console.log('refresh token successful')
-      getEvent()
-    }else console.log('something waring to get token')
+// const getEvent = async () => {
 
+//   const res = await fetch(eventLink,{
+//     method:'GET',
 
-  } else getStatus.value = false;
-};
+//   });
+//   if (res.status === 200) {
+//     eventList.value = await res.json();
+//     getStatus.value = true;
+//   }
+// };
+
 //get duration
 const durationTime = computed(() => {
   let value = undefined;
@@ -413,11 +402,11 @@ const durationTime = computed(() => {
   }
   return value;
 });
-onBeforeMount(async () => {
-  eMail.value=localStorage.getItem("name")==null?'':localStorage.getItem("name")
-  await getCategory();
-  await getEvent();
-});
+// onBeforeMount(async () => {
+//   // eMail.value=localStorage.getItem("name")==null?'':localStorage.getItem("name")
+//   await getCategory();
+//   await getEvent();
+// });
 
 
 // local storage
@@ -482,7 +471,7 @@ const saveLocal=()=>{
             </div>
             <div>
               <input
-                disabled
+                
                 v-model="eMail"
                 type="email"
                 name="email"

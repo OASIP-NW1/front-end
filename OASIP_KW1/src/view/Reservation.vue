@@ -17,6 +17,8 @@ const startTime = ref("");
 const duration = ref("");
 const noteT = ref("");
 const detailBooking = ref({});
+const catId=ref("")
+const catName=ref("")
 const eventList=ref([])
 const isNotNull = ref(false);
 const myRouoter = useRouter();
@@ -115,17 +117,21 @@ const getDetail = async () => {
   if (res.status === 200) {
     detailBooking.value = await res.json();
     //console.log(detailBooking.value);
-
+    console.log(detailBooking.value)
     //console.log(Date.parse("2022-06-01T15:00:00+07:00"));
-    if (detailBooking.value.id == id) {
+     if ( detailBooking.value.id == id) {
       isNotNull.value = true;
-      name.value = detailBooking.value.bookingName;
-      eMail.value = detailBooking.value.bookingEmail;
-      category.value = detailBooking.value.eventCategoryName;
-      startDate.value = detailBooking.value.eventStartTime.substring(0, 10);
-      startTime.value = detailBooking.value.eventStartTime.substring(11, 16);
-      duration.value = detailBooking.value.eventDuration;
-      noteT.value = detailBooking.value.eventNote;
+      name.value =  detailBooking.value.bookingName;
+      eMail.value =  detailBooking.value.bookingEmail;
+      category.value =  detailBooking.value.eventCategoryName;
+      // startDate.value = `${detailBooking.value.eventStartTime[0]}-${detailBooking.value.eventStartTime[1]<10?`0${detailBooking.value.eventStartTime[1]}`:detailBooking.value.eventStartTime[1]}-${detailBooking.value.eventStartTime[2]<10?`0${detailBooking.value.eventStartTime[2]}`:detailBooking.value.eventStartTime[2]}`
+      startDate.value = detailBooking.value.eventStartTime.substring(0,10)
+      // startTime.value = `${detailBooking.value.eventStartTime[3]<10?`0${detailBooking.value.eventStartTime[3]}`:detailBooking.value.eventStartTime[3]}:${detailBooking.value.eventStartTime[4]<10?`0${detailBooking.value.eventStartTime[4]}`:detailBooking.value.eventStartTime[4]}`
+      startTime.value =detailBooking.value.eventStartTime.substring(11,16)
+      duration.value =  detailBooking.value.eventDuration;
+      noteT.value =  detailBooking.value.eventNote;
+      catId.value=  detailBooking.value.eventCategoryId;
+      catName.value=  detailBooking.value.eventCategoryName;
     }
   }else if(res.status === 401){
     const ress= await fetch(refreshTLink,{
@@ -146,9 +152,9 @@ const getDetail = async () => {
   }
 };
 
-onBeforeMount(async()=>{
-        await  getEvent()
-       await getDetail()
+onBeforeMount(()=>{
+          getEvent()
+        getDetail()
 });
 
 //remove information
@@ -205,6 +211,11 @@ const cancel = () => {
 const edit =async(input)=>{
   const auther=ref(localStorage.getItem('tokenA'))
   const refreshT=ref(localStorage.getItem('tokenR'))
+  console.log("edit:"+editStartDate.value)
+  console.log(startDate.value)
+  console.log("edit:"+editStartTime.value)
+  console.log(startTime.value)
+  console.log(editNote.value)
   //console.log(`${editStartDate.value}T${editStartTime.value}:00+07:00`)
        let canEdit=undefined
         const res = await fetch(`${eventLink}/${id}`, {
@@ -215,9 +226,9 @@ const edit =async(input)=>{
         },
         body: JSON.stringify({
 
-          eventStartTime: `${editStartDate.value}T${editStartTime.value}:00+07:00`,
-          eventNote: editNote.value
-          
+          eventStartTime: `${editStartDate.value} ${editStartTime.value}:00`,
+          eventNote: editNote.value,
+        
         }),
       });
       if (res.status == 200) {

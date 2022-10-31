@@ -48,6 +48,7 @@ const getCategory = async () => {
       saveLocal()
       console.log('refresh token successful')
       getCategory()
+      console.log(categoryList.value)
     }else console.log('something waring to get token')
 
 

@@ -14,7 +14,7 @@ import DetailCategory from '../view/DetailCategory.vue'
 import EditCategory from '../view/EditCategory.vue'
 import Main from '../view/Main.vue'
 import Public from '../view/public.vue'
-
+import GuessUser from '../view/GuessUser.vue'
 const history=createWebHistory(import.meta.env.BASE_URL)
       
 const routes=[
@@ -42,9 +42,15 @@ const routes=[
                 name:'SignUp',
                 component: SignUp        
             },
+            {
+                path:'/guess-user',
+                name:'GuessUser',
+                component: GuessUser
+            },
 
         ]
     },
+   
     
     {
         path:'/account/',
