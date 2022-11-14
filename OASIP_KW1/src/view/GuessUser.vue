@@ -323,13 +323,14 @@ const addBooking = async () => {
     body: JSON.stringify({
       bookingName: name.value,
       bookingEmail: eMail.value,
-      eventStartTime: `${startDate.value}T${startTime.value}:00`,
+      eventStartTime: `${startDate.value} ${startTime.value}:00`,
       eventDuration: parseInt(durationTime.value),
       eventNote: noteText.value,
-      eventCategoryName:category.value ,
       eventCategory:{
         id:parseInt(cateId.value),
-        eventCategoryName:category.value
+        eventCategoryName:category.value,
+        eventCategoryDescription:getCatD.value,
+        eventDuration:parseInt(durationTime.value),
         } 
     }),
   });
@@ -415,6 +416,17 @@ const saveLocal=()=>{
   localStorage.setItem('tokenA',`${token.value.accessToken}`)
   localStorage.setItem('tokenR',`${token.value.refreshToken}`)
 }
+
+// getdescription
+const getCatD =computed(()=>{
+  let des = undefined
+  for(let v of categoryList.value){
+    if(cateId.value==v.id){
+      des=v.eventCategoryDescription
+    }
+  }
+ return des;
+})
 </script>
 <template>
   <div class="showUp container mx-auto">
