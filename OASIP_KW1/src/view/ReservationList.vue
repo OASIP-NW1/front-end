@@ -44,7 +44,7 @@ const getEvent = async () => {
     eventList.value = await res.json();
     filterReservationList.value = eventList.value;
     checkGetEvent.value=true
-    
+    console.log(eventList.value)
   }else if(res.status === 401){
     const ress= await fetch(refreshTLink,{
       method:'GET',
