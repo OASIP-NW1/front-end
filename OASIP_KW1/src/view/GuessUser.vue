@@ -310,17 +310,9 @@ const addBooking = async () => {
  console.log('time:'+startDate.value+'T'+startTime.value)
  console.log('duration:'+durationTime.value)
  console.log('note:'+noteText.value)
-
-
-
-  let createStatus = undefined;
-  const res = await fetch(eventLink, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      
-    },
-    body: JSON.stringify({
+ let formData = new FormData()
+  const blob = new Blob([
+  JSON.stringify({
       bookingName: name.value,
       bookingEmail: eMail.value,
       eventStartTime: `${startDate.value} ${startTime.value}:00`,
@@ -333,6 +325,19 @@ const addBooking = async () => {
         eventDuration:parseInt(durationTime.value),
         } 
     }),
+    ],{type:'application/json'})
+
+    formData.append('eventDTO',blob)
+
+
+  let createStatus = undefined;
+  const res = await fetch(eventLink, {
+    method: "POST",
+    // headers: {
+    //   "content-type": "application/json",
+      
+    // },
+    body: formData
   });
   console.log(res.status)
   if (res.status === 201) {
