@@ -10,9 +10,79 @@ const category = ref("");
 const startTime = ref("");
 const noteText = ref("");
 const cateId = ref("");
+const file=ref(undefined)
 const nameLength = 100;
 const emailLength = 100;
 const noteLength = 500;
+// form-data
+//  let formEl = document.getElementById("form")
+// // const newData =new FormData()
+// const blob =ref(undefined)
+// const data = ref()
+
+const fileStatus=ref(undefined)
+const uploadFile =(event)=>{
+
+  if(file.value==undefined){
+    if(event.target.files[0].size>10000000){
+    console.log("file too big")
+    document.getElementById('file').value=''
+    fileStatus.value=false
+  }else{
+    file.value=event.target.files[0]
+    fileStatus.value=true
+    console.log(file.value)
+  }
+  }else if(file.value!=undefined){
+    let nameF = file.value.name.toString()
+    if(event.target.files[0].size>10000000){
+    console.log("The file size cannot be larger then 10 MB ")
+    
+    document.getElementById('file').name='hello'
+    
+  }else{
+    file.value=event.target.files[0]
+    fileStatus.value=true
+    console.log(file.value)
+    console.log('new file selected')
+
+  }
+  }
+
+ 
+
+}
+const removeFile=()=>{
+file.value=undefined
+document.getElementById('file').value=''
+console.log("file is removed")
+console.log(file.value)
+}
+
+const convertToFormData =()=>{
+  const text=JSON.stringify({
+      bookingName: name.value,
+      bookingEmail: eMail.value,
+      eventStartTime: `${startDate.value} ${startTime.value}:00`,
+      eventDuration: parseInt(durationTime.value),
+      eventNote: noteText.value,
+      eventCategory:{
+        id:parseInt(cateId.value),
+        eventCategoryName:category.value,
+        eventCategoryDescription:getCatD.value,
+        eventDuration:parseInt(durationTime.value),
+        } 
+      })
+     blob.value=new Blob([text],{type:'application/json'})
+       
+     formData.append('eventDTO',blob.value)
+
+     console.log(blob.value)
+     
+      
+
+
+}
 //const db = "http://localhost:5000/booking";
 const eventLink = `${import.meta.env.BASE_URL}api/events`;
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
@@ -220,6 +290,9 @@ const submitt = () => {
       validateBetweenDate.value = true;
       isSend.value=true
       //  alert(`event is overlap`)
+
+    }else if(fileStatus.value==false){
+      console.log('file is too large 10MB')
     } else if (addBooking()) {
       name.value = "";
       category.value = "";
@@ -264,24 +337,59 @@ const addBooking = async () => {
   const auther=ref(localStorage.getItem('tokenA'))
   const refreshT=ref(localStorage.getItem('tokenR'))
   let createStatus = undefined;
-  console.log(noteText.value)
+  let formData = new FormData()
+  const blob = new Blob([
+    JSON.stringify({
+      bookingName: name.value.trim(),
+      bookingEmail: eMail.value.trim(),
+      eventStartTime: `${startDate.value} ${startTime.value}:00`,
+      eventDuration: parseInt(durationTime.value),
+      eventNote: noteText.value.trim(),
+      eventCategory:{
+        id:parseInt(cateId.value),
+        eventCategoryName:category.value,
+        eventCategoryDescription:getCatD.value,
+        eventDuration:parseInt(durationTime.value),
+        } 
+      })
+    ],{type:'application/json'})
+
+    formData.append('eventDTO',blob)
+    if(fileStatus.value==true){
+      formData.append('file',file.value)
+    }
+  console.log(name.value)
+  console.log(eMail.value)
+  console.log(`${startDate.value} ${startTime.value}:00`)
+  console.log(parseInt(durationTime.value))
+  console.log(getCatD.value)
+  console.log(cateId.value)
+  
+  // console.log(document.getElementsByName('note').value)
+  
   const res = await fetch(eventLink, {
     method: "POST",
     headers: {
-      "content-type": "application/json",
+      // "Content-Type": "multipart/form-data",
+      //  "Content-Type":"application/json",
+      // "Content-Type": "application/x-www-form-urlencoded",
       "Authorization": `Bearer ${auther.value}`
     },
-    body: JSON.stringify({
-      bookingName: name.value,
-      bookingEmail: eMail.value,
-      eventStartTime: `${startDate.value}T${startTime.value}:00`,
-      eventDuration: parseInt(durationTime.value),
-      eventNote: noteText.value,
-      eventCategoryName:category.value ,
-      eventCategory:{
-        id:parseInt(cateId.value)
-        } 
-    }),
+    body:formData
+    // JSON.stringify({
+    //   bookingName: name.value,
+    //   bookingEmail: eMail.value,
+    //   eventStartTime: `${startDate.value} ${startTime.value}:00`,
+    //   eventDuration: parseInt(durationTime.value),
+    //   eventNote: noteText.value,
+    //   eventCategory:{
+    //     id:parseInt(cateId.value),
+    //     eventCategoryName:category.value,
+    //     eventCategoryDescription:getCatD.value,
+    //     eventDuration:parseInt(durationTime.value),
+    //     } 
+    //   })
+    ,
   });
   console.log(res.status)
   if (res.status === 201) {
@@ -332,6 +440,9 @@ const getCategory = async () => {
   if (res.status === 200) {
     categoryList.value = await res.json();
     getStatus.value = true;
+    console.log(categoryList.value)
+    
+    console.log(document.getElementById('form'))
   }else
   if(res.status === 401){
     const ress= await fetch(refreshTLink,{
@@ -426,6 +537,17 @@ const saveLocal=()=>{
   localStorage.setItem('tokenA',`${token.value.accessToken}`)
   localStorage.setItem('tokenR',`${token.value.refreshToken}`)
 }
+
+// getdescription
+const getCatD =computed(()=>{
+  let des = undefined
+  for(let v of categoryList.value){
+    if(cateId.value==v.id){
+      des=v.eventCategoryDescription
+    }
+  }
+ return des;
+})
 </script>
 <template>
   <div class="showUp container mx-auto">
@@ -438,7 +560,10 @@ const saveLocal=()=>{
           Fill up the form below to send a online appointment.
         </p>
       </div>
-      <div>
+      <!-- testing -->
+      
+      <form id="form">
+      <div >
         <!-- name -->
         <div class="my-3 inline-flex px-4 w-full">
           <div class="inline-block m-auto">
@@ -455,6 +580,7 @@ const saveLocal=()=>{
             </div>
             <div>
               <input
+                
                 v-model="name"
                 type="text"
                 name="name"
@@ -517,6 +643,7 @@ const saveLocal=()=>{
                 :style="[
                   validateCategoryisNotNull == false ? 'border-color:red' : '',
                 ]"
+                name="category"
                 class="text-ellipsis overflow-hidden cursor-pointer w-64 font-medium px-3 py-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
                 v-model="category"
               >
@@ -544,6 +671,7 @@ const saveLocal=()=>{
             <div class="px-3 w-full m-auto">
               <input
                 id="date"
+                name="date"
                 :min="minDate"
                 :style="[
                   validateStartDateisNotNull == false ? 'border-color:red' : '',
@@ -558,10 +686,12 @@ const saveLocal=()=>{
           <div class="w-fit inline-block">
             <div class="pr-2 w-full">
               <div class="inline-block font-medium text-sm text-gray-600">
-                Start time
+                <label for="time"> Start time</label>
               </div>
               <div class="w-full">
                 <input
+                  id="time"
+                  name="time"
                   :style="[
                     validateStartTimeisNotNull == false
                       ? 'border-color:red'
@@ -579,12 +709,14 @@ const saveLocal=()=>{
             <div class="pr-2 w-full">
               <label
                 class="font-medium pr-2 focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
-                for="time"
+                for="duration"
                 >Duration
               </label>
             </div>
             <div class="pr-3 w-full">
               <input
+                id="duration"
+                name="duration"
                 disabled
                 class="w-14 px-3 py-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
                 type="text"
@@ -596,6 +728,9 @@ const saveLocal=()=>{
             </div>
           </div>
         </div>
+        <!-- upload file -->
+        <input type="file" id="file"  name="file" @change="uploadFile" />
+        <button @click="removeFile">remove file</button>
         <!-- note & button-->
         <div class="inline-flex w-full px-4">
           <!-- note -->
@@ -611,7 +746,7 @@ const saveLocal=()=>{
             <textarea
               :style="[noteText.length > noteLength ? 'border-color:red' : '']"
               id="textA"
-              name="textA"
+              name="note"
               rows="4"
               cols="50"
               class="w-full block px-3 py-2 placeholder-gray-300 border border-gray-400 resize-none rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
@@ -629,8 +764,11 @@ const saveLocal=()=>{
               Submit !
             </a>
           </div>
+          <!-- testing button -->
+          <button @click="testingB">testing</button>
         </div>
       </div>
+    </form>
       <!-- for submit  -->
       <div id="submit" class="overlay">
         <div class="popup2 h-96">
