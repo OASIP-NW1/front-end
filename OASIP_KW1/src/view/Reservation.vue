@@ -5,8 +5,6 @@ import { onBeforeMount, ref } from "vue";
 const { params } = useRoute();
 
 //const db = "http://localhost:5000/booking";
-const eventLink = `${import.meta.env.BASE_URL}api/events`;
-const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
 const token=ref(undefined)
 const id = params.id;
 const name = ref("");
@@ -16,6 +14,7 @@ const startDate = ref("");
 const startTime = ref("");
 const duration = ref("");
 const noteT = ref("");
+const fileName=ref("")
 const detailBooking = ref({});
 const catId=ref("")
 const catName=ref("")
@@ -23,7 +22,10 @@ const eventList=ref([])
 const isNotNull = ref(false);
 const myRouoter = useRouter();
 const goReservation = () => myRouoter.push({ name: "ReservationList" });
-
+// link
+const eventLink = `${import.meta.env.BASE_URL}api/events`;
+const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
+const dowloadFileLink =`${import.meta.env.BASE_URL}api/downloadFile`
 // timer
 const day = ref();
 const month = ref();
@@ -84,7 +86,9 @@ const getEvent =async()=>{
  })
   if (res.status === 200) {
     eventList.value = await res.json();
+    getFileName();
     getStatus.value = true;
+    
   }else if(res.status === 401){
     const ress= await fetch(refreshTLink,{
       method:'GET',
@@ -132,6 +136,7 @@ const getDetail = async () => {
       noteT.value =  detailBooking.value.eventNote;
       catId.value=  detailBooking.value.eventCategoryId;
       catName.value=  detailBooking.value.eventCategoryName;
+      
     }
   }else if(res.status === 401){
     const ress= await fetch(refreshTLink,{
@@ -216,20 +221,25 @@ const edit =async(input)=>{
   console.log("edit:"+editStartTime.value)
   console.log(startTime.value)
   console.log(editNote.value)
+  let formData = new FormData()
+  
+  const blob = new Blob([
+    ],{type:'application/json'})
+formData.append('updateEvent',JSON.stringify({
+
+eventStartTime: `${editStartDate.value} ${editStartTime.value}:00`,
+eventNote: editNote.value,
+
+}))
   //console.log(`${editStartDate.value}T${editStartTime.value}:00+07:00`)
        let canEdit=undefined
         const res = await fetch(`${eventLink}/${id}`, {
         method: "PUT",
         headers: {
-          "content-type": "application/json",
+          // "content-type": "application/json",
           "Authorization":`Bearer ${auther.value}`
         },
-        body: JSON.stringify({
-
-          eventStartTime: `${editStartDate.value} ${editStartTime.value}:00`,
-          eventNote: editNote.value,
-        
-        }),
+        body: formData
       });
       if (res.status == 200) {
         getDetail()
@@ -258,6 +268,44 @@ const edit =async(input)=>{
               editSuccess.value=false
        }
        return canEdit
+}
+
+const data =ref(undefined)
+// get file for dowload
+const getFileName=async()=>{
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
+  
+  for(let event of eventList.value){
+    if(event.id==id){
+      console.log(event.fileName)
+      fileName.value=event.fileName
+    }
+  }
+  
+  console.log(dowloadFileLink)
+   const res =await fetch(`${import.meta.env.BASE_URL}api/downloadFile/${id}/${fileName.value}`,{
+    method:'GET',
+    headers:{
+      'Authorization':`Bearer ${auther.value}`
+    }
+  })
+  .then((res)=>{return res.blob()})
+  .then((blob)=>{
+    const url = window.URL.createObjectURL(blob);
+    const a = document.getElementById("dowload")
+      a.href=url
+      // window.URL.revokeObjectURL(url)
+    // let text = document.createTextNode("dowload here")
+    // let element = document.getElementById("dowload")
+    // a.appendChild(text)
+    // a.href =window.URL.createObjectURL(data)
+    // a.document.
+    // a.download
+    // element.appendChild(a)
+    
+  })
+ 
 }
 
 // submit
@@ -496,6 +544,9 @@ const saveLocal=()=>{
           </div>
         </div>
       </div>
+      <!-- dowload file -->
+      
+      <a id="dowload" @click="getFileName" :download="fileName">dowload file here</a>
       <!-- note -->
       <div class="ml-2 flex my-4 w-full">
         <div
