@@ -21,27 +21,27 @@ const noteLength = 500;
 // const data = ref()
 
 const fileStatus=ref(undefined)
+const fileName=ref("")
 const uploadFile =(event)=>{
 
   if(file.value==undefined){
-    if(event.target.files[0].size>10000000){
+    if(event.target.files[0].size>10000001){
     console.log("file too big")
-    document.getElementById('file').value=''
+    fileName.value=""
     fileStatus.value=false
-  }else{
+    }else{
     file.value=event.target.files[0]
+    fileName.value=file.value.name
     fileStatus.value=true
     console.log(file.value)
   }
   }else if(file.value!=undefined){
-    let nameF = file.value.name.toString()
+
     if(event.target.files[0].size>10000000){
     console.log("The file size cannot be larger then 10 MB ")
-    
-    document.getElementById('file').name='hello'
-    
-  }else{
+    }else{
     file.value=event.target.files[0]
+    fileName.value=file.value.name
     fileStatus.value=true
     console.log(file.value)
     console.log('new file selected')
@@ -54,7 +54,7 @@ const uploadFile =(event)=>{
 }
 const removeFile=()=>{
 file.value=undefined
-document.getElementById('file').value=''
+fileName.value=""
 console.log("file is removed")
 console.log(file.value)
 }
@@ -729,8 +729,18 @@ const getCatD =computed(()=>{
           </div>
         </div>
         <!-- upload file -->
-        <input type="file" id="file"  name="file" @change="uploadFile" />
-        <button @click="removeFile">remove file</button>
+          <div class="w-fit inline-block">
+            <label for="file" class="cursor-pointer w-fit mx-4">
+              <span class="w-fit">attech file here :</span> 
+              <input type="file" id="file" class="hidden" name="file" @change="uploadFile" />
+              <span v-if="fileName.length!=0">{{fileName}}</span>
+              <span v-if="fileName.length==0">ยังไม่ได้เลือกไฟล์</span>
+            </label>
+              <span v-if="fileName.length!=0" @click="removeFile" class="cursor-pointer bg-rose-500">remove file</span>
+          </div>
+        
+
+        
         <!-- note & button-->
         <div class="inline-flex w-full px-4">
           <!-- note -->
