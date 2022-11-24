@@ -37,7 +37,7 @@ const uploadFile =(event)=>{
   }
   }else if(file.value!=undefined){
 
-    if(event.target.files[0].size>10000000){
+    if(event.target.files[0].size>10000001){
     console.log("The file size cannot be larger then 10 MB ")
     }else{
     file.value=event.target.files[0]
