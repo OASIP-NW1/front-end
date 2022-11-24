@@ -22,11 +22,13 @@ onBeforeMount(()=>{
     const goCategory = () => myRouter.push({ name: 'Category' })
     const goReservationList = () => myRouter.push({ name: 'ReservationList' })
     const goAllUser = () => myRouter.push({ name: 'AllUser' })
+    const goSignUp = () => myRouter.push({ name: 'SignUp' })
+
 </script>
     
 <template>
         <div id="bg_color" class="h-full">
-            <BaseNav   :logOut="true" :link="false"   />
+            <BaseNav   :logOut="true" :link="false"  :signUp="false" />
             <div class="  flex" style="height:88%">
                     <div class="bg-gray-700 pt-2 px-4 w-[15%]" >
                         <div class="w-[80%] mx-auto mt-10 text-xl text-gray-500">
@@ -49,6 +51,11 @@ onBeforeMount(()=>{
                                 <li v-if="checkRole=='admin'?true:false" class=" text-center my-5 p-2 border-b-2  hover:font-semibold hover:text-gray-200 hover:text-[22px]  border-gray-500 hover:border-b-3 hover:border-gray-400">
                                     <button @click="goAllUser" class="focus:text-rose-200 focus:text-[22px] focus:font-semibold">
                                     Show all user                                        
+                                    </button>
+                                </li>
+                                <li v-if="checkRole=='admin'?true:false" class=" text-center my-5 p-2 border-b-2  hover:font-semibold hover:text-gray-200 hover:text-[22px]  border-gray-500 hover:border-b-3 hover:border-gray-400">
+                                    <button @click="goSignUp" class="focus:text-rose-200 focus:text-[22px] focus:font-semibold">
+                                    Sign up                                        
                                     </button>
                                 </li>
                             </ul>
