@@ -37,11 +37,6 @@ const routes=[
                 name:'SignIn',
                 component: SignIn        
             },
-            {   
-                path:'sign-up',
-                name:'SignUp',
-                component: SignUp        
-            },
             {
                 path:'/guess-user',
                 name:'GuessUser',
@@ -91,7 +86,12 @@ const routes=[
             path:'/account/all-user',
             name:'AllUser',
             component: AllUser
-        }
+        },
+        {   
+            path:'sign-up',
+            name:'SignUp',
+            component: SignUp        
+        },
 
         ]
     },
