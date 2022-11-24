@@ -4,7 +4,7 @@ import BaseNav from '../components/BaseNav.vue'
  
 <template>
     <div id="bg_color" class="h-full">
-        <BaseNav :signIn="true" :signUp="true" :contractUs="true" :home="true" />
+        <BaseNav :signIn="true" :signUp="false" :contractUs="true" :home="true" />
         <div class="flex object-cover h-[88%]">
             <router-view></router-view>
         </div>
