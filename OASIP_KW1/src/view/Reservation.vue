@@ -270,7 +270,7 @@ eventNote: editNote.value,
        return canEdit
 }
 
-const data =ref(undefined)
+
 // get file for dowload
 const getFileName=async()=>{
   const auther=ref(localStorage.getItem('tokenA'))
@@ -283,13 +283,15 @@ const getFileName=async()=>{
     }
   }
   
-  console.log(dowloadFileLink)
-   const res =await fetch(`${import.meta.env.BASE_URL}api/downloadFile/${id}/${fileName.value}`,{
+  if(fileName.value!=null){
+  // console.log(dowloadFileLink)
+   const res =await fetch(`${dowloadFileLink}/${id}/${fileName.value}`,{
     method:'GET',
     headers:{
       'Authorization':`Bearer ${auther.value}`
     }
   })
+  
   .then((res)=>{return res.blob()})
   .then((blob)=>{
     const url = window.URL.createObjectURL(blob);
@@ -305,7 +307,25 @@ const getFileName=async()=>{
     // element.appendChild(a)
     
   })
- 
+  .catch(async(res)=>{
+    
+     if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getFileName()
+    }else console.log('something waring to get token')
+  } else console.log("error");
+  })
+  }
 }
 
 // submit
@@ -545,8 +565,13 @@ const saveLocal=()=>{
         </div>
       </div>
       <!-- dowload file -->
+      <div v-if="fileName!=null" class="px-3 w-fit">
+        <div class="pr-2 font-semibold inline-block m-auto text-gray-400">
+            File dowload : 
+          </div>
+        <a id="dowload" @click="getFileName" :download="fileName" class="cursor-pointer" >{{fileName}}</a>
+      </div>
       
-      <a id="dowload" @click="getFileName" :download="fileName">dowload file here</a>
       <!-- note -->
       <div class="ml-2 flex my-4 w-full">
         <div
