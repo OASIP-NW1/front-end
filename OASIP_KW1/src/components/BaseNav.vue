@@ -40,8 +40,8 @@ console.clear()
  
 <template>
     <nav
-        class=" px-5   flex justify-between flex-wrap container mx-auto  items-center bg-gray-500  drop-shadow-md   " style="height:12%">
-        
+        class="  bg-gray-500  drop-shadow-md   w-[100%]" >
+        <div class="px-5   flex justify-between flex-wrap container mx-auto  items-center">
 
         <div class="w-fit m-2 ml-10">
             <img src="../assets/icon.png" alt="LOGO" :style="logoSize" class="w-fit "/>
@@ -73,7 +73,7 @@ console.clear()
 
 
         
-
+        </div>
     </nav>
 
 
