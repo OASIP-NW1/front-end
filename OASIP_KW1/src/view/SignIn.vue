@@ -4,7 +4,8 @@ import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import BaseNav from '../components/BaseNav.vue'
 import { UserAgentApplication } from "msal" ;
-import * as Msal from "msal"
+
+import * as msal from 'msal';
 const passwordd=ref('')
 const eMail=ref('')
 // const userList=ref([])
@@ -143,44 +144,76 @@ const decode=(token)=>{
 // login with teams
 
 
-const msalConfig = {
-    auth: {
-        clientId: "e619ab10-290f-4dac-8376-057510c4030b",
-        authority: "https://login.microsoftonline.com/6f4432dc-20d2-441d-b1db-ac3380ba633d",
-        redirectURI: "http://localhost:3000/"
-    },
-    cache: {
-        cacheLocation: "localStorage", // This configures where your cache will be stored
+// const msalConfig = {
+//     auth: {
+//         clientId: "53b435c8-401e-4918-b208-1c69a8afda13",
+//         authority: "https://login.microsoftonline.com/6f4432dc-20d2-441d-b1db-ac3380ba633d",
+//         redirectURI: "http://localhost:3000/sign-in"
+//     },
+//     cache: {
+//         cacheLocation: "localStorage", // This configures where your cache will be stored
+//         storeAuthStateInCookie: true,
+//         popUp:true // Set this to "true" if you are having issues on IE11 or Edge
+//     }
+// };
+
+const userAgentApplication = ref(new msal.UserAgentApplication({
+      auth: {
+        clientId: 'b71c8c6b-d658-4ed5-a8bd-8d7866a28b2f',
+        authority: 'https://login.microsoftonline.com/6f4432dc-20d2-441d-b1db-ac3380ba633d',
+        redirectUri: 'http://localhost:3000/sign-in',
+      },
+      cache: {
+        cacheLocation: 'localStorage',
         storeAuthStateInCookie: true,
-        popUp:true // Set this to "true" if you are having issues on IE11 or Edge
+      },
+    }));
+
+function signIn() {
+      userAgentApplication.value.loginPopup(['user.read']).then(function (idToken) {
+        // User is now signed in
+        console.log(idToken);
+      }).catch(function (error) {
+        console.log(error);
+      });
     }
-};
 
+    function signOut() {
+      userAgentApplication.value.logout();
+    }
 
-var requestObj = {
-    scopes: ["user.read"]
-};
+    function getAccessToken() {
+      userAgentApplication.value.acquireTokenSilent(['user.read']).then(function (accessToken) {
+        // Use the access token to make API calls
+        console.log(accessToken);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+// var requestObj = {
+//     scopes: ["user.read"]
+// };
 
-var myMSALObj = new UserAgentApplication(msalConfig);
+// var myMSALObj = new UserAgentApplication(msalConfig);
 
-var login = async () => {
-    var authResult = await myMSALObj.loginPopup(requestObj);
-    accoutMicro.value = authResult.account
-    localStorage.setItem('MSTToken',authResult.idToken.rawIdToken)
-    console.log(authResult.idToken.rawIdToken)
-    console.log(authResult);
+// var login = async () => {
+//     var authResult = await myMSALObj.loginPopup(requestObj);
+//     accoutMicro.value = authResult.account
+//     localStorage.setItem('MSTToken',authResult.idToken.rawIdToken)
+//     console.log(authResult.idToken.rawIdToken)
+//     console.log(authResult);
     
      
-}
+// }
 
 var getAccount = async () => {
-    var account = await myMSALObj.getAccount();
+    var account = await userAgentApplication.value.getAccount();
     console.log(account) ;
 };
 
-var logoff = () => {
-    myMSALObj.logout();
-};
+// var logoff = () => {
+//     myMSALObj.logout();
+// };
 
 
 const accoutMicro = ref({accountIdentifier:null , roles:[]})
@@ -217,8 +250,14 @@ const accoutMicro = ref({accountIdentifier:null , roles:[]})
          <button @click="goGuess" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600" >
           guess?
         </button> 
-        <button @click="login" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600">
+        <button @click="signIn" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600">
           login by ms teams
+        </button>
+        <button @click="getAccount" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600">
+          getAccount
+        </button>
+        <button @click="signOut" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600">
+          logoff
         </button>
         </div>
       </div>
