@@ -3,6 +3,8 @@ import {ref} from 'vue'
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import BaseNav from '../components/BaseNav.vue'
+import { UserAgentApplication } from "msal" ;
+import * as Msal from "msal"
 const passwordd=ref('')
 const eMail=ref('')
 // const userList=ref([])
@@ -121,8 +123,12 @@ const saveLocal=()=>{
   localStorage.setItem('tokenR',`${token.value.refreshToken}`)
   localStorage.setItem('role',`${role.substring(5)}`)
   localStorage.setItem('name',`${name}`)
-
 }
+// save login from ms teams
+const msSaveLocal=()=>{
+  localStorage.setItem('name',)
+}
+
 //decode jwt key
 const decode=(token)=>{  
     let base64Url = token.split('.')[1];
@@ -133,6 +139,51 @@ const decode=(token)=>{
 
     return JSON.parse(jsonPayload);
 }
+
+// login with teams
+
+
+const msalConfig = {
+    auth: {
+        clientId: "e619ab10-290f-4dac-8376-057510c4030b",
+        authority: "https://login.microsoftonline.com/6f4432dc-20d2-441d-b1db-ac3380ba633d",
+        redirectURI: "http://localhost:3000/"
+    },
+    cache: {
+        cacheLocation: "localStorage", // This configures where your cache will be stored
+        storeAuthStateInCookie: true,
+        popUp:true // Set this to "true" if you are having issues on IE11 or Edge
+    }
+};
+
+
+var requestObj = {
+    scopes: ["user.read"]
+};
+
+var myMSALObj = new UserAgentApplication(msalConfig);
+
+var login = async () => {
+    var authResult = await myMSALObj.loginPopup(requestObj);
+    accoutMicro.value = authResult.account
+    localStorage.setItem('MSTToken',authResult.idToken.rawIdToken)
+    console.log(authResult.idToken.rawIdToken)
+    console.log(authResult);
+    
+     
+}
+
+var getAccount = async () => {
+    var account = await myMSALObj.getAccount();
+    console.log(account) ;
+};
+
+var logoff = () => {
+    myMSALObj.logout();
+};
+
+
+const accoutMicro = ref({accountIdentifier:null , roles:[]})
 </script>
  
 <template>
@@ -166,6 +217,9 @@ const decode=(token)=>{
          <button @click="goGuess" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600" >
           guess?
         </button> 
+        <button @click="login" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600">
+          login by ms teams
+        </button>
         </div>
       </div>
 
