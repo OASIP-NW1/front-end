@@ -3,8 +3,6 @@ import {ref} from 'vue'
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import BaseNav from '../components/BaseNav.vue'
-import { UserAgentApplication } from "msal" ;
-
 import * as msal from 'msal';
 const passwordd=ref('')
 const eMail=ref('')
@@ -120,14 +118,16 @@ const saveLocal=()=>{
   let name = undefined
   role=decode(token.value.accessToken).Roles
   name=decode(token.value.accessToken).sub
+ 
   localStorage.setItem('tokenA',`${token.value.accessToken}`)
   localStorage.setItem('tokenR',`${token.value.refreshToken}`)
   localStorage.setItem('role',`${role.substring(5)}`)
   localStorage.setItem('name',`${name}`)
 }
 // save login from ms teams
-const msSaveLocal=()=>{
-  localStorage.setItem('name',)
+const mstSaveLocal=()=>{
+  
+  
 }
 
 //decode jwt key
@@ -142,7 +142,8 @@ const decode=(token)=>{
 }
 
 // login with teams
-
+const isLogInWithMST=ref(false)
+const idToken =ref(undefined)
 
 // const msalConfig = {
 //     auth: {
@@ -164,17 +165,33 @@ const userAgentApplication = ref(new msal.UserAgentApplication({
         redirectUri: 'http://localhost:3000/sign-in',
       },
       cache: {
-        cacheLocation: 'localStorage',
-        storeAuthStateInCookie: true,
+        // cacheLocation: 'localStorage',
+        // storeAuthStateInCookie: true,
       },
     }));
 
-function signIn() {
-      userAgentApplication.value.loginPopup(['user.read']).then(function (idToken) {
+  function signIn () {
+     userAgentApplication.value.loginPopup(['user.read']).then( function (idToken) {
         // User is now signed in
-        console.log(idToken);
+        // console.log(idToken.idToken.rawIdToken);
+        // idToken.value= idToken.idToken.rawIdToken;
+        console.log(idToken.idToken.rawIdToken)
+        isLogInWithMST.value=true;
+        console.log(isLogInWithMST.value)
+
+        let data = decode(idToken.idToken.rawIdToken)
+        localStorage.setItem("tokenA",idToken.idToken.rawIdToken)
+        localStorage.setItem('role',data.roles[0])
+        localStorage.setItem('name',data.preferred_username)
+        localStorage.setItem("MST",isLogInWithMST.value)
+        console.log("save data success")
+        check_200.value=true
+        setTimeout(()=>(goBooking()),2000)
+        
       }).catch(function (error) {
+        console.log("can not login with microsoft teams")
         console.log(error);
+        
       });
     }
 
@@ -217,6 +234,8 @@ var getAccount = async () => {
 
 
 const accoutMicro = ref({accountIdentifier:null , roles:[]})
+
+
 </script>
  
 <template>
@@ -247,18 +266,14 @@ const accoutMicro = ref({accountIdentifier:null , roles:[]})
           focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password" v-model="passwordd">
         </div>
         <div >
-         <button @click="goGuess" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600" >
+         <button @click="goGuess" class="text-[13px] pl-4 text-gray-500 hover:text-gray-700" >
           guess?
         </button> 
-        <button @click="signIn" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600">
-          login by ms teams
+        <button @click="signIn" class="text-[13px] pl-4 text-gray-500 hover:text-gray-700">
+          log in with microsoft teams
         </button>
-        <button @click="getAccount" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600">
-          getAccount
-        </button>
-        <button @click="signOut" class="text-[13px] pl-4 text-gray-400 hover:text-gray-600">
-          logoff
-        </button>
+
+
         </div>
       </div>
 

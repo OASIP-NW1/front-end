@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
-
+import * as msal from 'msal';
+import {ref} from 'vue'
 defineProps({
     linkk:{
         type:Boolean
@@ -38,13 +39,32 @@ defineProps({
     const goSignIn = () => myRouter.push({ name: 'SignIn' })
 
     const logOut=()=>{
-        //   localStorage.removeItem('tokenA')
-        //   localStorage.removeItem('tokenR')
-        //   localStorage.removeItem('role')
-    
-        //localStorage.getItem('token')
-         goHome()
+        localStorage.removeItem('tokenA')
+        localStorage.removeItem('tokenR')
+        localStorage.removeItem('role')
+        localStorage.removeItem('name')
+        
+        // localStorage.getItem('token')
+        signOut()
+         
         //console.log(localStorage.getItem('token'))
+    }
+
+    // mst
+    const userAgentApplication = ref(new msal.UserAgentApplication({
+      auth: {
+        clientId: '63b704b4-2c35-4065-886a-8c24369da93b',
+        authority: 'https://login.microsoftonline.com/6f4432dc-20d2-441d-b1db-ac3380ba633d',
+        // redirectUri: 'http://localhost:3000/sign-in',
+      },
+      cache: {
+        cacheLocation: 'localStorage',
+        storeAuthStateInCookie: true,
+      },
+    }));
+    function signOut() {
+      userAgentApplication.value.logout();
+      setTimeout(()=>(goHome()),1000)
     }
 </script>
  
