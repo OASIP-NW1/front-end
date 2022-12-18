@@ -14,6 +14,7 @@ const file=ref(undefined)
 const nameLength = 100;
 const emailLength = 100;
 const noteLength = 500;
+const pageCount=ref(0)
 // form-data
 //  let formEl = document.getElementById("form")
 // // const newData =new FormData()
@@ -548,39 +549,40 @@ const getCatD =computed(()=>{
   }
  return des;
 })
+
+
+  const tesing=()=>{
+    console.log(pageCount.value)
+  }
 </script>
 <template>
-  <div class="showUp container  bg-gray-300">
-    <div
-      class="w-[100%] h-[100%]  pt-[3%]   "
-    >
-      <div class="text-center">
+ 
+  <div class="bg-gray-200 w-[100%]">
+    <div class="text-center mt-10">
         <h1 class=" text-3xl font-semibold text-gray-700">Booking</h1>
         <p class="text-gray-400">
           Fill up the form below to send a online appointment.
         </p>
-      </div>
-      <!-- testing -->
-      
-      <form id="form">
-      <div >
+    </div>
+    <!-- content -->
+    <div class="h-[40%]">
+
+      <!-- step1 name and email -->
+      <div v-if="pageCount==0" class="mt-[5%] w-fit mx-auto">
         <!-- name -->
-        <div class="mt-10   w-fit mx-auto">
-          <div class="inline-block m-auto">
-            <div class="px-3 w-fit  inline-block">
-              <label for="name" class=" font-medium m-auto text-sm text-gray-600"
-                >Full Name</label
-              >
-              
-            </div>
-            <div class="inline-block">
-              <span
-                class="text-gray-500 font-medium ml-1 block text-sm"
-                :style="[name.length > nameLength ? 'color:red' : '']"
-              >
-                {{ name.length }}/{{ nameLength }} charector
-              </span>
-              <input
+        <div >
+          <div >
+        <label for="name" class="inline-block text-lg font-semibold  text-sm text-gray-500">
+          Full Name
+        </label>
+        <span
+          class="text-gray-500 font-medium w-fit ml-2  ilnine-block text-sm"
+            :style="[name.length > nameLength ? 'color:red' : '']">
+            {{ name.length }}/{{ nameLength }} charector
+        </span>            
+          </div>
+          <div>
+            <input
                 
                 v-model="name"
                 type="text"
@@ -590,25 +592,25 @@ const getCatD =computed(()=>{
                 :style="[
                   validateNameisNotNull == false ? 'border-color:red' : '',
                 ]"
-                class="w-80 px-3 py-2 mx-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+                class="w-80 px-1.5 py-1.5  placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
               />
-            </div>
           </div>
-          <!-- email -->
-          <div class="mx-4 inline-block m-auto">
-            <div class="px-3 w-full">
-              <label for="email" class="font-medium text-sm text-gray-600"
-                >Email Address</label
-              >
-              <span
-                class="text-gray-300 font-medium ml-1 text-sm"
-                :style="[eMail.length > emailLength ? 'color:red' : '']"
-              >
+        </div>
+
+        <!-- email -->
+        <div class="mt-5">
+          <div>
+            <label for="email" class="inline-block text-lg font-semibold  text-sm text-gray-500">
+              Email Address
+            </label>
+            <span
+                class="text-gray-500 font-medium w-fit ml-2  ilnine-block text-sm"
+                :style="[eMail.length > emailLength ? 'color:red' : '']">
                 {{ eMail.length }}/{{ emailLength }} charector
-              </span>
-            </div>
-            <div>
-              <input
+            </span>
+          </div>
+          <div>
+            <input
                 disabled
                 v-model="eMail"
                 type="email"
@@ -618,34 +620,40 @@ const getCatD =computed(()=>{
                 :style="[
                   validateEmailisNotNull == false ? 'border-color:red' : '',
                 ]"
-                class="w-80 px-3 py-2 mx-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+                class="w-80 px-1.5 py-1.5  placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
               />
-            </div>
+          </div>
+          <div>
+
           </div>
         </div>
+
+
+      </div>
+
+      <!-- step2 select category -->
+       <div v-if="pageCount==1" class="mt-[5%] w-fit mx-auto">
         <!-- category -->
-        <div class="my-3 px-6 inline-block">
-          <div class="inline-block">
-            <div class="px-3 w-full">
-              <label for="category" class="text-sm font-medium text-gray-600"
-                >Category</label
-              >
-              <!-- show category detail -->
-              <a
+        <div class="mt-5">
+          <div>
+            <label for="category" class="text-lg font-semibold inline-block m-auto text-sm text-gray-500">
+              Category
+            </label>   
+            <a
                 href="#category-detail"
-                class="px-1.5 font-light mx-2 bg-white rounded-full text-xs bg-black text-white"
-                >?</a
-              >
-            </div>
-            <!-- select category -->
-            <div>
-              <select
+                class="px-1.5 font-light mr-3 ml-1 bg-white rounded-full text-xs bg-black text-white">
+                ?
+            </a>         
+          </div>
+          <div>
+            <div class="inline-block" >
+            <select
                 id="category"
                 :style="[
                   validateCategoryisNotNull == false ? 'border-color:red' : '',
                 ]"
                 name="category"
-                class="text-ellipsis overflow-hidden cursor-pointer w-64 font-medium px-3 py-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+                class="text-ellipsis overflow-hidden cursor-pointer w-[300px] inline-block font-medium px-3 py-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
                 v-model="category"
               >
                 <option value="" disable selected>select your category</option>
@@ -657,19 +665,33 @@ const getCatD =computed(()=>{
                   {{ cat.eventCategoryName }}
                 </option>
               </select>
+
             </div>
+
+            <div class="inline-block">
+              <input
+                id="duration"
+                name="duration"
+                disabled
+                class="w-14 px-3 py-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+                type="text"
+                v-model="durationTime"
+                min="00:00"
+                max="03:00"
+              />
+              <span class="pl-1.5">Min.</span>                
+            </div>
+
           </div>
-        </div>
-        <!-- date & time -->
-        <div class="inline-block px-3 w-max">
+
           <!-- start date -->
-          <div class="w-fit inline-block">
-            <div class="px-3 w-full m-auto">
-              <label for="date" class="font-medium mx-2 text-sm text-gray-600"
-                >Start date</label
-              >
+          <div class="inline-block mt-5">
+            <div>
+              <label for="time" class="text-lg font-semibold inline-block m-auto text-sm text-gray-500"> 
+                Date
+              </label>
             </div>
-            <div class="px-3 w-full m-auto">
+            <div>
               <input
                 id="date"
                 name="date"
@@ -683,14 +705,16 @@ const getCatD =computed(()=>{
               />
             </div>
           </div>
+
           <!-- start time -->
-          <div class="w-fit inline-block">
-            <div class="pr-2 w-full">
-              <div class="inline-block font-medium text-sm text-gray-600">
-                <label for="time"> Start time</label>
-              </div>
-              <div class="w-full">
-                <input
+          <div class="inline-block mt-5 ml-5">
+            <div>
+              <label for="time"  class="text-lg font-semibold inline-block m-auto text-sm text-gray-500"> 
+                Time
+              </label>
+            </div>
+            <div>
+              <input
                   id="time"
                   name="time"
                   :style="[
@@ -702,50 +726,28 @@ const getCatD =computed(()=>{
                   type="time"
                   v-model="startTime"
                 />
-              </div>
             </div>
           </div>
-          <!-- duration -->
-          <div class="w-fit inline-block">
-            <div class="pr-2 w-full">
-              <label
-                class="font-medium pr-2 focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
-                for="duration"
-                >Duration
-              </label>
-            </div>
-            <div class="pr-3 w-full">
-              <input
-                id="duration"
-                name="duration"
-                disabled
-                class="w-14 px-3 py-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
-                type="text"
-                v-model="durationTime"
-                min="00:00"
-                max="03:00"
-              />
-              <span class="pl-1.5">Min.</span>
-            </div>
-          </div>
+
         </div>
-        <!-- upload file -->
-          <div class="w-fit inline-block">
-            <label for="file" class="cursor-pointer w-fit mx-4">
+
+      </div>
+      <!-- step3 attatch file ,note, submit  -->
+      <div v-if="pageCount==2" class="mt-[5%] w-fit mx-auto">
+        <!--upload file  -->
+        <div >
+          <label for="file" class="cursor-pointer w-fit mx-4">
               <span class="w-fit">attech file here :</span> 
               <input type="file" id="file" class="hidden" name="file" @change="uploadFile" />
               <span v-if="fileName.length!=0">{{fileName}}</span>
               <span v-if="fileName.length==0">ยังไม่ได้เลือกไฟล์</span>
             </label>
               <span v-if="fileName.length!=0" @click="removeFile" class="cursor-pointer bg-rose-500">remove file</span>
-          </div>
-        
+        </div>
 
-        
-        <!-- note & button-->
-        <div class="inline-flex w-full px-4">
-          <!-- note -->
-          <div class="w-3/5 block m-auto">
+        <!-- note -->
+        <div>
+          <div>
             <label for="textA" class="font-medium text-sm text-gray-600"
               >Your Message
               <span
@@ -754,6 +756,8 @@ const getCatD =computed(()=>{
                 >{{ noteText.length }}/{{ noteLength }} charector
               </span>
             </label>
+          </div>
+          <div>
             <textarea
               :style="[noteText.length > noteLength ? 'border-color:red' : '']"
               id="textA"
@@ -765,23 +769,25 @@ const getCatD =computed(()=>{
             >
             </textarea>
           </div>
-          <!-- booking button -->
-          <div class="inline-flex m-auto p-5 w-60">
-            <a
-              href="#submit" class="font-bold text-slate-50 border-slate-500 bg-emerald-600  
-              focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-lg 
-              text-sm text-center dark:border-gray-600 dark:text-slate-50 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-gray-800 m-auto p-5"
-            >
-              Submit !
-            </a>
-          </div>
-          <!-- testing button -->
-          <button @click="testingB">testing</button>
         </div>
       </div>
-    </form>
-      <!-- for submit  -->
-      <div id="submit" class="overlay">
+    </div>  
+      <!-- button next pre -->
+      <div class="w-fit flex mx-auto  h-[5%]">
+        <!-- //\\<button @click="tesing">show</button> -->
+        <button v-if="pageCount>0" @click="pageCount--" class="mx-4 w-fit  bg-gray-700 px-2">Previous</button>
+        <button v-if="pageCount<2" @click="pageCount++" class="mx-4 w-fit bg-gray-700 px-2">Next</button>
+                  <!-- booking button -->
+        <a v-if="pageCount==2" href="#submit" class="mx-4 w-fit bg-green-800 text-gray-200 hover:text-gray-700 hover:bg-green-400 px-2 py-1 pointer my-auto">Submit !</a>
+          
+      </div>
+  </div>
+
+
+
+
+   <!-- for submit  -->
+   <div id="submit" class="overlay">
         <div class="popup2 h-96">
           <h2 class="mb-5 text-xl font-bold bg-white mx-auto w-fit">
             Are you sure ?
@@ -881,8 +887,9 @@ const getCatD =computed(()=>{
           please try again.
         </div>
       </div>
-    </div>
-  </div>
+
+
+
   <!-- for show category detail  -->
   <div id="category-detail" class="overlay">
     <div class="popup h-96 overflow-auto">
@@ -912,6 +919,9 @@ const getCatD =computed(()=>{
       </div>
     </div>
   </div>
+
+
+
 </template>
 <style scoped>
 /* width */
