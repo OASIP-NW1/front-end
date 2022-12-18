@@ -159,7 +159,7 @@ const decode=(token)=>{
 
 const userAgentApplication = ref(new msal.UserAgentApplication({
       auth: {
-        clientId: 'b71c8c6b-d658-4ed5-a8bd-8d7866a28b2f',
+        clientId: '63b704b4-2c35-4065-886a-8c24369da93b',
         authority: 'https://login.microsoftonline.com/6f4432dc-20d2-441d-b1db-ac3380ba633d',
         redirectUri: 'http://localhost:3000/sign-in',
       },

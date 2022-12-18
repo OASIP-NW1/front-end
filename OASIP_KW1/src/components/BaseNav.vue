@@ -2,7 +2,7 @@
 import BaseDate from './BaseDate.vue'
 import BaseLinkPage from './BaseLinkPage.vue'
 console.clear()
-    const logoSize = 'width:70px;';
+    const logoSize = 'width:50px;';
 
     defineProps({
     link:{
@@ -40,7 +40,7 @@ console.clear()
  
 <template>
     <nav
-        class="  bg-gray-500  drop-shadow-md   w-[100%]" >
+        class="  bg-gray-500  drop-shadow-md   w-[100%] h-[9%]" >
         <div class="px-5   flex justify-between flex-wrap container mx-auto  items-center">
 
         <div class="w-fit m-2 ml-10">

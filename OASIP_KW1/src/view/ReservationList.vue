@@ -427,9 +427,25 @@ const saveLocal=()=>{
 </script>
 
 <template>
+
+<!-- filter and reservation -->
+<div class="block w-[100%] bg-gray-400">
   <!-- for filter -->
-  <div class="showUp md:inline-block  mt-16 bg-gray-200 p-6 ml-20  rounded-l"
-  style="height: 475px; width: 25%"  
+  <div class=" block bg-gray-500 h-[20%]">
+    hello
+  </div>
+  <!-- for show events -->
+  <div class="bg-gray-200 h-[80%]">
+    event
+  </div>
+
+</div>
+
+
+
+  <!-- for filter -->
+  <div class="showUp md:inline-block w-[100%]  mt-16 bg-gray-200 p-6 ml-20  rounded-l"
+   
   >
     <div class="border-gray-500 border-4 border-double w-full">
       <h1 class="mt-4 mb-1 text-xl font-semibold text-gray-600 w-fit m-auto">Filter Booking</h1>

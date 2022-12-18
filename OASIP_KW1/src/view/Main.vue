@@ -29,7 +29,7 @@ onBeforeMount(()=>{
 <template>
         <div id="bg_color" class="h-full">
             <BaseNav   :logOut="true" :link="false"  :signUp="false" />
-            <div class="  flex" style="height:88%">
+            <div class="  flex h-[91%]" >
                     <div class="bg-gray-700 pt-2 px-4 w-[15%]" >
                         <div class="w-[80%] mx-auto mt-10 text-xl text-gray-500">
                             <ul>
@@ -83,9 +83,9 @@ onBeforeMount(()=>{
         font-family: 'Inter', sans-serif;
     } */
     
-    #bg_color {
+    /* #bg_color { */
         /* background-color: rgb(252 165 165); */
-        background: linear-gradient(-45deg, #fdba74,#fca5a5,#a5f3fc);
+        /* background: linear-gradient(-45deg, #fdba74,#fca5a5,#a5f3fc);
         background-size: 400% 400%;
         height: 100vh;
         animation: gradient 10s ease infinite;
@@ -100,7 +100,7 @@ onBeforeMount(()=>{
      100% {
       background-position: 0% 50%;
      }
-    }
+    } */
 
     
 </style>

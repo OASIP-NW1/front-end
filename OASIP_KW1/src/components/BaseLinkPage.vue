@@ -113,7 +113,7 @@ defineProps({
                     font-bold  rounded-xl transition duration-200" @click="goSignUp">Sign up</button>
             </div>
             <div v-if="logOutt==true" >
-                <button class="justify-end hidden lg:inline-block mx-2 py-2 px-6 hover:bg-rose-300 hover:text-gray-600 bg-rose-500 text-l text-white 
+                <button class="justify-end hidden lg:inline-block mx-1 py-1 px-4 hover:bg-rose-300 hover:text-gray-600  text-[14px] text-white 
                     font-bold  rounded-xl transition duration-200" @click="logOut">Log out</button>
             </div>
 </template>
