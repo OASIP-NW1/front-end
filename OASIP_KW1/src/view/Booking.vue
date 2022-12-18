@@ -550,12 +550,12 @@ const getCatD =computed(()=>{
 })
 </script>
 <template>
-  <div class="showUp container mx-auto">
+  <div class="showUp container  bg-gray-300">
     <div
-      class="max-w-screen-md p-5 pb-7 mx-auto mt-14 bg-gray-200 rounded-md shadow-sm shadow-xl"
+      class="w-[100%] h-[100%]  pt-[3%]   "
     >
       <div class="text-center">
-        <h1 class="my-3 text-3xl font-semibold text-gray-700">Booking</h1>
+        <h1 class=" text-3xl font-semibold text-gray-700">Booking</h1>
         <p class="text-gray-400">
           Fill up the form below to send a online appointment.
         </p>
@@ -565,20 +565,21 @@ const getCatD =computed(()=>{
       <form id="form">
       <div >
         <!-- name -->
-        <div class="my-3 inline-flex px-4 w-full">
+        <div class="mt-10   w-fit mx-auto">
           <div class="inline-block m-auto">
-            <div class="px-3 w-full">
-              <label for="name" class="font-medium m-auto text-sm text-gray-600"
+            <div class="px-3 w-fit  inline-block">
+              <label for="name" class=" font-medium m-auto text-sm text-gray-600"
                 >Full Name</label
               >
+              
+            </div>
+            <div class="inline-block">
               <span
-                class="text-gray-300 font-medium ml-1 text-sm"
+                class="text-gray-500 font-medium ml-1 block text-sm"
                 :style="[name.length > nameLength ? 'color:red' : '']"
               >
                 {{ name.length }}/{{ nameLength }} charector
               </span>
-            </div>
-            <div>
               <input
                 
                 v-model="name"

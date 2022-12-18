@@ -48,12 +48,12 @@ onBeforeMount(()=>{
                                     Reservation                                       
                                     </button>
                                 </li>
-                                <li v-if="checkRole=='admin'?true:false" class=" text-center my-5 p-2 border-b-2  hover:font-semibold hover:text-gray-200 hover:text-[22px]  border-gray-500 hover:border-b-3 hover:border-gray-400">
+                                <li v-if="checkRole=='Admin'?true:false" class=" text-center my-5 p-2 border-b-2  hover:font-semibold hover:text-gray-200 hover:text-[22px]  border-gray-500 hover:border-b-3 hover:border-gray-400">
                                     <button @click="goAllUser" class="focus:text-rose-200 focus:text-[22px] focus:font-semibold">
                                     Show all user                                        
                                     </button>
                                 </li>
-                                <li v-if="checkRole=='admin'?true:false" class=" text-center my-5 p-2 border-b-2  hover:font-semibold hover:text-gray-200 hover:text-[22px]  border-gray-500 hover:border-b-3 hover:border-gray-400">
+                                <li v-if="checkRole=='Admin'?true:false" class=" text-center my-5 p-2 border-b-2  hover:font-semibold hover:text-gray-200 hover:text-[22px]  border-gray-500 hover:border-b-3 hover:border-gray-400">
                                     <button @click="goSignUp" class="focus:text-rose-200 focus:text-[22px] focus:font-semibold">
                                     Sign up                                        
                                     </button>

@@ -431,46 +431,28 @@ const saveLocal=()=>{
 <!-- filter and reservation -->
 <div class="block w-[100%] bg-gray-400">
   <!-- for filter -->
-  <div class=" block bg-gray-500 h-[20%]">
-    hello
-  </div>
-  <!-- for show events -->
-  <div class="bg-gray-200 h-[80%]">
-    event
-  </div>
-
-</div>
-
-
-
-  <!-- for filter -->
-  <div class="showUp md:inline-block w-[100%]  mt-16 bg-gray-200 p-6 ml-20  rounded-l"
-   
-  >
-    <div class="border-gray-500 border-4 border-double w-full">
-      <h1 class="mt-4 mb-1 text-xl font-semibold text-gray-600 w-fit m-auto">Filter Booking</h1>
-
+  <div class=" block  h-[20%]">
+    <h1 class="mt-5 mb-1 text-xl font-semibold text-gray-700 w-fit m-auto">Reservation List</h1>
+    <div class="w-fit mt-4 mx-auto flex ">
       <!-- start date -->
-      <div class="w-full  block mt-2">
-        <div class="px-3 w-full m-auto block">
-          <label for="date" class="ml-1.5 font-medium text-sm text-gray-600">Date :</label>
+      <div class=" mx-2">
+        <div class="w-fit mx-auto">
+           <label for="date" class=" font-medium text-sm text-gray-600">Date</label>
         </div>
-
-        <div class="px-3 w-5/6 block">
+        <div>
           <input id="date"
-            class="w-full drop-shadow-md px-3 py-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+            class="w-full drop-shadow-md px-2 py-1 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
             type="date" v-model="fStartDate"/>
         </div>
-      </div>
-
+      </div >
       <!-- status -->
-      <div class="block w-full mt-2">
-        <div class="px-3 my-1 w-fit block">
-          <label for="category" class="ml-1.5 font-medium text-sm text-gray-600">Status :</label>
+      <div class=" mx-2">
+        <div class="w-fit mx-auto">
+          <label for="category" class="font-medium text-sm text-gray-600">Status</label>
         </div>
-        <div class="px-1.5 w-5/6 block">
+        <div>
           <select id="category"
-            class="w-full text-ellipsis overflow-hidden drop-shadow-md cursor-pointer px-3 py-2 mx-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+            class="w-full text-ellipsis overflow-hidden drop-shadow-md cursor-pointer px-3 py-1  placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
             v-model="fStatus">
             <option value="" disable selected>All</option>
             <option value="upcoming">Upcoming</option>
@@ -478,59 +460,55 @@ const saveLocal=()=>{
           </select>
         </div>
       </div>
-
       <!-- category -->
-      <div class="block w-full mt-2">
-        <div class="px-3 my-1 w-fit block">
-          <label for="category" class="ml-1.5 font-medium text-sm text-gray-600">Category :</label>
+      <div class=" mx-2">
+        <div class="w-fit mx-auto">
+          <label for="category" class=" font-medium text-sm text-gray-600">Category</label>
         </div>
-        <div class="px-1.5 w-5/6 block">
+        <div>
           <select id="category"
-            class="w-full text-ellipsis overflow-hidden drop-shadow-md cursor-pointer px-3 py-2 mx-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+            class="w-full text-ellipsis w-[170px] overflow-hidden drop-shadow-md cursor-pointer px-2 py-1  placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
             v-model="fCategory">
             <option value="" disable selected>All</option>
             <option v-for="cat in categoryList" :key="cat.id" :value="cat.eventCategoryName">{{ cat.eventCategoryName }}</option>
           </select>
         </div>
       </div>
-
       <!-- email -->
-        <div class="block w-full mt-2">
-          <div class="px-3 my-1 w-fit block">
-            <label for="category" class="ml-1.5 font-medium text-sm text-gray-600">Email :</label>
+      <div class=" mx-2">
+        <div class="w-fit mx-auto">
+          <label for="category" class="font-medium text-sm text-gray-600">Email</label>
         </div>
-        <div class="px-1.5 w-5/6 block">
-           <input
-            class="w-full text-ellipsis overflow-hidden drop-shadow-md cursor-pointer px-3 py-2 mx-2 placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+        <div>
+          <input
+            class="w-full text-ellipsis overflow-hidden drop-shadow-md cursor-pointer px-2 py-1  placeholder-gray-300 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
             type="text" v-model="fEmail"/>
         </div>
       </div>
-
       <!-- search button -->
-      <div class="flex mt-1 p-3 w-full">
-        <div class="inline-flex w-w-1/4 m-auto">
-          <button @click="reset" class="custom-btn reset">Reset</button>
-        </div>
-
-        <div class="inline-flex w-w-1/4 m-auto">
-          <button @click="search" class="custom-btn search">Search</button>
-        </div>
+      <div class=" m-auto mx-2 w-fit">
+          <button @click="reset" class="mx-1 transition duration-200 hover:bg-rose-300 font-bold  rounded-md px-3">Reset</button>
+<!-- custom-btn reset -->
+          <button @click="search" class="mx-1 transition duration-200 hover:bg-blue-300 hover:text-gray-700 font-bold  rounded-md px-3">Search</button>
+        
       </div>
+<!-- custom-btn search -->
     </div>
+    
   </div>
-
-  <!-- for booking table -->
-  <div class="showUp bg-gray-200 md:inline-block mr-28 mt-16 p-4 rounded-r" style="height: 475px; width: 65%">
-    <div v-if="checkGetEvent==undefined" class="m-auto w-fit mt-[23%]">
+  <!-- for show events -->
+  <div class="bg-gray-200 h-[70%]">
+    <div class="showUp      h-[100%] w-[100%]" >
+    <div v-if="checkGetEvent==undefined" class="m-auto w-fit p-[10%] ">
       <BaseLoading :heightt="70" :widthh="70" :thick="15" />
     </div>
 
     <div v-if="checkGetEvent==false">
-      <h1 class="drop-shadow-2xl mx-auto w-fit my-20 font-semibold">No event</h1>
+      <h1 class="drop-shadow-2xl mx-auto w-fit  font-semibold p-[10%]  ">No event</h1>
     </div>
 
-    <div v-if="checkGetEvent==true" class="drop-shadow-2xl bg-white overflow-y-auto mx-auto h-fit h-[440px] w-[100%]" >
-      <table class="table-fixed m-auto md:table-flexed w-full">
+    <div v-if="checkGetEvent==true" class=" bg-white overflow-y-auto mx-auto h-fit h-[100%] w-[100%]" >
+      <table class="table-fixed mx-auto md:table-flexed w-full">
         <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3">Name</th>
@@ -586,6 +564,14 @@ const saveLocal=()=>{
         <strong class="block">Warning!</strong> A system error has occurred,please try again.</div>
     </div>
   </div>
+
+  
+  </div>
+
+</div>
+
+
+ 
 </template>
 
 <style scoped>
@@ -651,7 +637,7 @@ const saveLocal=()=>{
 /* alert */
 .alert-area {
   position: fixed;
-  top: 100px;
+  top: 70px;
   right: 0;
   background-color: transparent;
   width: 23%;
