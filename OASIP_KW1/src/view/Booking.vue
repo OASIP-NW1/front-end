@@ -565,11 +565,11 @@ const getCatD =computed(()=>{
         </p>
     </div>
     <div class="mx-auto w-fit mt-5">
-      <img src="../assets/user.png" :style="[ pageCount == 0 ? 'border-radius: 25px; background-color:#888888;padding:5px' : '',]" class="w-[40px] inline " alt="user"/>
+      <img  src="../assets/user.png" :style="[ pageCount == 0 ? 'border-radius: 25px; background-color:#888888;padding:5px' : '',]" class="w-[40px] inline mx-2" alt="user"/>
       <img src="../assets/line.png"  class="w-[60px] inline "  alt="line"/>
-      <img src="../assets/clock.png" :style="[ pageCount == 1 ? 'border-radius: 25px; background-color:#888888;padding:5px' : '',]" class="w-[40px] inline " alt="clock"/>
+      <img src="../assets/clock.png" :style="[ pageCount == 1 ? 'border-radius: 25px; background-color:#888888;padding:5px' : '',]" class="w-[40px] inline mx-2" alt="clock"/>
       <img src="../assets/line.png" class="w-[60px] inline "  alt="line"/>
-      <img src="../assets/quality.png" :style="[ pageCount == 2 ? 'border-radius: 25px; background-color:#888888;padding:5px' : '',]" class="w-[40px] inline " alt="quality"/>
+      <img src="../assets/quality.png" :style="[ pageCount == 2 ? 'border-radius: 25px; background-color:#888888;padding:5px' : '',]" class="w-[40px] inline mx-2" alt="quality"/>
 
     </div>
     <!-- content -->
@@ -640,7 +640,7 @@ const getCatD =computed(()=>{
       </div>
 
       <!-- step2 select category -->
-       <div v-if="pageCount==1" class="mt-[5%] w-fit mx-auto">
+       <div v-if="pageCount==1" class="mt-[2%] w-fit mx-auto">
         <!-- category -->
         <div class="mt-5">
           <div>
@@ -741,7 +741,7 @@ const getCatD =computed(()=>{
 
       </div>
       <!-- step3 attatch file ,note, submit  -->
-      <div v-if="pageCount==2" class="mt-[5%] w-fit mx-auto">
+      <div v-if="pageCount==2" class="mt-[2%] w-fit mx-auto">
         <!--upload file  -->
         <div >
           <label for="file" class="cursor-pointer w-fit ">
