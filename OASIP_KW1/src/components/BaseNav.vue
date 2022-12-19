@@ -1,6 +1,7 @@
 <script setup>
 import BaseDate from './BaseDate.vue'
 import BaseLinkPage from './BaseLinkPage.vue'
+
 console.clear()
     const logoSize = 'width:50px;';
 
@@ -43,17 +44,17 @@ console.clear()
         class="  bg-gray-500  drop-shadow-md   w-[100%] h-[9%]" >
         <div class="px-5   flex justify-between flex-wrap container mx-auto  items-center">
 
-        <div class="w-fit m-2 ml-10">
+        <div class="w-fit flex   m-2 ml-10">
             <img src="../assets/icon.png" alt="LOGO" :style="logoSize" class="w-fit "/>
 
-            <!-- <h1 class="font-bold text-xl text-white mx-4 w-fit inline-flex">
+            <h1 class="font-bold text-xl text-white mx-4 w-fit inline-flex my-auto">
                 <BaseDate :isTime='true' />
 
                     <br>
-                <span class=" font-medium ">
+                <span class=" font-medium text-[14px] ml-[10px] ">
                 <BaseDate :isDate="true" />
                 </span>
-            </h1> -->
+            </h1>
         </div>
  
 
