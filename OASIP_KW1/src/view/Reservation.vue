@@ -475,7 +475,7 @@ const removeFile =async()=>{
    });
    if (res.status === 200) {
     console.log("delete successfully");
-    isEdit=false
+    isEdit.value=false
   }else if(res.status === 401){
     const ress= await fetch(refreshTLink,{
       method:'GET',
