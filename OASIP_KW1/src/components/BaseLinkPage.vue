@@ -37,17 +37,19 @@ defineProps({
     const goAllUser = () => myRouter.push({ name: 'AllUser' })
     const goSignUp = () => myRouter.push({ name: 'SignUp' })
     const goSignIn = () => myRouter.push({ name: 'SignIn' })
+    const isMst = ref(localStorage.getItem("isMST"))
 
     const logOut=()=>{
+        console.log('sign in without teams')
+        localStorage.removeItem("isMST")
         localStorage.removeItem('tokenA')
         localStorage.removeItem('tokenR')
         localStorage.removeItem('role')
         localStorage.removeItem('name')
-        let check = localStorage.getItem("MST")
         goHome()
-        if(check==true){
-            signOut()
-        }
+        
+       
+        
         
         // localStorage.getItem('token')
         
@@ -67,13 +69,18 @@ defineProps({
         storeAuthStateInCookie: true,
       },
     }));
-    function signOut() {
+
+    const signOut=()=>{
+        console.log('sign in with teams')
+        userAgentApplication.value.logout()
+        localStorage.removeItem("isMST")
+        localStorage.removeItem('tokenA')
+        localStorage.removeItem('tokenR')
+        localStorage.removeItem('role')
+        localStorage.removeItem('name')
         goHome()
-      userAgentApplication.value.logout()
-      
-      
-      
     }
+
 </script>
  
 <template>
@@ -140,9 +147,13 @@ defineProps({
                 <button class="justify-end hidden lg:inline-block mx-2 py-2 px-6 hover:bg-emerald-400 hover:text-gray-600 bg-blue-600 text-l text-white 
                     font-bold  rounded-xl transition duration-200" @click="goSignUp">Sign up</button>
             </div>
-            <div v-if="logOutt==true" >
+            <div v-if="logOutt==true&&isMst!=true " >
                 <button class="justify-end hidden lg:inline-block mx-1 py-1 px-4 hover:bg-rose-300 hover:text-gray-600  text-[14px] text-white 
                     font-bold  rounded-xl transition duration-200" @click="logOut">Log out</button>
+            </div>
+            <div v-else-if="logOutt==true&&isMst===true" >
+                <button class="justify-end hidden lg:inline-block mx-1 py-1 px-4 hover:bg-rose-300 hover:text-gray-600  text-[14px] text-white 
+                    font-bold  rounded-xl transition duration-200" @click="signOut">Log out</button>
             </div>
 </template>
  
