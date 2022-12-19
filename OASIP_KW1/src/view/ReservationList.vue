@@ -6,7 +6,6 @@ import BaseLoading from "../components/BaseLoading.vue";
 const eventList = ref([]);
 const categoryList = ref([]);
 const categoryCheck = ref(false);
-const filterReservationList = ref([]);
 const token=ref(undefined)
 
 // const db = "http://localhost:5000/booking";
@@ -156,233 +155,63 @@ let clock = () => {
 };
 setInterval(clock, 1000);
 
-// filter
+
+
+// newfilter
+const filterReservationList = ref([]);
+const fEvent =ref([])
 const fStartDate = ref("");
-const fStatus = ref("");
-const fCategory = ref("");
-const fEmail = ref("")
-const noInputFilter = ref(undefined);
-
-const searchLastest = () => {
-  noInputFilter.value = undefined;
-
-  if (fStartDate.value == "" && fStatus.value == "" && fCategory.value == "") {
-    // alert("input in form if you want to filter");
-    noInputFilter.value = true;
-  } else {
-    filterReservationList.value = [];
-
-    // หากมีแค่ start date จะทำการเลือก start date ตามนั้นแต่ว่าจะเลือกเวลาทั้งวัน
-    if (
-      fStartDate.value.length>0  &&
-      fStatus.value.length==0  &&
-      fCategory.value.length==0  &&
-      fEmail.value.length==0 
-    ) {
-      for (let filter of eventList.value) {
-        if (
-          Date.parse(filter.eventStartTime) >=
-            Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-          Date.parse(filter.eventStartTime) <=
-            Date.parse(`${fStartDate.value}T23:59:00+07:00`)
-        ) {
-          filterReservationList.value.push(filter);
-        }
-      }
-      // console.log(filterReservationList.value)
-    }
-    // สำหรับ past and upcoming จะ show ข้อมูลที่จะมีในอนาคต หรืออดีต
-    else if (
-      fStatus.value.length>0  &&
-      fStartDate.value.length==0  &&
-      fCategory.value.length==0  &&
-      fEmail.value.length==0 
-    ) {
-      if (fStatus.value == "upcoming") {
-        for (let filter of eventList.value) {
-          if (
-            Date.parse(filter.eventStartTime) >
-            Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      } else if (fStatus.value == "past") {
-        for (let filter of eventList.value) {
-          if (
-            Date.parse(filter.eventStartTime) <=
-            Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      }
-    }
-    // category
-    else if (
-      fCategory.value.length>0  &&
-      fStatus.value.length==0  &&
-      fStartDate.value.length==0  &&
-      fEmail.value.length==0 
-    ) {
-      for (let filter of eventList.value) {
-        if (filter.categoryName == fCategory.value) {
-          filterReservationList.value.push(filter);
-        }
-      }
-    }
-    // start date and status
-    else if (
-      fStatus.value.length>0  &&
-      fStartDate.value.length>0  &&
-      fCategory.value.length==0 &&
-      fEmail.value.length==0
-    ) {
-      for (let filter of eventList.value) {
-        if (fStatus.value == "upcoming") {
-          if (
-            Date.parse(filter.eventStartTime) >=
-              Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
-            Date.parse(filter.eventStartTime) >
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        } else if (fStatus.value == "past") {
-          if (
-            Date.parse(filter.eventStartTime) >=
-              Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      }
-    }
-    // status and category
-    else if (
-      fStatus.value.length>0  &&
-      fStartDate.value.length==0  &&
-      fCategory.value.length>0 &&
-      fEmail.value.length==0 
-    ) {
-      for (let filter of eventList.value) {
-        if (fStatus.value == "upcoming") {
-          if (
-            filter.categoryName == fCategory.value &&
-            Date.parse(filter.eventStartTime) >
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        } else if (fStatus.value == "past") {
-          if (
-            filter.categoryName == fCategory.value &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      }
-    }
-    // start date and category
-    else if (
-      fStatus.value.length==0  &&
-      fStartDate.value.length>0  &&
-      fCategory.value.length>0 &&
-      fEmail.value.length==0 
-    ) {
-      for (let filter of eventList.value) {
-        if (
-          filter.categoryName == fCategory.value &&
-          Date.parse(filter.eventStartTime) >=
-            Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-          Date.parse(filter.eventStartTime) <=
-            Date.parse(`${fStartDate.value}T23:59:00+07:00`)
-        ) {
-          filterReservationList.value.push(filter);
-        }
-      }
-    }
-    // e-mail
-    else if(
-      fStatus.value.length==0  &&
-      fStartDate.value.length==0  &&
-      fCategory.value.length==0 &&
-      fEmail.value.length>0       
-    ){
-      for(let filter of eventList.value){
-        if(
-          filter.bookingEmail==fEmail.value
-        ){
-          filterReservationList.value.push(filter)
-        }
-      }
-    }
-    else if(
-      fStatus.value.length>0  &&
-      fStartDate.value.length==0  &&
-      fCategory.value.length==0 &&
-      fEmail.value.length>0       
-    ){
-      for(let filter in eventList.value){
-        if(
-          filter.boo
-        ){
-
-        }
-      }
-
-    }
-    // start date ,status, category
-    else if (
-      fStatus.value.length>0  &&
-      fStartDate.value.length>0  &&
-      fCategory.value.length>0 &&
-      fEmail.value.length>0 
-    ) {
-      for (let filter of eventList.value) {
-        if (fStatus.value == "upcoming") {
-          if (
-            filter.categoryName == fCategory.value &&
-            Date.parse(filter.eventStartTime) >=
-              Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
-            Date.parse(filter.eventStartTime) >
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        } else if (fStatus.value == "past") {
-          if (
-            filter.categoryName == fCategory.value &&
-            Date.parse(filter.eventStartTime) >=
-              Date.parse(`${fStartDate.value}T00:00:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${fStartDate.value}T23:59:00+07:00`) &&
-            Date.parse(filter.eventStartTime) <=
-              Date.parse(`${date.value}T${time.value}:00+07:00`)
-          ) {
-            filterReservationList.value.push(filter);
-          }
-        }
-      }
-    }
+  const fStatus = ref("");
+  const fCategory = ref("");
+  const fEmail = ref("")
+  const isInputFilter = ref(undefined);
+  const filterCheck=ref(undefined)
+const searching=()=>{
+  filterReservationList.value=eventList.value
+  // email
+  if(fEmail.value!=""){
+    filterReservationList.value = filterReservationList.value.filter((event) =>{
+      return event.bookingEmail == fEmail.value.trim()})
   }
-};
+  else //status
+  if(fStatus.value!=""){
+    console.log("status check")
+    if(fStatus.value == 'past'){
+      console.log("past")
+          filterReservationList.value = filterReservationList.value.filter((event) => {
+            return new Date() > new Date(event.eventStartTime)
+          })
+      }else if(fStatus.value == 'upcoming'){
+        console.log("Upcoming")
+          filterReservationList.value = filterReservationList.value.filter((event) => {
+            return new Date() < new Date(event.eventStartTime)
+          })
+      }
+  }
+  else//category
+  if(fCategory.value!=""){
+    filterReservationList.value= filterReservationList.value.filter((event)=>{
+      return event.eventCategory.eventCategoryName==fCategory.value
+
+    })
+  }
+  else//startDate
+  if(fStartDate.value!=""){
+    filterReservationList.value = filterReservationList.value.filter((event)=>{
+      let date =event.eventStartTime.substring(0,10)
+      // console.log(fStartDate.value)
+      return date == fStartDate.value
+    })
+  }
+}
+
 
 // reset filter
 const reset = () => {
   fStartDate.value = "";
   fStatus.value = "";
   fCategory.value = "";
+  fEmail.value=""
   filterReservationList.value = eventList.value;
 };
 
@@ -489,7 +318,7 @@ const saveLocal=()=>{
       <div class=" m-auto mx-2 w-fit">
           <button @click="reset" class="mx-1 transition duration-200 hover:bg-rose-300 font-bold  rounded-md px-3">Reset</button>
 <!-- custom-btn reset -->
-          <button @click="search" class="mx-1 transition duration-200 hover:bg-blue-300 hover:text-gray-700 font-bold  rounded-md px-3">Search</button>
+          <button @click="searching" class="mx-1 transition duration-200 hover:bg-blue-300 hover:text-gray-700 font-bold  rounded-md px-3">Search</button>
         
       </div>
 <!-- custom-btn search -->
@@ -502,12 +331,14 @@ const saveLocal=()=>{
     <div v-if="checkGetEvent==undefined" class="m-auto w-fit p-[10%] ">
       <BaseLoading :heightt="70" :widthh="70" :thick="15" />
     </div>
-
+  
+  <!-- no data -->
     <div v-if="checkGetEvent==false">
       <h1 class="drop-shadow-2xl mx-auto w-fit  font-semibold p-[10%]  ">No event</h1>
     </div>
-
-    <div v-if="checkGetEvent==true" class=" bg-white overflow-y-auto mx-auto h-fit h-[100%] w-[100%]" >
+  
+  <!-- data -->
+    <div v-if="checkGetEvent==true" class=" bg-white overflow-y-auto mx-auto h-[100%] w-[100%] mt-2" >
       <table class="table-fixed mx-auto md:table-flexed w-full">
         <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -519,7 +350,7 @@ const saveLocal=()=>{
           </tr>
         </thead>
         <tbody>
-          <!-- show data -->
+          <!-- show data filter -->
           <tr v-for="Booking in filterReservationList" :key="Booking.id"
             class="text-center border-y border-t-0 dark:border-gray-700">
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
@@ -555,8 +386,8 @@ const saveLocal=()=>{
 
     <!-- for alert -->
     <div class="alert-area">
-      <div v-if="noInputFilter == true" class="alert info text-sm">
-        <span class="closebtn" @click="noInputFilter = undefined">x</span>
+      <div v-if="isInputFilter == true" class="alert info text-sm">
+        <span class="closebtn" @click="isInputFilter = undefined">x</span>
         <strong class="block">Info!</strong> Please input information to filter
       </div>
 
