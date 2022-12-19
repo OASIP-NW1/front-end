@@ -38,7 +38,7 @@ const routes=[
                 component: SignIn        
             },
             {
-                path:'/guess-user',
+                path:'/guest-user',
                 name:'GuessUser',
                 component: GuessUser
             },
