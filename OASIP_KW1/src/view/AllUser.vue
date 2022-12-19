@@ -77,25 +77,32 @@ const saveLocal=()=>{
 </script>
  
 <template>
+<div class="bg-gray-400 w-[100%]">
+
+  
   <!-- for loading -->
-  <div v-if="userCheck==undefined" class="  p-5  mx-auto mt-40  ">
+  <div v-if="userCheck==undefined" class=" w-fit  p-5  mx-auto mt-40  ">
     <BaseLoading :heightt="100" :widthh="100" :thick="15" />
     
   </div>
   <!-- for show no user -->
-  <div v-else-if="userCheck==false" class="w-64 h-28 p-5  mx-auto mt-10 bg-white rounded-md shadow-xl">
-    <h4 class="text-center w-fit m-auto ">No User</h4>
+  <div v-else-if="userCheck==false" class="w-64 h-28 p-5   mx-auto mt-[15%] bg-white rounded-md shadow-xl">
+    <h4 class="text-center w-fit m-auto  mt-5 font-semibold">No User</h4>
   </div>
 
+  
   <!-- for show user -->
-  <div v-else-if="userCheck==true" class="showUp  p-5 pt-10 pb-7 mx-auto  bg-white  overflow-auto">
+  <div v-else-if="userCheck==true" class="showUp px2  w-[100%] h-[100%]  mx-auto    overflow-auto">
+
+      <h1 class="  text-xl font-semibold text-gray-700  mx-auto w-[15%] mt-6">User List</h1>
+
     <!-- this for filter -->
-    <div class="mx-auto  bg-gray-400">
+    <!-- <div class="mx-auto  bg-gray-400">
       for filter
       --
       --
-    </div>
-    <div class="drop-shadow-2xl bg-white overflow-y-auto mx-auto h-fit" style="height: 440px; width: 100%">
+    </div> -->
+    <div class=" bg-white overflow-y-auto mx-auto h-[85%] w-[100%] mt-6" >
       <table class="table-fixed m-auto md:table-flexed w-full">
         <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -138,9 +145,35 @@ const saveLocal=()=>{
     </div>
 
   </div>
+</div>
 </template>
  
 <style>
+
+/* slice bar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(111, 129, 151);
+  border-radius: 0px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #53719d;
+}
+
+
 .showUp {
   position: relative;
   animation: wii 1s;

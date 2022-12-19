@@ -43,9 +43,10 @@ defineProps({
         localStorage.removeItem('tokenR')
         localStorage.removeItem('role')
         localStorage.removeItem('name')
-        
-        // localStorage.getItem('token')
+        goHome()
         signOut()
+        // localStorage.getItem('token')
+        
          
         //console.log(localStorage.getItem('token'))
     }
@@ -63,8 +64,11 @@ defineProps({
       },
     }));
     function signOut() {
-      userAgentApplication.value.logout();
-      setTimeout(()=>(goHome()),1000)
+        goHome()
+      userAgentApplication.value.logout()
+      
+      
+      
     }
 </script>
  

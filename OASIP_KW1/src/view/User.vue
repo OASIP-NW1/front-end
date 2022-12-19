@@ -298,17 +298,17 @@ const saveLocal=()=>{
  
 <template>
     <div
-    class=" showUp w-3/5 p-5 pb-7 mx-auto m-10 bg-white rounded-md shadow-xl ">
-      <div class="border-4 border-double">
-      <h1 class="font-semibold  text-lg m-auto w-fit font-sans text-slate-600">User Detail </h1>
+    class=" showUp w-[100%] p-5 pb-7 mx-auto  bg-white rounded-md shadow-xl ">
+      <div class="border-4 border-double h-[100%]">
+      <h1 class="font-semibold  text-lg m-auto w-fit font-sans text-slate-600 mt-10">User Detail </h1>
       <h2 class="text-slate-700 font-medium m-auto w-fit">User ID: {{id}}</h2>
       <div class=" w-full mx-auto">
       <!-- <div class=" w-2/5 m-12">
         <img src="../assets/Rick_Rolling.gif" alt="">
       </div> -->
       <div class="px-2 m-auto w-4/5  ">
-    <div class=" w-full p-4 mx-auto">
-            <div class="w-5/6 ml-12  pt-3">
+    <div class=" w-[55%] p-4 mx-auto">
+            <div class="w-full   pt-3">
               <!-- name -->
               <div  class="block w-full  pt-2">
                 <div class="w-5/6 ml-12">

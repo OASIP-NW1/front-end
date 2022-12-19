@@ -214,14 +214,14 @@
   <template>
       
          
-        <div class=" mx-auto w-fit mt-10 ">
+        <div class=" mx-auto w-[100%] h-[100%] ">
           <!-- Col -->
           <!-- <div class="w-500 h-auto bg-gray-400 hidden  lg:block 2xl:w-1/2 bg-cover rounded-l-lg"
             style="background-image: url('https://source.unsplash.com/K4mSJ7kc0As/600x800')"></div> -->
           <!-- Col -->
-          <div class="w-fit  mx-auto  bg-white p-5 rounded">
-            <h3 class="pt-2 text-2xl font-semibold text-gray-600 text-center">Register</h3>
-            <form class="px-8 pt-4 pb-4 mb-1 bg-white rounded">
+          <div class="w-fit  mx-auto w-[100%] h-[100%]  bg-white p-5 rounded">
+            <h3 class="pt-2 text-2xl font-semibold text-gray-600 text-center mt-6">Register</h3>
+            <form class="px-8 pt-4 pb-4 mb-1 bg-white rounded w-[500px] mx-auto">
               <div class="mt-1">
                 <label for="name" class="inline-block mr-1.5 mb-2 text-sm font-bold text-gray-500"> Username </label> 
                 <span class="text-xs text-gray-500"> {{name.length}}/{{nameL}} character</span>
