@@ -265,7 +265,7 @@ const accoutMicro = ref({accountIdentifier:null , roles:[]})
           guess?
         </button> 
         <button @click="signIn" class="text-[13px] pl-4 text-gray-500 hover:text-gray-700">
-          log in with microsoft teams
+          log-in with microsoft.
         </button>
 
 
