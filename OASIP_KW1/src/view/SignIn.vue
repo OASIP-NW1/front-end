@@ -191,7 +191,7 @@ const userAgentApplication = ref(new msal.UserAgentApplication({
         localStorage.setItem("tokenA",idToken.idToken.rawIdToken)
         localStorage.setItem('role',data.roles[0])
         localStorage.setItem('name',data.preferred_username)
-        localStorage.setItem("MST",isLogInWithMST.value)
+        localStorage.setItem("isMST",isLogInWithMST.value)
         console.log("save data success")
         check_200.value=true
         setTimeout(()=>(goBooking()),2000)
