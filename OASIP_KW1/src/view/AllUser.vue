@@ -148,7 +148,7 @@ const saveLocal=()=>{
 </div>
 </template>
  
-<style>
+<style scoped>
 
 /* slice bar */
 /* width */
