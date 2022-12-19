@@ -153,24 +153,11 @@ const decode=(token)=>{
 const isLogInWithMST=ref(false)
 const idToken =ref(undefined)
 
-// const msalConfig = {
-//     auth: {
-//         clientId: "53b435c8-401e-4918-b208-1c69a8afda13",
-//         authority: "https://login.microsoftonline.com/6f4432dc-20d2-441d-b1db-ac3380ba633d",
-//         redirectURI: "http://localhost:3000/sign-in"
-//     },
-//     cache: {
-//         cacheLocation: "localStorage", // This configures where your cache will be stored
-//         storeAuthStateInCookie: true,
-//         popUp:true // Set this to "true" if you are having issues on IE11 or Edge
-//     }
-// };
-
 const userAgentApplication = ref(new msal.UserAgentApplication({
       auth: {
         clientId: '63b704b4-2c35-4065-886a-8c24369da93b',
         authority: 'https://login.microsoftonline.com/6f4432dc-20d2-441d-b1db-ac3380ba633d',
-        redirectUri: 'http://localhost:3000/sign-in',
+        // redirectUri: 'http://localhost:3000/sign-in',
       },
       cache: {
         // cacheLocation: 'localStorage',
