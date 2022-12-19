@@ -1,7 +1,7 @@
 <script setup>
 import { onBeforeMount, onUpdated, ref } from "vue";
 import { useRoute, useRouter } from 'vue-router'
-
+import BaseLoading from "../components/BaseLoading.vue";
 const myRouter = useRouter()
 const { params } = useRoute();
 const categoryList = ref([]);
@@ -9,7 +9,7 @@ const id = params.id
 const categoryName=ref("")
 const categoryDuration=ref("")
 const categoryDescription=ref("")
-const getStatus = ref(false);
+const getStatus = ref(undefined);
 const categoryLink = `${import.meta.env.BASE_URL}api/eventCategory`;
 const refreshTLink =`${import.meta.env.BASE_URL}api/refresh`
 const token =ref(undefined)
@@ -121,35 +121,60 @@ onBeforeMount(async () => {
 });
 </script>
 <template>
+<div  class="bg-gray-300 w-[100%]">
+  <div  class="w-[100%] bg-gray-400">
+    <h2 class="w-fit mx-auto text-gray-600 font-semibold  text-4xl py-7 pt-10">Category details</h2>
+  </div>
+ <!-- loading -->
+ <div v-if="getStatus==undefined" class=" m-auto w-fit mt-[16%]">
+  <BaseLoading :heightt="120" :widthh="120" :thick="30" />
+</div>
+
+ <!-- no data -->
+ <div v-if="getStatus==false" class="bg-gray-100 p-7 m-auto w-fit mt-10 rounded-md">
+  <div class="w-fit mx-auto m-2">
+  no data    
+  </div>
+
+  <button
+          class="bg-gray-700 hover:bg-gray-100 hover:text-gray-700 text-gray-300 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          @click="goCategory()">
+          Back to Category
+        </button>
+</div>
+
+<!-- have data -->
+
+
+  <div v-if="getStatus==true">
   <!-- for show -->
-  <div v-if="isEdit==false" class=" w-1/2  mx-auto mt-20">
-    <div class="rounded bg-white p-5">
-      <h2 class="w-fit mx-auto text-2xl font-semibold">Category details</h2>
+  <div v-if="isEdit==false" class=" w-1/2  mx-auto mt-10">
+    <div class="">
       <div class="mt-5">
          <h3 class="w-fit mb-3 ml-6"><!--category name  -->
-          <span class="font-semibold text-gray-400 text-base p"> Category Name :</span>
-          <span class="font-normal pl-2 text-lg">{{ categoryList.eventCategoryName }}</span> 
+          <span class="font-semibold text-gray-500 text-base p"> Category Name :</span>
+          <span class="font-normal pl-2 text-lg text-gray-800">{{ categoryList.eventCategoryName }}</span> 
         </h3>
         <h3 class="w-fit mb-3 ml-6"><!--category duration  -->
-          <span class="font-semibold text-gray-400 text-base ">Duration :</span>
-          <span class="font-normal pl-2 text-lg text-gray-600">{{ categoryList.eventDuration }} Minutes</span>
+          <span class="font-semibold text-gray-500 text-base ">Duration :</span>
+          <span class="font-normal pl-2 text-lg text-gray-800">{{ categoryList.eventDuration }} Minutes</span>
         </h3>
         <h3 v-if="categoryList.eventCategoryDescription == null" class="w-fit ml-6"><!--category description  -->
-          <span class="font-semibold text-gray-400 text-base">Description : -</span>
+          <span class="font-semibold text-gray-500 text-base">Description : -</span>
         </h3>
         <h3 v-else class="w-fit ml-6"><!--category description  -->
-          <span class="font-semibold text-gray-400 text-base "  >Description :</span>
-          <span class="font-normal pl-2 text-lg  " >{{ categoryList.eventCategoryDescription }}</span>
+          <span class="font-semibold text-gray-500 text-base "  >Description :</span>
+          <span class="font-normal pl-2 text-lg  text-gray-800" >{{ categoryList.eventCategoryDescription }}</span>
         </h3>
       </div>
       <div class="mx-auto w-fit mt-10"><!--button  -->
         <button
-          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          class="bg-white hover:bg-purple-500 hover:text-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
           @click="edit">
           Edit
         </button> &nbsp;
         <button
-          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          class="bg-gray-100 hover:bg-gray-600 hover:text-gray-300 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
           @click="goCategory()">
           Back to Category
         </button>
@@ -158,9 +183,8 @@ onBeforeMount(async () => {
   </div>
 
   <!-- for edit -->
-  <div v-if="isEdit==true" class="w-1/2  mx-auto mt-20">
-    <div class="rounded bg-white p-5">
-      <h2 class="w-fit mx-auto text-2xl font-semibold">Category details</h2>
+  <div v-if="isEdit==true" class="w-1/2  mx-auto mt-10">
+    <div >
       <div class="mt-5 w-full">
          <div class=" mb-3 ml-6">
           <label for="name" class="font-semibold text-gray-400 text-base ">Category Name :</label>
@@ -174,17 +198,17 @@ onBeforeMount(async () => {
         <div  class=" ml-6">
           <label for="descrip" class="font-semibold text-gray-400 text-base block">Description :</label>
           <!-- <input type="text" id="descrip" v-model="categoryDescription" class="border border-rose-300 rounded border-2 w-3/4 mx-2 px-2 ">  -->
-          <textarea  id="descrip" v-model="categoryDescription" class="overflow-auto resize-none border border-rose-300 rounded border-2 block w-5/6 mx-auto py-1 px-2 "></textarea>
+          <textarea  id="descrip" v-model="categoryDescription" class="overflow-auto resize-none border border-rose-300 rounded border-2 block w-[90%] mx-auto py-1 px-2 "></textarea>
         </div>
       </div>
       <div class="mx-auto w-fit mt-10">
         <button
-          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          class="bg-white hover:bg-rose-500 hover:text-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
           @click="edit">
           Cancel<!--  {{ categoryList.eventCategoryName }} -->
         </button> &nbsp;
         <button
-          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          class="bg-white hover:bg-purple-500 hover:text-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
           @click="submitt">
           Submit
         </button>
@@ -270,6 +294,8 @@ onBeforeMount(async () => {
         @click="edit">Cancel</button>
     </div> -->
   </div>
+  </div>
+</div>
 </template>
 
 <style scoped>

@@ -3,6 +3,7 @@ import { computed } from "@vue/reactivity";
 import { onBeforeMount, onUpdated, ref } from "vue";
 import { useRouter } from "vue-router";
 import BaseLoading from "../components/BaseLoading.vue";
+import BaseLoadingVue from "../components/BaseLoading.vue";
 const name = ref("");
 const eMail = ref("");
 const startDate = ref("");
@@ -15,6 +16,7 @@ const nameLength = 100;
 const emailLength = 100;
 const noteLength = 500;
 const pageCount=ref(0)
+const process=ref(false)
 // form-data
 //  let formEl = document.getElementById("form")
 // // const newData =new FormData()
@@ -335,6 +337,7 @@ const submitt = () => {
 // fetch create
 const isStatus = ref(undefined);
 const addBooking = async () => {
+  process.value=true
   const auther=ref(localStorage.getItem('tokenA'))
   const refreshT=ref(localStorage.getItem('tokenR'))
   let createStatus = undefined;
@@ -394,16 +397,19 @@ const addBooking = async () => {
   });
   console.log(res.status)
   if (res.status === 201) {
+    process.value=false
     addSuccess.value = true;
     createStatus = true;
     isStatus.value = true;
     isSend.value=false
     setTimeout(() => (addSuccess.value = false), 5000);
   } else if (res.status === 400) {
+    process.value=false
     validateBetweenDate.value = true;
     isStatus.value = false;
 
   }else if(res.status === 401){
+    
     isSend.value=false
     const ress= await fetch(refreshTLink,{
       method:'GET',
@@ -413,6 +419,7 @@ const addBooking = async () => {
     });
 
     if(ress.status === 200){
+      process.value=false
       token.value =await ress.json()
       saveLocal()
       console.log('refresh token successful')
@@ -421,6 +428,7 @@ const addBooking = async () => {
 
 
   } else {
+    process.value=false
     createStatus = false;
     isStatus.value = false;
     isSend.value = false
@@ -743,17 +751,20 @@ const getCatD =computed(()=>{
       <!-- step3 attatch file ,note, submit  -->
       <div v-if="pageCount==2" class="mt-[2%] w-fit mx-auto">
         <!--upload file  -->
-        <div >
+        <div class="w-[400px] text-ellipsis truncate overflow-hidden">
           <label for="file" class="cursor-pointer w-fit ">
-              <span class="w-fit">attech file here :</span> 
+              <span class="w-fit">Attech file :</span> 
               <input type="file" id="file" class="hidden" name="file" @change="uploadFile" />
-              <span v-if="fileName.length!=0">{{fileName}}</span>
-              <span v-if="fileName.length==0">ยังไม่ได้เลือกไฟล์</span>
-            </label>
-              <button v-if="fileName.length!=0" @click="removeFile" class="pointer justify-end hidden lg:inline-block my-auto bg-rose-400 mx-1 py-[1px] px-2 hover:bg-rose-300 
-              hover:text-gray-600  text-[14px] text-white font-bold ml-2 rounded-xl transition duration-200">
+              <span v-if="fileName.length!=0" class="">{{fileName}}</span>
+              <span v-if="fileName.length==0"> ยังไม่ได้เลือกไฟล์</span>
+          </label>
+              <div>
+              <button v-if="fileName.length!=0" @click="removeFile" class="block pointer justify-end hidden lg:inline-block my-auto bg-rose-400 mx-1 py-[1px] px-2 hover:bg-rose-300 
+              hover:text-gray-600  text-[14px] text-white font-bold  rounded-xl transition duration-200">
                 remove file
-              </button>
+              </button>                
+              </div>
+
         </div>
 
         <!-- note -->
@@ -793,10 +804,17 @@ const getCatD =computed(()=>{
           Next
         </button>
                   <!-- booking button -->
-        <a v-if="pageCount==2" href="#submit" class="justify-end hidden lg:inline-block my-auto bg-green-400 mx-1 py-1 px-4 hover:bg-green-300 hover:text-gray-600  text-[14px] text-white 
+        <a v-if="pageCount==2 && process==false" href="#submit" class="justify-end hidden lg:inline-block my-auto bg-green-400 mx-1 py-1 px-4 hover:bg-green-300 hover:text-gray-600  text-[14px] text-white 
         font-bold  rounded-xl transition duration-200">
         Submit !
         </a>
+        <a v-else-if="pageCount==2 &&process==true" :style="[process==true?'opacity: 0.6;cursor: not-allowed;':'']"  class="  justify-end hidden lg:inline-block my-auto bg-green-400 mx-1 py-1 px-4  text-[14px] text-white 
+        font-bold  rounded-xl transition duration-200">
+          Submit !
+        </a>
+        <span v-if="process==true" class="ml-1.5 my-auto w-fit">
+            <BaseLoading :heightt="20" :widthh="20" :thick="5" />
+        </span>
           
       </div>
   </div>

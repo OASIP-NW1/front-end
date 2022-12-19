@@ -79,9 +79,13 @@ return text
 </script>
 
 <template>
+<div class="bg-gray-300 w-[100%]">
+  <div class="mt-8">
+    <h2 class="font-semibold text-gray-600 w-fit mx-auto text-4xl">Category </h2>
+  </div>
   <!-- loading -->
-<div v-if="getStatus==undefined" class="mt-8 m-auto mt-[18%]">
-  <BaseLoading :heightt="90" :widthh="90" :thick="20" />
+<div v-if="getStatus==undefined" class=" m-auto w-fit mt-[16%]">
+  <BaseLoading :heightt="120" :widthh="120" :thick="30" />
 </div>
 
   <!-- no data -->
@@ -90,17 +94,24 @@ return text
   </div>
 
   <!-- content -->
-<div v-if="getStatus==true" class="mt-[5%] mx-auto w-4/5">
+  <div v-if="getStatus==true" class="mt-[3%] mx-auto w-4/5">
   <ul class="grid grid-cols-3 gap-4  text-center ">
-    <li v-for="(cat,index) in categoryList" class="bg-gray-400 rounded p-5" :key="index">
+    <li v-for="(cat,index) in categoryList" class="shadow bg-gray-400 rounded p-5 hover:drop-shadow-2xl transition duration-200" :key="index">
     
-        <img :src="'../src/assets/categorys/'+(index+1)+'.png'" alt="Icon" class="mx-auto w-1/3"  />
-      <p class="w-fit mx-auto">CategoryName : {{cat.eventCategoryName}}</p>
-      <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-3 border border-gray-400 
-    rounded shadow justify-center m-2 "  id="button1" @click="goCategoryDetail(cat)">More Details</button>
+        <!-- <img :src="'../src/assets/categorys/'+(index+1)+'.png'" alt="Icon" class="mx-auto w-1/3"  /> -->
+        <img v-if="index==0" src="../assets/categorys/1.png" class="mx-auto w-1/3" alt="Project_management">
+        <img v-if="index==1" src="../assets/categorys/2.png" class="mx-auto w-1/3" alt="DevOp">
+        <img v-if="index==2" src="../assets/categorys/3.png" class="mx-auto w-1/3" alt="database">
+        <img v-if="index==3" src="../assets/categorys/4.png" class="mx-auto w-1/3" alt="client">
+        <img v-if="index==4" src="../assets/categorys/5.png" class="mx-auto w-1/3" alt="servser_side">
+
+      <p class="w-fit mx-auto"> {{cat.eventCategoryName}}</p>
+      <button class="bg-gray300 hover:bg-gray-800 hover:text-gray-300 text-gray-800 font-semibold py-1 px-3 border border-gray-400 
+    rounded  justify-center m-2 "  id="button1" @click="goCategoryDetail(cat)">More Details</button>
       
     </li>
   </ul>
+  </div>
 </div>
 </template>
  

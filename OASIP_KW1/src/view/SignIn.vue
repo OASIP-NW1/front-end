@@ -3,9 +3,11 @@ import {ref} from 'vue'
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import BaseNav from '../components/BaseNav.vue'
+import BaseLoading from "../components/BaseLoading.vue";
 import * as msal from 'msal';
 const passwordd=ref('')
 const eMail=ref('')
+const process=ref(false)
 // const userList=ref([])
 let token=ref(undefined)
 const userCheck=ref(undefined)
@@ -46,6 +48,7 @@ const checkOther=ref(false)
 
 // send to back for check
 const sendd =async ()=>{
+    process.value=true
     const res = await fetch(matchLink, {
     method: "POST",
     headers: {
@@ -57,6 +60,7 @@ const sendd =async ()=>{
     })
   });if(res.status==200){
     console.log("sign in successful")
+    process.value=false
     check_200.value=true
     token.value=await res.json()
     // console.log(token.value.jwtToken)
@@ -66,19 +70,23 @@ const sendd =async ()=>{
   }
   else
   if(res.status==404){
+    process.value=false
     console.log('not found')
     check_404.value=true
   }
   else
   if(res.status==401){
+    process.value=false
     console.log("Password Incorrect")
     check_401.value=true
   }
   else
   if(res.status==400){
+    process.value=false
     console.log('Bad request')
     check_400.value=true
   }else{
+    process.value=false
     console.log('can not sign-in please try again later')
     checkOther.value=true 
   } 
@@ -290,8 +298,8 @@ const accoutMicro = ref({accountIdentifier:null , roles:[]})
       </div> -->
 
       <div>
-        
-        <button class="group relative w-full flex justify-center py-2 px-4 border 
+        <!-- button submit -->
+        <button v-if="process==false"   class="group relative w-full flex justify-center py-2 px-4 border 
         border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 
         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" @click="submitt">
           <!-- <span class="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -300,6 +308,21 @@ const accoutMicro = ref({accountIdentifier:null , roles:[]})
             </svg>
           </span> -->
           Sign in
+
+        </button>
+        
+        <button v-else-if="process==true"  :style="[process==true?'opacity: 0.6;cursor: not-allowed;':'']" class="group relative w-full flex justify-center py-2 px-4 border 
+        border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 
+        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" >
+          <!-- <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+            </svg>
+          </span> -->
+          Sign in
+          <span v-if="process==true" class="ml-1.5">
+            <BaseLoading :heightt="20" :widthh="20" :thick="5" />
+          </span>
         </button>
       </div>
     <!-- </form> -->

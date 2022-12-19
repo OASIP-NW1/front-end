@@ -1,7 +1,7 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { onBeforeMount, ref } from "vue";
-
+import BaseLoading from "../components/BaseLoading.vue";
 const { params } = useRoute();
 
 //const db = "http://localhost:5000/booking";
@@ -19,7 +19,7 @@ const detailBooking = ref({});
 const catId=ref("")
 const catName=ref("")
 const eventList=ref([])
-const isNotNull = ref(false);
+const getCheck = ref(undefined);
 const myRouoter = useRouter();
 const goReservation = () => myRouoter.push({ name: "ReservationList" });
 // link
@@ -124,7 +124,7 @@ const getDetail = async () => {
     console.log(detailBooking.value)
     //console.log(Date.parse("2022-06-01T15:00:00+07:00"));
      if ( detailBooking.value.id == id) {
-      isNotNull.value = true;
+      getCheck.value = true;
       name.value =  detailBooking.value.bookingName;
       eMail.value =  detailBooking.value.bookingEmail;
       category.value =  detailBooking.value.eventCategoryName;
@@ -147,6 +147,7 @@ const getDetail = async () => {
     });
 
     if(ress.status === 200){
+      getCheck.value=true
       token.value =await ress.json()
       saveLocal()
       console.log('refresh token successful')
@@ -154,6 +155,8 @@ const getDetail = async () => {
     }else console.log('something waring to get token')
 
 
+  }else{
+    getCheck.value=false
   }
 };
 
@@ -500,8 +503,13 @@ const removeFile =async()=>{
     <h3 class="text-center">----------------</h3>
   </div>
   <!-- content -->
+    <!-- loading -->
+    <div v-if="getCheck == undefined" class="mt-[15%] mx-auto w-fit">
+      <BaseLoading :heightt="80" :widthh="80" :thick="20" />
+    </div>
+
     <!-- no data -->
-    <div v-if="isNotNull == false" class="mt-[17%]">
+    <div v-else-if="getCheck == false" class=" mt-[17%]">
       <h2 class="text-center mb-1 font-bold text-xl">No date</h2>
       <div class="w-fit m-auto">
         <button @click="goReservation" class="custom-btn back block">Go Back</button>
@@ -509,7 +517,7 @@ const removeFile =async()=>{
     </div>
 
     <!-- have data -->
-  <div v-else-if="isNotNull == true" class="w-[70%] mx-auto">
+  <div v-else-if="getCheck == true" class="w-[70%] mx-auto">
     <!-- name email -->
     <div class="w-fit mx-auto mt-5">
       <!-- name -->
