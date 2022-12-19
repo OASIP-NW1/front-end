@@ -397,6 +397,8 @@ const addBooking = async () => {
   });
   console.log(res.status)
   if (res.status === 201) {
+    pageCount.value=0
+    removeFile()
     process.value=false
     addSuccess.value = true;
     createStatus = true;
