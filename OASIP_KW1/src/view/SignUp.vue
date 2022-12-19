@@ -1,6 +1,5 @@
 <script setup>
   import { ref } from 'vue'
-  import { useRouter } from 'vue-router';
   import { onBeforeMount } from 'vue';
  import BaseNav from '../components/BaseNav.vue'
   const name = ref('')
@@ -15,12 +14,7 @@
   const pwMinL = 8
 
   
-  //router
-  const myRouter = useRouter();
-  const goSignIn= () =>
-    myRouter.push({
-      name: "SignIn"
-    });
+  
   
   const db = "http://localhost:5000/user"
   const userLink = `${import.meta.env.BASE_URL}api/users/signup`
@@ -149,7 +143,7 @@
       body: JSON.stringify({
         name: name.value.trim(),
         email: eMail.value.trim(),
-        role: role.value == '' ? null : role.value.trim(),
+        role: role.value == '' ? null : role.value,
         password: passwordd.value.trim()
   
       })
@@ -163,7 +157,7 @@
       passwordC.value=''
       passwordd.value=''
       isSuccess.value=true
-      setTimeout(()=>(goSignIn()),2000)
+      
       //goHome()
     }else
     if(res.status==400){
