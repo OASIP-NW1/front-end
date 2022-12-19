@@ -43,8 +43,12 @@ defineProps({
         localStorage.removeItem('tokenR')
         localStorage.removeItem('role')
         localStorage.removeItem('name')
+        let check = localStorage.getItem("MST")
         goHome()
-        signOut()
+        if(check==true){
+            signOut()
+        }
+        
         // localStorage.getItem('token')
         
          

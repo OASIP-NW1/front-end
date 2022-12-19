@@ -457,14 +457,51 @@ const saveLocal=()=>{
   localStorage.setItem('tokenA',`${token.value.accessToken}`)
   localStorage.setItem('tokenR',`${token.value.refreshToken}`)
 }
+
+// remove file
+const removeFile =async()=>{
+  const auther=ref(localStorage.getItem('tokenA'))
+  const refreshT=ref(localStorage.getItem('tokenR'))
+    const res = await fetch(`${eventLink}/file/${id}`, {
+    method: "Delete",
+    headers: {
+      // "content-type": "application/json",
+      "Authorization":`Bearer ${auther.value}`
+    },
+   
+   });
+   if (res.status === 200) {
+    console.log("delete successfully");
+    isEdit=false
+  }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      removeInfo()
+    }else console.log('something waring to get token')
+
+
+  } else console.log("error");  
+}
 </script>
 
 <template>
-  <div
-    class="showUp w-3/5 p-5 pb-7 mx-auto mt-10 bg-white rounded-md shadow-xl"
-  >
+<div class="bg-gray-300 w-[100%]">
+  <div class=" w-full">
+    <h1 class="text-center mt-[5%] font-bold text-2xl">Reservation</h1>
+    <h3 class="text-center">----------------</h3>
+  </div>
+  <!-- content -->
     <!-- no data -->
-    <div v-if="isNotNull == false">
+    <div v-if="isNotNull == false" class="mt-[17%]">
       <h2 class="text-center mb-1 font-bold text-xl">No date</h2>
       <div class="w-fit m-auto">
         <button @click="goReservation" class="custom-btn back block">Go Back</button>
@@ -472,135 +509,126 @@ const saveLocal=()=>{
     </div>
 
     <!-- have data -->
-    <div
-      v-else-if="isNotNull == true"
-      class="p-4 border-double border-4 border-neutral-300 max-w-screen-lg"
-    >
-      <div class="mx-2 w-full">
-        <h1 class="text-center mb-1 font-bold text-2xl">Reservation</h1>
-        <h3 class="text-center">----------------</h3>
+  <div v-else-if="isNotNull == true" class="w-[70%] mx-auto">
+    <!-- name email -->
+    <div class="w-fit mx-auto mt-5">
+      <!-- name -->
+      <div class="inline-flex w-fit ">
+        <div class=" w-fit pr-2 font-semibold  my-auto  text-gray-400 ml-3">Name :</div>
+        <div class=" overflow-hidden overflow-x-scroll w-[250px] border-2   rounded-md p-1.5 pt-2.5 font-normal bg-white flex  ">
+          {{ name }}
+        </div>        
       </div>
-      <div class="flex m-auto my-4 w-full">
-        <!-- Name -->
-        <div class="px-2 w-1/2 inline-flex">
-          <div class="pr-2 font-semibold flex m-auto text-gray-400">Name :</div>
-          <div
-            class="overflow-hidden overflow-x-scroll border-2 rounded-md p-1.5 pt-2.5 font-normal bg-white flex w-3/4 h-12"
-          >
-            {{ name }}
-          </div>
-        </div>
 
-        <!-- E-mail -->
-        <div class="px-2 w-1/2 inline-flex">
-          <div class="pr-2 font-semibold flex m-auto text-gray-400">
-            E-mail :
-          </div>
-          <div
-            class="overflow-hidden overflow-x-scroll border-2 rounded-md p-1.5 pt-2.5 font-normal bg-white flex w-3/4 h-12"
-          >
-            {{ eMail }}
-          </div>
+      <!-- email -->
+      <div class="inline-flex w-fit ml-5 ">
+          <div class="w-fit pr-2 font-semibold  my-auto  text-gray-400">E-mail :</div>
+        <div class="overflow-hidden overflow-x-scroll w-[250px] border-2 rounded-md p-1.5 pt-2.5 font-normal bg-white flex ">
+          {{ eMail }}
         </div>
       </div>
-      <!-- start date ,time and duration -->
-      <div class="flex my-4 w-full">
-        <div class="px-1 w-fit block">
-          <div class="p-3 font-semibold inline-block m-auto text-gray-400">
-            Start date :
-          </div>
-          <div
-            v-if="isEdit == false"
-            class="border-2 rounded-md p-1.5 font-normal bg-white inline-block w-fit h-10"
-          >
-            {{ startDate }}
-          </div>
-          <div
-            v-if="isEdit == true"
-            class="eidt-color showUp border-2 rounded-md p-1.5 font-normal bg-white inline-block w-fit h-10"
-          >
-            <input type="date" :min="date" v-model="editStartDate" />
-          </div>
+    </div>
+
+    <!--category, duration, date and time -->
+    <div class="w-fit mx-auto mt-5 ">
+      <!-- category -->
+      <div class="inline-flex w-fit">
+        <div class="pr-2 font-semibold inline-block m-auto text-gray-400 ml-3">
+          Category :
         </div>
-        <div class="px-1 w-fit block">
+        <div class="text-ellipsis overflow-hidden border-2 text-black rounded-md p-1.5 font-normal bg-white inline-block w-fit">
+          {{ category }}
+        </div>
+      </div>
+
+       <!-- duration -->
+       <div class="inline-flex w-fit">
+        <!-- <div>
+          <div class="p-3 font-semibold inline-block m-auto text-gray-400"> 
+            Duration :
+          </div>
+        </div> -->
+        <div>
+          <div class="border-2 text-black rounded-md p-1.5 font-normal bg-white inline-block w-max h-10" >
+            {{ duration }}
+          </div>
+          <span class="py-3 ml-2 mr-4">minute</span>
+        </div>
+      </div> 
+
+      <!-- date -->
+      <div class="inline-flex w-fit ">
+          <div class="w-fit pr-2 font-semibold  my-auto  text-gray-400">Start date :</div>
+        <div v-if="isEdit == false"
+          class="border-2 rounded-md p-1.5 font-normal bg-white inline-block w-fit h-10">
+          {{ startDate }}
+        </div>
+        <div v-if="isEdit == true"
+            class="eidt-color showUp border-2 rounded-md p-1.5 font-normal bg-white inline-block w-fit h-10">
+            <input type="date" :min="date" v-model="editStartDate" />
+        </div>
+      </div>
+
+      <!-- time -->
+      <div class="inline-flex w-fit ">
+        <div>
           <div class="p-3 font-semibold inline-block m-auto text-gray-400">
             Start time :
           </div>
-          <div
-            v-if="isEdit == false"
-            class="text-black border-2 rounded-md p-1.5 font-normal bg-white inline-block w-fit h-10"
-          >
+          <div v-if="isEdit == false"
+            class="text-black border-2 rounded-md p-1.5 font-normal bg-white inline-block w-fit h-10" >
             {{ startTime }}
           </div>
-          <div
-            v-if="isEdit == true"
-            class="eidt-color showUp border-2 rounded-md p-1.5 font-normal bg-white inline-block w-fit h-10"
-          >
+          <div v-if="isEdit == true"
+            class="eidt-color showUp border-2 rounded-md p-1.5 font-normal bg-white inline-block w-fit h-10" >
             <input type="time" v-model="editStartTime" />
           </div>
         </div>
-        <div class="px-1 w-fit block">
-          <div class="p-3 font-semibold inline-block m-auto text-gray-400">
-            Duration :
-          </div>
-          <div
-            class="border-2 text-black rounded-md p-1.5 font-normal bg-white inline-block w-max h-10"
-          >
-            {{ duration }}
-          </div>
-          <span class="p-3">minute</span>
-        </div>
       </div>
-      <!-- category -->
-      <div class="px-2 font-semibold block w-fit">
-        <div class="px-1 w-fit inline-flex">
-          <div class="pr-2 font-semibold inline-block m-auto text-gray-400">
-            Category :
-          </div>
-          <div
-            class="text-ellipsis overflow-hidden border-2 text-black rounded-md p-1.5 font-normal bg-white inline-block w-fit"
-          >
-            {{ category }}
-          </div>
-        </div>
-      </div>
-      <!-- dowload file -->
-      <div v-if="fileName!=null" class="px-3 w-fit">
+
+    </div>
+ 
+    <!-- file note -->
+    <div class="w-fit mx-auto mt-5">
+      <!-- file -->
+      <div v-if="fileName!=null" class="px-3 w-fit ml-2 mb-5">
         <div class="pr-2 font-semibold inline-block m-auto text-gray-400">
             File dowload : 
           </div>
         <a id="dowload" @click="getFileName" :download="fileName" class="cursor-pointer" >{{fileName}}</a>
+        <button v-if="isEdit == true" @click="removeFile" class="pointer justify-end hidden lg:inline-block my-auto bg-rose-400 mx-1 py-[1px] px-2 hover:bg-rose-300 
+              hover:text-gray-600  text-[14px] text-white font-bold ml-2 rounded-xl transition duration-200">
+            remove
+        </button>
       </div>
-      
+
       <!-- note -->
-      <div class="ml-2 flex my-4 w-full">
-        <div
-          v-if="(noteT !== null && noteT !== '') || isEdit == true"
-          class="inline-block"
-        >
-          <div class="px-2 font-semibold w-fit text-gray-400">Note :</div>
-          <div class="ml-5 w-fit">
+      <div v-if="(noteT !== null && noteT !== '') || isEdit == true" class="flex">
+        <div class="px-2 font-semibold w-fit text-gray-400 ml-3 w-[9%]">Note :</div>
+        <div class="ml-5 w-[80%]">
             <textarea
               readonly
               v-if="isEdit == false"
               rows="4"
-              cols="50"
-              class="border-2 text-black rounded-md block px-3 py-2 placeholder-gray-300 border resize-none rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+              cols="80"
+              class=" border-2 text-black rounded-md block px-3 py-2 placeholder-gray-300 border resize-none rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
               v-model="noteT"
             >
             </textarea>
             <textarea
               rows="4"
-              cols="50"
+              cols="80"
               v-if="isEdit == true"
-              class="eidt-color showUp border-2 text-black rounded-md block px-3 py-2 placeholder-gray-300 border resize-none rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+              class=" eidt-color showUp border-2 text-black rounded-md block px-3 py-2 placeholder-gray-300 border resize-none rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
               v-model="editNote"
             >
             </textarea>
           </div>
-        </div>
+
+      </div>
+
        <!-- button not edit mode -->
-        <div v-if="isEdit == false" class="showUp m-auto w-fit">
+       <div v-if="isEdit == false" class="showUp m-auto w-fit">
           <button @click="editInfo" class="m-4 custom-btn edit">Edit</button>
           <a  href="#remove" class="m-4 custom-btn remove">
             Remove
@@ -614,9 +642,10 @@ const saveLocal=()=>{
           </button>
           <a href="#submit" class="m-4 custom-btn edit">Submit</a>
         </div>
-      </div>
+
     </div>
   </div>
+</div>
 
   <!-- for alert -->
   <div class="alert-area">
