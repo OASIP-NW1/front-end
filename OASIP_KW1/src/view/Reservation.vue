@@ -15,6 +15,7 @@ const startTime = ref("");
 const duration = ref("");
 const noteT = ref("");
 const fileName=ref("")
+const file=ref(undefined)
 const detailBooking = ref({});
 const catId=ref("")
 const catName=ref("")
@@ -227,13 +228,14 @@ const edit =async(input)=>{
   let formData = new FormData()
   
   const blob = new Blob([
-    ],{type:'application/json'})
-formData.append('updateEvent',JSON.stringify({
-
+  JSON.stringify({
 eventStartTime: `${editStartDate.value} ${editStartTime.value}:00`,
 eventNote: editNote.value,
-
-}))
+  })],{type:'application/json'})
+formData.append('updateEvent',blob)
+if(fileStatus.value==true){
+      formData.append('file',file.value)
+    }
   //console.log(`${editStartDate.value}T${editStartTime.value}:00+07:00`)
        let canEdit=undefined
         const res = await fetch(`${eventLink}/${id}`, {
@@ -246,6 +248,7 @@ eventNote: editNote.value,
       });
       if (res.status == 200) {
         getDetail()
+        
         isEdit.value = false;
         canEdit=true
         editSuccess.value=true
@@ -273,6 +276,45 @@ eventNote: editNote.value,
        return canEdit
 }
 
+
+
+// uploadfile edit
+const fileStatus=ref(undefined)
+const fileNameUpload=ref("")
+const uploadFile =(event)=>{
+
+  if(file.value==undefined){
+    if(event.target.files[0].size>10000001){
+    console.log("file too big")
+    fileNameUpload.value=""
+    fileStatus.value=false
+    }else{
+    file.value=event.target.files[0]
+    fileNameUpload.value=file.value.name
+    fileStatus.value=true
+    console.log(file.value)
+  }
+  }else if(file.value!=undefined){
+
+    if(event.target.files[0].size>10000001){
+    console.log("The file size cannot be larger then 10 MB ")
+    }else{
+    file.value=event.target.files[0]
+    fileNameUpload.value=file.value.name
+    fileStatus.value=true
+    console.log(file.value)
+    console.log('new file selected')
+
+  }
+  }
+
+}
+const removeFileUpload=()=>{
+file.value=undefined
+fileName.value=""
+console.log("file is removed")
+console.log(file.value)
+}
 
 // get file for dowload
 const getFileName=async()=>{
@@ -474,6 +516,8 @@ const removeFile =async()=>{
    
    });
    if (res.status === 200) {
+    getDetail()
+    
     console.log("delete successfully");
     isEdit.value=false
   }else if(res.status === 401){
@@ -599,6 +643,7 @@ const removeFile =async()=>{
     <!-- file note -->
     <div class="w-fit mx-auto mt-5">
       <!-- file -->
+      
       <div v-if="fileName!=null" class="px-3 w-fit ml-2 mb-5">
         <div class="pr-2 font-semibold inline-block m-auto text-gray-400">
             File dowload : 
@@ -608,8 +653,27 @@ const removeFile =async()=>{
               hover:text-gray-600  text-[14px] text-white font-bold ml-2 rounded-xl transition duration-200">
             remove
         </button>
-      </div>
+        <!--upload file  -->
+      </div>  
 
+        <div v-if="isEdit==true&&fileName==null" class="w-[400px] text-ellipsis truncate overflow-hidden px-3 w-fit ml-2 mb-5">
+          <label for="file" class="cursor-pointer w-fit ">
+              <span class="w-fit">Attech file :</span> 
+              <input type="file" id="file" class="hidden" name="file" @change="uploadFile" />
+              <span v-if="fileNameUpload.length!=0" class="">{{fileNameUpload}}</span>
+              <span v-if="fileNameUpload.length==0"> ยังไม่ได้เลือกไฟล์</span>
+          </label>
+              <div>
+              <button v-if="fileNameUpload.length!=0" @click="removeFileUpload" class="block pointer justify-end hidden lg:inline-block my-auto bg-rose-400 mx-1 py-[1px] px-2 hover:bg-rose-300 
+              hover:text-gray-600  text-[14px] text-white font-bold  rounded-xl transition duration-200">
+                remove file
+              </button>                
+              </div>
+
+        </div>
+        
+
+      
       <!-- note -->
       <div v-if="(noteT !== null && noteT !== '') || isEdit == true" class="flex">
         <div class="px-2 font-semibold w-fit text-gray-400 ml-3 w-[9%]">Note :</div>
