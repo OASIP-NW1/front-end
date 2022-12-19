@@ -170,7 +170,7 @@ const userAgentApplication = ref(new msal.UserAgentApplication({
         // User is now signed in
         // console.log(idToken.idToken.rawIdToken);
         // idToken.value= idToken.idToken.rawIdToken;
-        console.log(idToken.idToken.rawIdToken)
+        // console.log(idToken.idToken.rawIdToken)
         isLogInWithMST.value=true;
         console.log(isLogInWithMST.value)
 
@@ -185,6 +185,12 @@ const userAgentApplication = ref(new msal.UserAgentApplication({
         
       }).catch(function (error) {
         console.log("can not login with microsoft teams")
+        console.log('maybe guest ?')
+        if(localStorage.getItem("tokenA")!=null){
+          check_200.value=true
+          setTimeout(()=>(goBooking()),2000)
+          // console.log('hi')
+        }
         console.log(error);
         
       });
