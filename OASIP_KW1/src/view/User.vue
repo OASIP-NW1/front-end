@@ -205,8 +205,8 @@ const updateUser=async ()=>{
     },
     body: JSON.stringify({
       name: nameEdit.value.trim(),
-      email: eMailEdit.value.trim(),
-      role: roleEdit.value==''?null:roleEdit.value,
+      email: eMailEdit.value.trim()
+      
     })
   }); 
     if( res.status==200){
@@ -340,16 +340,16 @@ const saveLocal=()=>{
               <div class="block w-full ml-11 pt-3">
                   <div class=" inline-block">
                   <label class="inline w-fit text-gray-400  font-semibold pr-2" for="role">Role : </label>
-                 <h4 v-if="isEdit==false" class="showUp w-fit rounded border-gray-300 border-2 px-2 inline-block">{{role}}</h4>                  
+                 <h4  class="showUp w-fit rounded border-gray-300 border-2 px-2 inline-block">{{role}}</h4>                  
                   </div>
  
                  <!-- <input v-if="isEdit==true" type="text" class="border-cyan-400 border-3 border-solid w-4/5" v-model="roleEdit" /> -->
-                 <select v-if="isEdit==true" :style="[isSame==true||isUniqueNameAndRole==true ? 'border-style:solid;border-color:red':'']" class=" showUp px-2 border-fuchsia-500 border-2 border-solid rounded w-28" id="role" v-model="roleEdit">
+                 <!-- <select v-if="isEdit==true" :style="[isSame==true||isUniqueNameAndRole==true ? 'border-style:solid;border-color:red':'']" class=" showUp px-2 border-fuchsia-500 border-2 border-solid rounded w-28" id="role" v-model="roleEdit">
                    <option value="" disabled >select your role.</option>
                    <option  value="student">student</option>
                    <option  value="lecturer">lecturer</option>
                    <option  value="admin">admin</option>
-                 </select>                     
+                 </select>                      -->
               </div>
               <!-- created -->
             <div class="pt-3 flex ml-11 w-fit">
