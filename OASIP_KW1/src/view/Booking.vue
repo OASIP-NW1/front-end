@@ -629,7 +629,7 @@ const getCatD =computed(()=>{
           </div>
           <div>
             <input
-                disabled
+                
                 v-model="eMail"
                 type="email"
                 name="email"
