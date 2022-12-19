@@ -564,11 +564,19 @@ const getCatD =computed(()=>{
           Fill up the form below to send a online appointment.
         </p>
     </div>
+    <div class="mx-auto w-fit mt-5">
+      <img src="../assets/user.png" :style="[ pageCount == 0 ? 'border-radius: 25px; background-color:#888888;padding:5px' : '',]" class="w-[40px] inline " alt="user"/>
+      <img src="../assets/line.png"  class="w-[60px] inline "  alt="line"/>
+      <img src="../assets/clock.png" :style="[ pageCount == 1 ? 'border-radius: 25px; background-color:#888888;padding:5px' : '',]" class="w-[40px] inline " alt="clock"/>
+      <img src="../assets/line.png" class="w-[60px] inline "  alt="line"/>
+      <img src="../assets/quality.png" :style="[ pageCount == 2 ? 'border-radius: 25px; background-color:#888888;padding:5px' : '',]" class="w-[40px] inline " alt="quality"/>
+
+    </div>
     <!-- content -->
     <div class="h-[40%]">
 
       <!-- step1 name and email -->
-      <div v-if="pageCount==0" class="mt-[5%] w-fit mx-auto">
+      <div v-if="pageCount==0" class="mt-[2%] w-fit mx-auto">
         <!-- name -->
         <div >
           <div >
@@ -736,17 +744,20 @@ const getCatD =computed(()=>{
       <div v-if="pageCount==2" class="mt-[5%] w-fit mx-auto">
         <!--upload file  -->
         <div >
-          <label for="file" class="cursor-pointer w-fit mx-4">
+          <label for="file" class="cursor-pointer w-fit ">
               <span class="w-fit">attech file here :</span> 
               <input type="file" id="file" class="hidden" name="file" @change="uploadFile" />
               <span v-if="fileName.length!=0">{{fileName}}</span>
               <span v-if="fileName.length==0">ยังไม่ได้เลือกไฟล์</span>
             </label>
-              <span v-if="fileName.length!=0" @click="removeFile" class="cursor-pointer bg-rose-500">remove file</span>
+              <button v-if="fileName.length!=0" @click="removeFile" class="pointer justify-end hidden lg:inline-block my-auto bg-rose-400 mx-1 py-[1px] px-2 hover:bg-rose-300 
+              hover:text-gray-600  text-[14px] text-white font-bold ml-2 rounded-xl transition duration-200">
+                remove file
+              </button>
         </div>
 
         <!-- note -->
-        <div>
+        <div class="mt-4">
           <div>
             <label for="textA" class="font-medium text-sm text-gray-600"
               >Your Message
@@ -775,10 +786,17 @@ const getCatD =computed(()=>{
       <!-- button next pre -->
       <div class="w-fit flex mx-auto  h-[5%]">
         <!-- //\\<button @click="tesing">show</button> -->
-        <button v-if="pageCount>0" @click="pageCount--" class="mx-4 w-fit  bg-gray-700 px-2">Previous</button>
-        <button v-if="pageCount<2" @click="pageCount++" class="mx-4 w-fit bg-gray-700 px-2">Next</button>
+        <button v-if="pageCount>0" @click="pageCount--" class="font-bold  rounded-xl transition duration-200 mx-4 w-fit hover:text-gray-300  hover:bg-gray-600 bg-gray-300 text-gray-600 px-2">
+          Previous
+        </button>
+        <button v-if="pageCount<2" @click="pageCount++" class="font-bold  rounded-xl transition duration-200 mx-4 w-fit hover:text-gray-300  hover:bg-gray-600 bg-gray-300 text-gray-600 px-2">
+          Next
+        </button>
                   <!-- booking button -->
-        <a v-if="pageCount==2" href="#submit" class="mx-4 w-fit bg-green-800 text-gray-200 hover:text-gray-700 hover:bg-green-400 px-2 py-1 pointer my-auto">Submit !</a>
+        <a v-if="pageCount==2" href="#submit" class="justify-end hidden lg:inline-block my-auto bg-green-400 mx-1 py-1 px-4 hover:bg-green-300 hover:text-gray-600  text-[14px] text-white 
+        font-bold  rounded-xl transition duration-200">
+        Submit !
+        </a>
           
       </div>
   </div>
