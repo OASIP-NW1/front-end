@@ -262,7 +262,7 @@ const accoutMicro = ref({accountIdentifier:null , roles:[]})
         </div>
         <div >
          <button @click="goGuess" class="text-[13px] pl-4 text-gray-500 hover:text-gray-700" >
-          guess?
+          guest
         </button> 
         <button @click="signIn" class="text-[13px] pl-4 text-gray-500 hover:text-gray-700">
           log-in with microsoft.
