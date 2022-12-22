@@ -135,6 +135,10 @@
   }
   //add new user
   const addNewUser = async () => {
+    console.log(name.value)
+    console.log(eMail.value)
+    console.log(role.value == '' ? null : role.value)
+    console.log(passwordd.value)
     const res = await fetch(userLink, {
       method: "POST",
       headers: {
@@ -240,9 +244,9 @@
               focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
               dark:focus:ring-blue-500 dark:focus:border-blue-500" v-model="role">
                   <option class="text-gray-500" value="" disabled selected>select your role ( student )</option>
-                  <option class="bg-rose-500" value="student">Student</option>
-                  <option value="lecturer">Lecturer</option>
-                  <option value="admin">Admin</option>
+                  <option class="bg-rose-500" value="Student">Student</option>
+                  <option value="Lecturer">Lecturer</option>
+                  <option value="Admin">Admin</option>
                 </select>
               </div>
               <div class="mt-1">
