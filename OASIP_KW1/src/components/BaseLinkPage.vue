@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import * as msal from 'msal';
-import {ref} from 'vue'
+import {ref,onBeforeMount} from 'vue'
 defineProps({
     linkk:{
         type:Boolean
@@ -26,7 +26,7 @@ defineProps({
     }
 
 })
-
+    const status = ref(undefined)
     
     const myRouter = useRouter()
     const goHome = () => myRouter.push({ name: 'Home' })
@@ -37,16 +37,29 @@ defineProps({
     const goAllUser = () => myRouter.push({ name: 'AllUser' })
     const goSignUp = () => myRouter.push({ name: 'SignUp' })
     const goSignIn = () => myRouter.push({ name: 'SignIn' })
-    const isMst = ref(localStorage.getItem("isMST"))
 
-    const logOut=()=>{
+    const logOut=async()=>{
+        if(status.value==true){
+        console.log('sign in with teams')
+       await userAgentApplication.value.logout()
+        localStorage.removeItem("isMST")
+        localStorage.removeItem('tokenA')
+        localStorage.removeItem('tokenR')
+        localStorage.removeItem('role')
+        localStorage.removeItem('name')
+        sessionStorage.clear();
+        goHome()
+        }else if(status.value!=true){
         console.log('sign in without teams')
         localStorage.removeItem("isMST")
         localStorage.removeItem('tokenA')
         localStorage.removeItem('tokenR')
         localStorage.removeItem('role')
         localStorage.removeItem('name')
+        sessionStorage.clear();
         goHome()
+        }
+
         
        
         
@@ -70,17 +83,16 @@ defineProps({
       },
     }));
 
-    const signOut=()=>{
-        console.log('sign in with teams')
-        userAgentApplication.value.logout()
-        localStorage.removeItem("isMST")
-        localStorage.removeItem('tokenA')
-        localStorage.removeItem('tokenR')
-        localStorage.removeItem('role')
-        localStorage.removeItem('name')
-        goHome()
-    }
 
+    const checkMST =()=>{
+        let statusMst =Boolean(localStorage.getItem('isMST'))
+        status.value =statusMst
+        console.log(status.value)
+    }
+    onBeforeMount(()=>{
+    checkMST()
+    //  console.log(checkRole.value)
+    })
 </script>
  
 <template>
@@ -147,14 +159,11 @@ defineProps({
                 <button class="justify-end hidden lg:inline-block mx-2 py-2 px-6 hover:bg-emerald-400 hover:text-gray-600 bg-blue-600 text-l text-white 
                     font-bold  rounded-xl transition duration-200" @click="goSignUp">Sign up</button>
             </div>
-            <div v-if="logOutt==true&&isMst!=true " >
+            <div v-if="logOutt==true " >
                 <button class="justify-end hidden lg:inline-block mx-1 py-1 px-4 hover:bg-rose-300 hover:text-gray-600  text-[14px] text-white 
                     font-bold  rounded-xl transition duration-200" @click="logOut">Log out</button>
             </div>
-            <div v-else-if="logOutt==true&&isMst===true" >
-                <button class="justify-end hidden lg:inline-block mx-1 py-1 px-4 hover:bg-rose-300 hover:text-gray-600  text-[14px] text-white 
-                    font-bold  rounded-xl transition duration-200" @click="signOut">Log out</button>
-            </div>
+            
 </template>
  
 <style>
