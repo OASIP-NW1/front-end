@@ -12,7 +12,7 @@
   const passwordC = ref('')
   const pwMaxL= 14
   const pwMinL = 8
-
+  const token=ref(undefined)
   
   
   
@@ -135,6 +135,8 @@
   }
   //add new user
   const addNewUser = async () => {
+    const auther=ref(localStorage.getItem('tokenA'))
+    const refreshT=ref(localStorage.getItem('tokenR'))
     console.log(name.value)
     console.log(eMail.value)
     console.log(role.value == '' ? null : role.value)
@@ -143,6 +145,7 @@
       method: "POST",
       headers: {
         "content-type": "application/json",
+        "Authorization":`Bearer ${auther.value}`
       },
       body: JSON.stringify({
         name: name.value.trim(),
@@ -167,6 +170,22 @@
     if(res.status==400){
       // console.log(res.status)
       isUnique.value=false
+
+    }else if(res.status === 401){
+    const ress= await fetch(refreshTLink,{
+      method:'GET',
+      headers:{
+        "Authorization":`Bearer ${refreshT.value}`
+      }
+    });
+
+    if(ress.status === 200){
+      token.value =await ress.json()
+      saveLocal()
+      console.log('refresh token successful')
+      getEvent()
+    }else console.log('something waring to get token')
+
 
     }
      else {
