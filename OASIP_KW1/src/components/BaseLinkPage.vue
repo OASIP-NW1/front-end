@@ -42,21 +42,23 @@ defineProps({
         if(status.value==true){
         console.log('sign in with teams')
        await userAgentApplication.value.logout()
-        localStorage.removeItem("isMST")
-        localStorage.removeItem('tokenA')
-        localStorage.removeItem('tokenR')
-        localStorage.removeItem('role')
-        localStorage.removeItem('name')
+        // localStorage.removeItem("isMST")
+        // localStorage.removeItem('tokenA')
+        // localStorage.removeItem('tokenR')
+        // localStorage.removeItem('role')
+        // localStorage.removeItem('name')
+        localStorage.clear();
         sessionStorage.clear();
         goHome()
         }else if(status.value!=true){
         console.log('sign in without teams')
-        localStorage.removeItem("isMST")
-        localStorage.removeItem('tokenA')
-        localStorage.removeItem('tokenR')
-        localStorage.removeItem('role')
-        localStorage.removeItem('name')
-        sessionStorage.clear();
+        // localStorage.removeItem("isMST")
+        // localStorage.removeItem('tokenA')
+        // localStorage.removeItem('tokenR')
+        // localStorage.removeItem('role')
+        // localStorage.removeItem('name')
+        // sessionStorage.clear();
+        localStorage.clear();
         goHome()
         }
 
@@ -87,7 +89,7 @@ defineProps({
     const checkMST =()=>{
         let statusMst =Boolean(localStorage.getItem('isMST'))
         status.value =statusMst
-        console.log(status.value)
+        // console.log(status.value)
     }
     onBeforeMount(()=>{
     checkMST()
